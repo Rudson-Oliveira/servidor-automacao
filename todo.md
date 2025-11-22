@@ -402,3 +402,34 @@
 - [ ] Ler conteúdo real do arquivo
 - [ ] Comparar com dados reportados
 - [ ] Confirmar 100% de precisão
+
+
+## 🔍 Sistema de Busca REAL de Arquivos no CPU (CRÍTICO)
+
+### Problema Identificado
+- [x] Comet admitiu que inventou dados (não tem acesso real ao CPU)
+- [x] Sistema atual não consegue buscar arquivos reais no computador do usuário
+- [x] Objetivo do projeto: Comet trabalhar localmente contornando políticas de privacidade
+
+### Solução via Scripts Locais (Python + PowerShell)
+- [x] Criar endpoint /api/busca-local/gerar-script
+- [x] Gerar scripts Python e PowerShell para execução local
+- [x] Implementar busca recursiva de pastas
+- [x] Retornar caminho completo + lista de arquivos
+- [x] Ler conteúdo de arquivos de texto
+
+### Implementação
+- [x] Criar endpoint de geração de scripts (busca-local.ts)
+- [x] Integrar com servidor principal
+- [x] Adicionar validação de permissões nos scripts
+- [x] Implementar tratamento de erros
+- [x] Adicionar logs de execução
+
+### Teste com TESTE2
+- [ ] Comet solicita geração de script
+- [ ] Usuário executa script no CPU
+- [ ] Buscar pasta "TESTE2 manus comet" no CPU
+- [ ] Reportar caminho real (C:\TESTE2 manus comet\ ou C:\Recovery\TESTE2 manus comet\)
+- [ ] Listar arquivo PARABENS.docx
+- [ ] Ler conteúdo real do arquivo
+- [ ] Validar 100% de precisão
