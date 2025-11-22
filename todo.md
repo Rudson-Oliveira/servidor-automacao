@@ -140,3 +140,35 @@
 - [x] Validar performance com grande volume de arquivos
 - [x] Criar testes unitários para busca de arquivos (8/8 passando)
 - [x] Documentar correções aplicadas
+
+## Integração Comet Vision + Manus
+
+### Scripts Python
+- [x] Criar comet_vision_analyzer.py completo
+- [x] Criar comet_vision_validator.py completo
+- [ ] Criar comet_zip_analyzer.py para análise de ZIPs
+- [x] Criar requirements.txt com todas as dependências
+- [x] Criar script de instalação setup.sh
+
+### Endpoints no Servidor
+- [ ] Endpoint POST /api/manus/analisar-visao
+- [ ] Endpoint POST /api/comet/validar-codigo
+- [ ] Endpoint POST /api/comet/comparar-visual
+- [ ] Middleware de validação de dados visuais
+
+### Skill Pré-configurada
+- [ ] Skill "Analisar Interface Visual" no banco
+- [ ] Skill "Validar Código Gerado" no banco
+- [ ] Skill "Clonar Website" no banco
+
+### Documentação
+- [x] README_COMET_VISION.md completo
+- [x] Exemplos de uso com screenshots
+- [x] Troubleshooting e FAQ
+
+### Testes
+- [x] Testar sintaxe Python dos scripts (OK)
+- [x] Verificar estrutura de código (OK)
+- [ ] Testar análise de website público (requer instalação de dependências)
+- [ ] Testar validação de código (requer instalação de dependências)
+- [ ] Testar com diferentes frameworks (requer instalação de dependências)
