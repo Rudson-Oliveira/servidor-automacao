@@ -62,3 +62,12 @@
 - [x] Verificação de qualidade
 - [x] Logs detalhados de execução
 - [x] Sistema de autonomia total (sem confirmações)
+
+## Criação Autônoma de Skills
+
+- [x] Endpoint POST /api/skills - Criar nova skill
+- [x] Validação de dados de entrada
+- [x] Testes unitários do endpoint (3/4 passando)
+- [x] Atualizar documentação com novo endpoint
+- [x] Criar API_CRIAR_SKILLS.md completo
+- [x] Atualizar TRANSFERENCIA_CONHECIMENTO_COMET.md

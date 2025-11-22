@@ -132,6 +132,79 @@ export function registerSkillsRoutes(app: Express) {
     }
   });
 
+  // POST /api/skills - Criar nova skill
+  app.post("/api/skills", async (req, res) => {
+    try {
+      const { nome, descricao, categoria, instrucoes, exemplo, tags, autonomiaNivel } = req.body;
+      
+      // Validação
+      if (!nome || !descricao || !instrucoes) {
+        return res.status(400).json({
+          sucesso: false,
+          erro: 'Campos obrigatórios: nome, descricao, instrucoes'
+        });
+      }
+      
+      // Validar nível de autonomia
+      const niveisValidos = ['nenhuma', 'parcial', 'total'];
+      const nivelFinal = autonomiaNivel && niveisValidos.includes(autonomiaNivel) 
+        ? autonomiaNivel 
+        : 'parcial';
+      
+      const db = await getDb();
+      if (!db) {
+        return res.status(503).json({
+          sucesso: false,
+          erro: 'Banco de dados indisponível'
+        });
+      }
+      
+      // Verificar se skill já existe
+      const skillExistente = await db
+        .select()
+        .from(skills)
+        .where(eq(skills.nome, nome))
+        .limit(1);
+      
+      if (skillExistente.length > 0) {
+        return res.status(409).json({
+          sucesso: false,
+          erro: 'Skill com este nome já existe'
+        });
+      }
+      
+      // Inserir nova skill
+      await db.insert(skills).values({
+        nome,
+        descricao,
+        categoria: categoria || 'geral',
+        instrucoes,
+        exemplo: exemplo || null,
+        tags: tags || null,
+        autonomiaNivel: nivelFinal as any
+      });
+      
+      // Buscar skill criada
+      const novaSkill = await db
+        .select()
+        .from(skills)
+        .where(eq(skills.nome, nome))
+        .limit(1);
+      
+      res.status(201).json({
+        sucesso: true,
+        mensagem: 'Skill criada com sucesso',
+        dados: novaSkill[0]
+      });
+    } catch (erro: any) {
+      console.error('[Skills API] Erro ao criar skill:', erro);
+      res.status(500).json({
+        sucesso: false,
+        erro: 'Erro ao criar skill: ' + erro.message
+      });
+    }
+  });
+
   // POST /api/skills/:id/falha - Marcar execução falhada
   app.post("/api/skills/:id/falha", async (req, res) => {
     try {
