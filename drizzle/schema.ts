@@ -159,3 +159,76 @@ export const apiKeys = mysqlTable("api_keys", {
 
 export type ApiKey = typeof apiKeys.$inferSelect;
 export type InsertApiKey = typeof apiKeys.$inferInsert;
+
+/**
+ * Tabela de análises visuais do Comet Vision
+ * Armazena resultados de análise de websites
+ */
+export const cometVisionAnalyses = mysqlTable("comet_vision_analyses", {
+  id: int("id").autoincrement().primaryKey(),
+  url: varchar("url", { length: 1000 }).notNull(),
+  title: varchar("title", { length: 500 }),
+  numScreenshots: int("num_screenshots").default(0),
+  numComponents: int("num_components").default(0),
+  numColors: int("num_colors").default(0),
+  layoutType: varchar("layout_type", { length: 100 }),
+  domStructure: text("dom_structure"), // JSON
+  computedStyles: text("computed_styles"), // JSON
+  visualPatterns: text("visual_patterns"), // JSON
+  analyzerVersion: varchar("analyzer_version", { length: 50 }),
+  status: mysqlEnum("status", ["pendente", "concluido", "erro"]).default("pendente"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  urlIdx: index("url_idx").on(table.url),
+  statusIdx: index("status_idx").on(table.status),
+  createdAtIdx: index("created_at_idx").on(table.createdAt),
+}));
+
+export type CometVisionAnalysis = typeof cometVisionAnalyses.$inferSelect;
+export type InsertCometVisionAnalysis = typeof cometVisionAnalyses.$inferInsert;
+
+/**
+ * Tabela de screenshots capturados pelo Comet Vision
+ */
+export const cometVisionScreenshots = mysqlTable("comet_vision_screenshots", {
+  id: int("id").autoincrement().primaryKey(),
+  analysisId: int("analysis_id").notNull(),
+  filePath: text("file_path").notNull(),
+  width: int("width"),
+  height: int("height"),
+  section: varchar("section", { length: 100 }), // 'hero', 'features', 'footer', etc
+  scrollPosition: int("scroll_position"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  analysisIdIdx: index("analysis_id_idx").on(table.analysisId),
+}));
+
+export type CometVisionScreenshot = typeof cometVisionScreenshots.$inferSelect;
+export type InsertCometVisionScreenshot = typeof cometVisionScreenshots.$inferInsert;
+
+/**
+ * Tabela de validações de código gerado
+ * Compara código gerado com site original
+ */
+export const cometVisionValidations = mysqlTable("comet_vision_validations", {
+  id: int("id").autoincrement().primaryKey(),
+  analysisId: int("analysis_id").notNull(),
+  urlOriginal: varchar("url_original", { length: 1000 }).notNull(),
+  urlGerada: varchar("url_gerada", { length: 1000 }).notNull(),
+  similaridadeGeral: int("similaridade_geral").notNull(), // 0-100
+  ssimScore: int("ssim_score"), // 0-100
+  colorSimilarity: int("color_similarity"), // 0-100
+  layoutSimilarity: int("layout_similarity"), // 0-100
+  threshold: int("threshold").default(90),
+  aprovado: int("aprovado").default(0), // 1 = aprovado, 0 = reprovado
+  diffImagePath: text("diff_image_path"),
+  observacoes: text("observacoes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  analysisIdIdx: index("analysis_id_idx").on(table.analysisId),
+  aprovadoIdx: index("aprovado_idx").on(table.aprovado),
+  createdAtIdx: index("created_at_idx").on(table.createdAt),
+}));
+
+export type CometVisionValidation = typeof cometVisionValidations.$inferSelect;
+export type InsertCometVisionValidation = typeof cometVisionValidations.$inferInsert;

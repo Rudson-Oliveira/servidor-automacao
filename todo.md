@@ -192,3 +192,37 @@
 - [ ] Testar com site complexo (dashboard)
 - [ ] Validar métricas de similaridade
 - [ ] Gerar relatório de testes
+
+## Dashboard de Administração Comet Vision
+
+### Schema do Banco de Dados
+- [x] Tabela comet_vision_analyses (análises realizadas)
+- [x] Tabela comet_vision_validations (validações de código)
+- [x] Tabela comet_vision_screenshots (screenshots capturados)
+- [x] Relações entre tabelas
+- [x] Aplicar migrations com SQL direto
+
+### Endpoints de API
+- [x] GET /api/dashboard/analyses - Listar análises
+- [x] GET /api/dashboard/analyses/:id - Detalhes de análise
+- [x] GET /api/dashboard/validations - Listar validações
+- [x] GET /api/dashboard/metrics - Métricas agregadas
+- [x] DELETE /api/dashboard/analyses/:id - Deletar análise
+
+### Componentes React
+- [ ] AnalysisCard - Card de análise individual
+- [ ] ValidationComparison - Comparação lado a lado
+- [ ] MetricsChart - Gráficos de métricas
+- [ ] ScreenshotGallery - Galeria de screenshots
+- [ ] AnalysisTimeline - Timeline de análises
+
+### Páginas do Dashboard
+- [x] /dashboard/vision - Página principal
+- [ ] /dashboard/vision/analysis/:id - Detalhes de análise (pode ser expandido)
+- [x] Métricas exibidas na página principal
+- [x] Navegação e rotas
+
+### Testes e Validação
+- [ ] Testar CRUD de análises
+- [ ] Testar visualização de comparações
+- [ ] Validar responsividade do dashboard

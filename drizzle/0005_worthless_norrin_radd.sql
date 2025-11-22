@@ -1,1 +1,0 @@
-ALTER TABLE `api_keys` MODIFY COLUMN `chave` varchar(128) NOT NULL;
