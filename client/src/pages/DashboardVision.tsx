@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import ScreenshotGallery from "@/components/ScreenshotGallery";
+import ImageComparison from "@/components/ImageComparison";
 
 interface Metrics {
   totalAnalyses: number;
@@ -19,10 +21,21 @@ interface Analysis {
   createdAt: string;
 }
 
+interface Screenshot {
+  id: number;
+  filePath: string;
+  width: number | null;
+  height: number | null;
+  section: string | null;
+  scrollPosition: number | null;
+}
+
 export default function DashboardVision() {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
+  const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showComparison, setShowComparison] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -44,6 +57,16 @@ export default function DashboardVision() {
       const analysesData = await analysesRes.json();
       if (analysesData.sucesso) {
         setAnalyses(analysesData.dados);
+        
+        // Carregar screenshots da primeira análise (se existir)
+        if (analysesData.dados.length > 0) {
+          const firstAnalysisId = analysesData.dados[0].id;
+          const screenshotsRes = await fetch(`/api/dashboard/analyses/${firstAnalysisId}`);
+          const screenshotsData = await screenshotsRes.json();
+          if (screenshotsData.sucesso && screenshotsData.dados.screenshots) {
+            setScreenshots(screenshotsData.dados.screenshots);
+          }
+        }
       }
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
@@ -107,6 +130,53 @@ export default function DashboardVision() {
               </CardContent>
             </Card>
           </div>
+        )}
+
+        {/* Galeria de Screenshots */}
+        {screenshots.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Screenshots da Análise Mais Recente</CardTitle>
+              <CardDescription>
+                Visualização dos screenshots capturados durante a análise
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ScreenshotGallery screenshots={screenshots} />
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Comparação de Imagens (Exemplo) */}
+        {screenshots.length >= 2 && (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Comparação Visual</CardTitle>
+                  <CardDescription>
+                    Compare o site original com o código gerado
+                  </CardDescription>
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowComparison(!showComparison)}
+                >
+                  {showComparison ? 'Ocultar' : 'Mostrar'} Comparação
+                </Button>
+              </div>
+            </CardHeader>
+            {showComparison && (
+              <CardContent>
+                <ImageComparison
+                  originalImage={screenshots[0].filePath}
+                  generatedImage={screenshots[1].filePath}
+                  originalLabel="Original"
+                  generatedLabel="Gerado"
+                />
+              </CardContent>
+            )}
+          </Card>
         )}
 
         {/* Lista de Análises */}

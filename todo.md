@@ -226,3 +226,32 @@
 - [ ] Testar CRUD de análises
 - [ ] Testar visualização de comparações
 - [ ] Validar responsividade do dashboard
+
+## Galeria de Screenshots com Comparação Visual
+
+### Componentes React
+- [x] ScreenshotGallery - Grid responsivo de screenshots
+- [x] ImageComparison - Slider interativo para comparar imagens
+- [x] Lightbox - Visualização ampliada integrada no ScreenshotGallery
+- [x] ComparisonControls - Controles integrados no ImageComparison
+
+### Funcionalidades
+- [x] Grid responsivo de miniaturas
+- [x] Lightbox com navegação (anterior/próximo)
+- [x] Comparação lado a lado (original vs clonado)
+- [x] Slider interativo para comparação
+- [x] Download de screenshots
+- [x] Filtros por seção (hero, features, footer)
+- [ ] Zoom e pan em imagens ampliadas (pode ser expandido)
+
+### Integração
+- [x] Adicionar galeria na página DashboardVision
+- [x] Carregar screenshots da análise mais recente
+- [x] Integrar componente ImageComparison
+- [ ] Criar página de detalhes com galeria completa (pode ser expandido)
+- [ ] Otimização de carregamento de imagens (lazy loading)
+
+### Testes
+- [ ] Testar responsividade da galeria
+- [ ] Validar funcionamento do slider
+- [ ] Testar lightbox em diferentes resoluções
