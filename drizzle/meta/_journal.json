@@ -29,6 +29,20 @@
       "when": 1763818616580,
       "tag": "0003_ancient_lockjaw",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1763820133756,
+      "tag": "0004_simple_ironclad",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1763820207367,
+      "tag": "0005_worthless_norrin_radd",
+      "breakpoints": true
     }
   ]
 }

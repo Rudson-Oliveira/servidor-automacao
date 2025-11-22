@@ -137,3 +137,25 @@ export const cometPreferencias = mysqlTable("comet_preferencias", {
 
 export type CometPreferencia = typeof cometPreferencias.$inferSelect;
 export type InsertCometPreferencia = typeof cometPreferencias.$inferInsert;
+
+/**
+ * Tabela de chaves API para autenticação de IAs externas
+ * Permite acesso seguro ao sistema de automação
+ */
+export const apiKeys = mysqlTable("api_keys", {
+  id: int("id").autoincrement().primaryKey(),
+  chave: varchar("chave", { length: 128 }).notNull().unique(),
+  nome: varchar("nome", { length: 200 }).notNull(), // Nome da IA (ex: "Comet", "Abacus")
+  descricao: text("descricao"),
+  ativa: int("ativa").default(1).notNull(), // 1 = ativa, 0 = desativada
+  ultimoUso: timestamp("ultimo_uso"),
+  totalRequisicoes: int("total_requisicoes").default(0),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  chaveIdx: index("chave_idx").on(table.chave),
+  ativaIdx: index("ativa_idx").on(table.ativa),
+}));
+
+export type ApiKey = typeof apiKeys.$inferSelect;
+export type InsertApiKey = typeof apiKeys.$inferInsert;
