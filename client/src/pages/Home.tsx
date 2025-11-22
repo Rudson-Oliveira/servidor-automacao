@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Settings } from 'lucide-react';
+import { Link } from 'wouter';
 
 interface Message {
   id: string;
@@ -146,6 +148,14 @@ export default function Home() {
             <CardDescription className="text-lg">
               Interface de Comunicação Comet/Manus ↔ Automação
             </CardDescription>
+            <div className="mt-4">
+              <Link href="/configuracoes/ias">
+                <Button variant="outline" className="gap-2">
+                  <Settings className="h-4 w-4" />
+                  Configurar IAs
+                </Button>
+              </Link>
+            </div>
           </CardHeader>
 
           <CardContent className="space-y-6">

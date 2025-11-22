@@ -455,3 +455,18 @@
 - [ ] Adicionar logs de execução
 - [ ] Implementar retry automático
 - [ ] Criar dashboard de monitoramento
+
+
+## 🎨 Interface Visual para Configuração de IAs (Usuário Leigo)
+
+- [x] Criar página de Configurações de IAs (/configuracoes/ias)
+- [x] Adicionar formulário simples para cada IA (Perplexity, Manus, Genspark, Abacus.ai, DeepAgente)
+- [x] Implementar campo de API key com máscara de segurança (botão mostrar/ocultar)
+- [x] Adicionar botão "Testar Conexão" para cada IA
+- [x] Mostrar status visual (✅ Conectado / ❌ Desconectado / 🔄 Testando)
+- [x] Adicionar feedback visual (loading spinner, sucesso toast, erro toast)
+- [x] Criar guia passo-a-passo para usuário leigo (card "Como Funciona?")
+- [x] Remover termos técnicos da interface (linguagem simples)
+- [x] Adicionar tooltips explicativos (HelpCircle com Tooltip)
+- [x] Implementar salvamento de configurações (botão Salvar)
+- [x] Adicionar botão na Home para acessar configurações
