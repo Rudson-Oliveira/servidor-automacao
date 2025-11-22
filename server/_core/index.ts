@@ -7,6 +7,11 @@ import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
+import { registerStatusRoutes } from "../routes/status";
+import { registerConversarRoutes } from "../routes/conversar";
+import { registerHistoricoRoutes } from "../routes/historico";
+import { registerExecutarRoutes } from "../routes/executar";
+import { registerCorrigirErroRoutes } from "../routes/corrigir-erro";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -35,6 +40,13 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+  
+  // Registrar rotas REST do sistema de automação
+  registerStatusRoutes(app);
+  registerConversarRoutes(app);
+  registerHistoricoRoutes(app);
+  registerExecutarRoutes(app);
+  registerCorrigirErroRoutes(app);
   // tRPC API
   app.use(
     "/api/trpc",
