@@ -25,6 +25,30 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
+/**
+ * Tabela de skills (habilidades) para base de conhecimento
+ * Armazena instruções reutilizáveis para tarefas comuns
+ */
+export const skills = mysqlTable("skills", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 200 }).notNull().unique(),
+  descricao: text("descricao"),
+  instrucoes: text("instrucoes").notNull(),
+  exemplo: text("exemplo"),
+  tags: varchar("tags", { length: 500 }),
+  categoria: varchar("categoria", { length: 100 }),
+  autonomiaNivel: mysqlEnum("autonomia_nivel", ["baixa", "media", "alta", "total"]).default("media"),
+  usoCount: int("uso_count").default(0),
+  sucessoCount: int("sucesso_count").default(0),
+  falhaCount: int("falha_count").default(0),
+  ultimaExecucao: timestamp("ultima_execucao"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Skill = typeof skills.$inferSelect;
+export type InsertSkill = typeof skills.$inferInsert;
+
 // TODO: Add your tables here
 
 /**

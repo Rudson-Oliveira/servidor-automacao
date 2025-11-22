@@ -12,6 +12,7 @@ import { registerConversarRoutes } from "../routes/conversar";
 import { registerHistoricoRoutes } from "../routes/historico";
 import { registerExecutarRoutes } from "../routes/executar";
 import { registerCorrigirErroRoutes } from "../routes/corrigir-erro";
+import { registerSkillsRoutes } from "../routes/skills";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -47,6 +48,7 @@ async function startServer() {
   registerHistoricoRoutes(app);
   registerExecutarRoutes(app);
   registerCorrigirErroRoutes(app);
+  registerSkillsRoutes(app);
   // tRPC API
   app.use(
     "/api/trpc",

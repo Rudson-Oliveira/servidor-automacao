@@ -15,6 +15,13 @@
       "when": 1763815646347,
       "tag": "0001_careful_agent_zero",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1763817489179,
+      "tag": "0002_broken_spirit",
+      "breakpoints": true
     }
   ]
 }
