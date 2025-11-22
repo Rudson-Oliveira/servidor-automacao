@@ -172,3 +172,23 @@
 - [ ] Testar análise de website público (requer instalação de dependências)
 - [ ] Testar validação de código (requer instalação de dependências)
 - [ ] Testar com diferentes frameworks (requer instalação de dependências)
+
+## Guia de Teste Completo Comet Vision
+
+### Documentação
+- [x] Criar GUIA_TESTE_CLONAGEM.md completo
+- [ ] Adicionar checklist de pré-requisitos
+- [ ] Documentar casos de teste
+- [ ] Criar troubleshooting específico
+
+### Scripts Auxiliares
+- [x] Script test_flow_complete.sh
+- [x] Script validate_setup.sh
+- [x] Script generate_test_report.py### Implementação de Endpoints
+- [x] Endpoint POST /api/manus/analisar-visao
+- [x] Endpoint POST /api/comet/validar-codigo
+- [x] Endpoint POST /api/comet/comparar-visual
+- [x] Endpoint GET /api/manus/status-geracaote simples (landing page)
+- [ ] Testar com site complexo (dashboard)
+- [ ] Validar métricas de similaridade
+- [ ] Gerar relatório de testes

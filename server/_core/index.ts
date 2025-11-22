@@ -15,6 +15,7 @@ import { registerCorrigirErroRoutes } from "../routes/corrigir-erro";
 import { registerSkillsRoutes } from "../routes/skills";
 import { registerCometApiRoutes } from "../routes/comet-api";
 import authRouter from "../routes/auth";
+import manusVisionRouter from "../routes/manus-vision";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -53,6 +54,8 @@ async function startServer() {
   registerSkillsRoutes(app);
   registerCometApiRoutes(app);
   app.use("/api/auth", authRouter);
+  app.use("/api/manus", manusVisionRouter);
+  app.use("/api/comet", manusVisionRouter);
   // tRPC API
   app.use(
     "/api/trpc",
