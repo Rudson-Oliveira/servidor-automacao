@@ -96,24 +96,38 @@ export default function ConfiguracoesIAs() {
     }));
 
     try {
-      // Simular teste de conexão (substituir por chamada real à API)
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Sucesso
-      setIas(prev => ({
-        ...prev,
-        [iaId]: { ...prev[iaId], status: 'conectado' }
-      }));
-      
-      toast.success(`${ia.nome} conectado com sucesso! ✅`);
+      // Fazer teste REAL de conexão com a API
+      const response = await fetch('/api/integration/test-connection', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          iaId,
+          apiKey: ia.apiKey,
+          nome: ia.nome,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.sucesso) {
+        setIas(prev => ({
+          ...prev,
+          [iaId]: { ...prev[iaId], status: 'conectado' }
+        }));
+        toast.success(`✅ TESTE REALIZADO E CONCLUÍDO COM SUCESSO! ${ia.nome} está funcionando corretamente.`);
+      } else {
+        setIas(prev => ({
+          ...prev,
+          [iaId]: { ...prev[iaId], status: 'desconectado' }
+        }));
+        toast.error(`❌ Falha no teste: ${data.erro || 'API key inválida ou serviço indisponível'}`);
+      }
     } catch (error) {
-      // Erro
       setIas(prev => ({
         ...prev,
         [iaId]: { ...prev[iaId], status: 'desconectado' }
       }));
-      
-      toast.error(`Falha ao conectar com ${ia.nome}. Verifique a chave de API.`);
+      toast.error(`❌ Erro de conexão: Verifique sua internet e a chave de API`);
     }
   };
 

@@ -470,3 +470,33 @@
 - [x] Adicionar tooltips explicativos (HelpCircle com Tooltip)
 - [x] Implementar salvamento de configurações (botão Salvar)
 - [x] Adicionar botão na Home para acessar configurações
+
+
+## 🔐 Sistema de Cadastro/Login (CRÍTICO)
+
+- [ ] Criar tabela de usuários estendida (nome completo, data nascimento, telefone/WhatsApp)
+- [ ] Criar página de cadastro (/cadastro)
+- [ ] Criar página de login (/login)
+- [ ] Implementar validação de formulários (Zod)
+- [ ] Adicionar proteção de rotas (middleware)
+- [ ] Implementar autenticação JWT
+- [ ] Criar sistema de sessão
+- [ ] Adicionar logout funcional
+
+## ✅ Validação REAL de APIs (CRÍTICO)
+
+- [ ] Implementar teste REAL de conexão Perplexity
+- [ ] Implementar teste REAL de conexão Manus
+- [ ] Implementar teste REAL de conexão Abacus.ai
+- [ ] Implementar teste REAL de conexão DeepAgente
+- [ ] Adicionar feedback "✅ Teste realizado e concluído com sucesso"
+- [ ] Salvar resultados de testes no banco de dados
+- [ ] Criar log de testes de API
+
+## 🚀 Preparação para Publicação
+
+- [ ] Criar guia de atualização para COMET
+- [ ] Documentar todas as funcionalidades
+- [ ] Criar checklist de verificação
+- [ ] Garantir que nada será perdido na atualização
+- [ ] Preparar instruções de uso

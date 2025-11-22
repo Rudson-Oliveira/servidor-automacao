@@ -64,6 +64,13 @@
       "when": 1763850532820,
       "tag": "0008_little_night_thrasher",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1763853065563,
+      "tag": "0009_lonely_gateway",
+      "breakpoints": true
     }
   ]
 }

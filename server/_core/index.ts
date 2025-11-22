@@ -19,6 +19,8 @@ import manusVisionRouter from "../routes/manus-vision";
 import dashboardVisionRouter from "../routes/dashboard-vision";
 import multiIaIntegrationRouter from "../routes/multi-ia-integration";
 import buscaLocalRouter from "../routes/busca-local";
+import userAuthRouter from "../routes/user-auth";
+import testConnectionRouter from "../routes/test-connection";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
 
 function isPortAvailable(port: number): Promise<boolean> {
@@ -61,10 +63,12 @@ async function startServer() {
   registerSkillsRoutes(app);
   registerCometApiRoutes(app);
   app.use("/api/auth", authRouter);
+  app.use("/api/auth", userAuthRouter); // Rotas de cadastro/login
   app.use("/api/manus", manusVisionRouter);
   app.use("/api/comet", manusVisionRouter);
   app.use("/api/dashboard", dashboardVisionRouter);
   app.use("/api/integration", multiIaIntegrationRouter);
+  app.use("/api/integration", testConnectionRouter); // Teste de conexão de APIs
   app.use("/api/busca-local", buscaLocalRouter);
   // tRPC API
   app.use(
