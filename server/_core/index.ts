@@ -13,6 +13,7 @@ import { registerHistoricoRoutes } from "../routes/historico";
 import { registerExecutarRoutes } from "../routes/executar";
 import { registerCorrigirErroRoutes } from "../routes/corrigir-erro";
 import { registerSkillsRoutes } from "../routes/skills";
+import { registerCometApiRoutes } from "../routes/comet-api";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -49,6 +50,7 @@ async function startServer() {
   registerExecutarRoutes(app);
   registerCorrigirErroRoutes(app);
   registerSkillsRoutes(app);
+  registerCometApiRoutes(app);
   // tRPC API
   app.use(
     "/api/trpc",

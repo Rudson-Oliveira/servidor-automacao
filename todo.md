@@ -17,3 +17,48 @@
 - [x] Endpoint GET /api/skills/buscar - Buscar por query
 - [x] Sistema de métricas (uso, sucesso, falha)
 - [x] Skill "Varrer Área de Trabalho" criada
+
+## Treinamento do Comet
+
+- [x] System prompt para uso autônomo de skills
+- [x] Exemplos práticos de identificação de tarefas
+- [x] Fluxo de busca e execução de skills
+- [x] Sistema de marcação de sucesso/falha
+- [x] Guia de integração com Comet
+
+## API de Integração com Comet
+
+- [x] Endpoint POST /api/comet/processar - Processar pedido do Comet
+- [x] Endpoint POST /api/comet/buscar-arquivos - Buscar em todo o computador
+- [x] Endpoint POST /api/comet/atualizar-contexto - Gerenciar contexto de conversas
+- [x] Endpoint POST /api/comet/aprender - Aprender preferências
+- [x] Endpoint GET /api/comet/status - Status do sistema Comet
+- [x] Documentação completa da API
+
+## Busca Avançada
+
+- [x] Busca recursiva em todos os diretórios
+- [x] Filtros por tipo de arquivo
+- [x] Busca por conteúdo (texto dentro de arquivos)
+- [x] Busca por data de modificação
+- [x] Busca por tamanho
+- [x] Indexação para busca rápida
+- [x] Script Python completo (busca_avancada_arquivos.py)
+
+## Sistema de Contexto
+
+- [x] Armazenar histórico de conversas
+- [x] Entender referências anteriores
+- [x] Manter estado entre requisições
+- [x] Sugerir ações baseadas em contexto
+- [x] Aprender preferências do usuário
+- [x] Tabelas no banco: contextos_comet, preferencias_comet
+
+## Melhorias de Assertividade
+
+- [x] Validação de resultados
+- [x] Confiança em respostas (score)
+- [x] Fallback automático
+- [x] Verificação de qualidade
+- [x] Logs detalhados de execução
+- [x] Sistema de autonomia total (sem confirmações)
