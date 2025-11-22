@@ -437,16 +437,19 @@
 
 ## 📚 Documentação da API para Integração Externa
 
-- [x] Criar documentação completa da API REST (API_DOCUMENTATION.md)
+- [x] Criar documentação completa da API REST (API_DOCUMENTATION_V1_FINAL.md)
 - [x] Documentar todos os 30+ endpoints
-- [x] Adicionar exemplos de uso para cada endpoint
-- [x] Criar guia de autenticação (API keys)
+- [x] Adicionar exemplos de uso para cada endpoint (JavaScript, Python, cURL)
+- [x] Criar guia de autenticação (API keys + JWT)
 - [x] Documentar formato de requisições e respostas (JSON padrão)
 - [x] Adicionar códigos de erro e tratamento (HTTP status codes)
 - [x] Criar guia de integração para Perplexity (GUIA_INTEGRACAO_RAPIDA.md)
 - [x] Criar guia de integração para Genspark (GUIA_INTEGRACAO_RAPIDA.md)
 - [x] Criar guia de integração para Manus (GUIA_INTEGRACAO_RAPIDA.md)
 - [x] Criar guia de integração para DeepSite (GUIA_INTEGRACAO_RAPIDA.md)
+- [x] Criar guia de publicação e execução (GUIA_PUBLICACAO_EXECUCAO.md)
+- [x] Criar guia de atualização do Comet (GUIA_ATUALIZACAO_COMET_V1_FINAL.md)
+- [x] Criar roadmap V2 Hospitalar (ROADMAP_V2_HOSPITALAR.md)
 
 ## ⚙️ Sistema de Execução e Automação
 
@@ -500,3 +503,67 @@
 - [ ] Criar checklist de verificação
 - [ ] Garantir que nada será perdido na atualização
 - [ ] Preparar instruções de uso
+
+
+## 🏥 Integração com Hospitalar Saúde - V2 (ESQUELETO PREPARADO)
+
+### Schema do Banco de Dados
+- [ ] Criar tabela `hospitalar_audit_logs` (auditoria LGPD/ISO 27001)
+- [ ] Criar tabela `hospitalar_ai_workflows` (orquestração de IAs)
+- [ ] Criar tabela `hospitalar_sync_state` (sincronização bidirecional)
+- [ ] Criar tabela `hospitalar_atividades` (atividades do dashboard)
+- [ ] Criar tabela `hospitalar_metas` (metas setoriais)
+- [ ] Criar tabela `hospitalar_demandas` (demandas espontâneas)
+- [ ] Aplicar migrations no banco de dados
+
+### Endpoints de Webhook
+- [ ] POST /webhooks/hospitalar - Receber eventos do dashboard
+- [ ] Validar assinatura criptográfica dos webhooks
+- [ ] Rotear eventos para Abacus/GenSpark/DeepAgent/COMET
+
+### Endpoints de Sincronização de Dados
+- [ ] GET /api/v1/hospitalar/metas - Listar metas
+- [ ] POST /api/v1/hospitalar/metas - Criar meta
+- [ ] GET /api/v1/hospitalar/atividades - Listar atividades
+- [ ] POST /api/v1/hospitalar/atividades - Criar atividade
+- [ ] PUT /api/v1/hospitalar/atividades/:id - Atualizar atividade
+- [ ] GET /api/v1/hospitalar/demandas - Listar demandas
+- [ ] POST /api/v1/hospitalar/demandas - Criar demanda
+- [ ] PUT /api/v1/hospitalar/demandas/:id - Atualizar demanda
+
+### Endpoints de Orquestração de IAs
+- [ ] POST /api/v1/ai/analyze-demand - Analisar demanda com IA
+- [ ] POST /api/v1/ai/generate-report - Gerar relatório automático
+- [ ] GET /api/v1/ai/workflow-status - Status de workflows
+- [ ] POST /api/v1/ai/prioritize-activity - Priorizar atividade (GenSpark)
+- [ ] POST /api/v1/ai/suggest-responsible - Sugerir responsável (DeepAgent)
+- [ ] POST /api/v1/ai/predict-delay - Predizer atrasos (DeepAgent)
+
+### Sistema de Auditoria e Conformidade
+- [ ] POST /api/v1/audit/log - Registrar operação auditada
+- [ ] GET /api/v1/audit/logs - Listar logs de auditoria
+- [ ] Implementar criptografia E2E (TLS 1.3)
+- [ ] Implementar rate limiting (1000 req/min por IP)
+- [ ] Marcar dados PHI/PII com [LGPD PROTECTED]
+- [ ] Criar alertas de conformidade (LGPD/CFM 2314)
+
+### Fluxos de Automação
+- [ ] Fluxo: Nova Demanda Espontânea (Dashboard → Webhook → Abacus → Atualização)
+- [ ] Fluxo: Meta Setorial Ultrapassada (Trigger → Análise → Relatório → Notificação)
+- [ ] Fluxo: Auditoria em Tempo Real (Ação → Logger → Supabase → Dashboard)
+
+### Interface Visual
+- [ ] Criar página /hospitalar/dashboard - Painel de integração
+- [ ] Criar página /hospitalar/atividades - Gerenciar atividades
+- [ ] Criar página /hospitalar/metas - Gerenciar metas
+- [ ] Criar página /hospitalar/demandas - Gerenciar demandas
+- [ ] Criar página /hospitalar/auditoria - Logs de auditoria
+- [ ] Criar widget "IA Insights" com análises preditivas
+
+### Testes e Documentação
+- [ ] Testar webhook com payload simulado
+- [ ] Testar sincronização bidirecional
+- [ ] Testar orquestração de IAs
+- [ ] Validar conformidade LGPD/ISO 27001
+- [ ] Criar documentação completa da API
+- [ ] Criar guia de integração para equipe Hospitalar
