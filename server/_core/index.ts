@@ -18,6 +18,7 @@ import authRouter from "../routes/auth";
 import manusVisionRouter from "../routes/manus-vision";
 import dashboardVisionRouter from "../routes/dashboard-vision";
 import multiIaIntegrationRouter from "../routes/multi-ia-integration";
+import { antiHallucinationMiddleware } from "../anti-hallucination";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -44,6 +45,9 @@ async function startServer() {
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  
+  // Anti-hallucination middleware (detect and prevent fake data)
+  app.use(antiHallucinationMiddleware);
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
   

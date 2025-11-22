@@ -26,7 +26,28 @@ export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
 /**
- * Tabela de skills (habilidades) para base de conhecimento
+ * Tabela de auditoria para detecção de alucinações
+ */
+export const auditLogs = mysqlTable("audit_logs", {
+  id: int("id").autoincrement().primaryKey(),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  endpoint: varchar("endpoint", { length: 255 }).notNull(),
+  input: text("input"),
+  output: text("output"),
+  validationScore: int("validation_score").notNull(),
+  isHallucination: mysqlEnum("is_hallucination", ["0", "1"]).default("0").notNull(),
+  realDataVerified: mysqlEnum("real_data_verified", ["0", "1"]).default("0").notNull(),
+  discrepancies: text("discrepancies"),
+  executionTimeMs: int("execution_time_ms").notNull(),
+});
+
+export type AuditLog = typeof auditLogs.$inferSelect;
+export type InsertAuditLog = typeof auditLogs.$inferInsert;
+
+// TODO: Add your tables here
+
+/**
+ * Skills (habilidades) para base de conhecimento
  * Armazena instruções reutilizáveis para tarefas comuns
  */
 export const skills = mysqlTable("skills", {
