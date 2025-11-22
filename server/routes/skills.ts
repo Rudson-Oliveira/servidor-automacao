@@ -182,10 +182,10 @@ export function registerSkillsRoutes(app: Express) {
       }
       
       // Validar nível de autonomia
-      const niveisValidos = ['nenhuma', 'parcial', 'total'];
+      const niveisValidos = ['baixa', 'media', 'alta'];
       const nivelFinal = autonomiaNivel && niveisValidos.includes(autonomiaNivel) 
         ? autonomiaNivel 
-        : 'parcial';
+        : 'media';
       
       const db = await getDb();
       if (!db) {

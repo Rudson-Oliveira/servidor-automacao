@@ -146,9 +146,24 @@ export function registerCometApiRoutes(app: Express) {
     try {
       const { query, tipo, tamanhoMin, tamanhoMax, dataInicio, dataFim, limite = 50 } = req.body;
 
+      // Validação de parâmetros
+      if (!query && !tipo && !tamanhoMin && !tamanhoMax && !dataInicio && !dataFim) {
+        return res.status(400).json({
+          sucesso: false,
+          erro: "Pelo menos um critério de busca deve ser fornecido (query, tipo, tamanho ou data)"
+        });
+      }
+
+      if (limite && (limite < 1 || limite > 1000)) {
+        return res.status(400).json({
+          sucesso: false,
+          erro: "Limite deve estar entre 1 e 1000"
+        });
+      }
+
       const db = await getDb();
       if (!db) {
-        return res.status(500).json({
+        return res.status(503).json({
           sucesso: false,
           erro: "Banco de dados não disponível"
         });
@@ -158,9 +173,11 @@ export function registerCometApiRoutes(app: Express) {
       let conditions = [];
       
       if (query) {
+        const queryLower = query.toLowerCase();
+        const padraoLike = `%${queryLower}%`;
         conditions.push(
-          sql`LOWER(${cometArquivos.nome}) LIKE '%${query.toLowerCase()}%' OR 
-              LOWER(${cometArquivos.conteudoIndexado}) LIKE '%${query.toLowerCase()}%'`
+          sql`LOWER(${cometArquivos.nome}) LIKE ${padraoLike} OR 
+              LOWER(${cometArquivos.conteudoIndexado}) LIKE ${padraoLike}`
         );
       }
       
