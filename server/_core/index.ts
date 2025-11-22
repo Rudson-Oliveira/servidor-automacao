@@ -17,6 +17,7 @@ import { registerCometApiRoutes } from "../routes/comet-api";
 import authRouter from "../routes/auth";
 import manusVisionRouter from "../routes/manus-vision";
 import dashboardVisionRouter from "../routes/dashboard-vision";
+import multiIaIntegrationRouter from "../routes/multi-ia-integration";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -58,6 +59,7 @@ async function startServer() {
   app.use("/api/manus", manusVisionRouter);
   app.use("/api/comet", manusVisionRouter);
   app.use("/api/dashboard", dashboardVisionRouter);
+  app.use("/api/integration", multiIaIntegrationRouter);
   // tRPC API
   app.use(
     "/api/trpc",
