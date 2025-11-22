@@ -88,3 +88,45 @@
 - [x] Documentar fluxo de decisão Chain-of-Thought
 - [x] Criar guia completo de APIs
 - [x] Adicionar roadmap de evolução
+
+## Expansão de Skills Pré-configuradas
+
+### Gestão de Arquivos
+- [x] Skill: Fazer Upload para Google Drive
+- [x] Skill: Buscar em Documentos PDF
+- [x] Skill: Organizar Downloads por Tipo
+- [x] Skill: Fazer Backup de Arquivos Importantes
+
+### Comunicação
+- [x] Skill: Enviar Email com Anexo
+- [x] Skill: Enviar Mensagem WhatsApp
+- [x] Skill: Criar Notificação de Lembrete
+
+### Produtividade
+- [x] Skill: Criar Relatório Semanal
+- [x] Skill: Agendar Tarefa Recorrente
+- [x] Skill: Gerar Lista de Tarefas Diárias
+
+### Planejamento
+- [x] Skill: Criar Rotina em Checklist
+- [x] Skill: Gerar Template de OKR
+- [x] Skill: Definir Metas Semanais
+- [x] Skill: Revisar Progresso de Metas
+
+### Análise
+- [x] Skill: Extrair Dados de PDF
+- [x] Skill: Resumir Documento Longo
+- [x] Skill: Gerar Insights de Dados
+
+### Implementação
+- [x] Inserir todas as skills no banco de dados (17 skills)
+- [x] Criar script de seed para popular skills
+- [x] Criar endpoint GET /api/skills/categorias
+- [x] Documentar uso de cada skill
+- [x] Criar COMET_SKILLS_UPDATE.md completo
+- [x] Realizar teste completo com Comet
+- [x] Testar endpoint GET /api/skills (20 skills)
+- [x] Testar endpoint GET /api/skills/categorias (12 categorias)
+- [x] Testar endpoint POST /api/comet/processar
+- [x] Validar busca inteligente de skills
+- [x] Confirmar autenticação via API key

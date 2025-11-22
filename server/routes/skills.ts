@@ -4,6 +4,42 @@ import { skills } from "../../drizzle/schema";
 import { getDb } from "../db";
 
 export function registerSkillsRoutes(app: Express) {
+  // GET /api/skills/categorias - Listar categorias
+  app.get("/api/skills/categorias", async (req, res) => {
+    try {
+      const db = await getDb();
+      if (!db) {
+        return res.status(503).json({ sucesso: false, erro: "Banco de dados indisponível" });
+      }
+
+      const { sql } = await import("drizzle-orm");
+      const categorias = await db
+        .select({
+          categoria: skills.categoria,
+          total: sql<number>`count(*)`.as('total'),
+          totalUso: sql<number>`sum(${skills.usoCount})`.as('totalUso'),
+        })
+        .from(skills)
+        .groupBy(skills.categoria)
+        .orderBy(sql`count(*) desc`);
+
+      res.json({
+        sucesso: true,
+        dados: {
+          categorias: categorias.map(cat => ({
+            nome: cat.categoria,
+            totalSkills: cat.total,
+            totalUso: cat.totalUso || 0,
+          })),
+          total: categorias.length,
+        },
+      });
+    } catch (erro) {
+      console.error("[Skills Categorias] Erro:", erro);
+      res.status(500).json({ sucesso: false, erro: "Erro ao buscar categorias" });
+    }
+  });
+
   // GET /api/skills - Listar todas as skills
   app.get("/api/skills", async (req, res) => {
     try {

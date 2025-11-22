@@ -35,15 +35,37 @@ export function registerCometApiRoutes(app: Express) {
 
       // 1. Buscar skills relevantes baseado na mensagem
       const palavrasChave = mensagem.toLowerCase().split(' ').filter((p: string) => p.length > 3);
-      const skillsRelevantes = await db
-        .select()
-        .from(skills)
-        .where(
-          sql`LOWER(${skills.nome}) LIKE '%${palavrasChave[0]}%' OR 
-              LOWER(${skills.descricao}) LIKE '%${palavrasChave[0]}%' OR
-              LOWER(${skills.tags}) LIKE '%${palavrasChave[0]}%'`
-        )
-        .limit(3);
+      
+      let skillsRelevantes: any[] = [];
+      
+      if (palavrasChave.length > 0) {
+        // Buscar usando cada palavra-chave
+        for (const palavra of palavrasChave.slice(0, 3)) { // Limitar a 3 palavras
+          const padraoLike = `%${palavra}%`;
+          const results = await db
+            .select()
+            .from(skills)
+            .where(
+              sql`LOWER(${skills.nome}) LIKE ${padraoLike} OR 
+                  LOWER(${skills.descricao}) LIKE ${padraoLike} OR
+                  LOWER(${skills.tags}) LIKE ${padraoLike}`
+            )
+            .limit(5);
+          
+          // Adicionar skills encontradas (evitar duplicatas)
+          for (const skill of results) {
+            if (!skillsRelevantes.find(s => s.id === skill.id)) {
+              skillsRelevantes.push(skill);
+            }
+          }
+          
+          // Se já encontrou 3+ skills, parar
+          if (skillsRelevantes.length >= 3) break;
+        }
+      }
+      
+      // Limitar a 3 skills mais relevantes
+      skillsRelevantes = skillsRelevantes.slice(0, 3);
 
       // 2. Buscar contexto anterior da sessão
       const contextosAnteriores = await db
