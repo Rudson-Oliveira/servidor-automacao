@@ -255,3 +255,25 @@
 - [ ] Testar responsividade da galeria
 - [ ] Validar funcionamento do slider
 - [ ] Testar lightbox em diferentes resoluções
+
+## Lazy Loading de Screenshots
+
+### Instalação
+- [x] Instalar react-lazy-load-image-component
+- [x] Instalar tipos TypeScript (@types/react-lazy-load-image-component)
+
+### Componentes
+- [x] Criar SkeletonLoader para imagens
+- [x] Atualizar ScreenshotGallery com lazy loading
+- [x] Atualizar ImageComparison com lazy loading
+
+### Otimizações
+- [x] Configurar threshold de carregamento (100px para miniaturas, 0 para lightbox)
+- [x] Adicionar efeito de fade-in (blur para miniaturas, opacity para comparação)
+- [x] Implementar placeholder blur com SkeletonLoader animado
+- [x] Otimizar performance com lazy loading em todos os componentes
+
+### Testes
+- [ ] Validar carregamento sob demanda (requer dados de teste)
+- [ ] Testar skeleton loaders (requer dados de teste)
+- [ ] Verificar performance em rede lenta (requer testes manuais)

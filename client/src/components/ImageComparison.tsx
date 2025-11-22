@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/opacity.css';
+import SkeletonLoader from "@/components/SkeletonLoader";
 
 interface ImageComparisonProps {
   originalImage: string;
@@ -84,11 +87,16 @@ export default function ImageComparison({
           onTouchEnd={handleMouseUp}
         >
           {/* Imagem Original (fundo) */}
-          <img
+          <LazyLoadImage
             src={originalImage}
             alt={originalLabel}
             className="absolute inset-0 w-full h-full object-cover"
-            draggable={false}
+            effect="opacity"
+            threshold={0}
+            wrapperProps={{ style: { position: 'absolute', inset: 0 } }}
+            placeholder={
+              <SkeletonLoader width="100%" height="100%" />
+            }
           />
 
           {/* Imagem Gerada (com clip) */}
@@ -96,11 +104,13 @@ export default function ImageComparison({
             className="absolute inset-0 overflow-hidden"
             style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
           >
-            <img
+            <LazyLoadImage
               src={generatedImage}
               alt={generatedLabel}
               className="absolute inset-0 w-full h-full object-cover"
-              draggable={false}
+              effect="opacity"
+              threshold={0}
+              wrapperProps={{ style: { position: 'absolute', inset: 0 } }}
             />
           </div>
 
@@ -133,20 +143,30 @@ export default function ImageComparison({
       {mode === "side-by-side" && (
         <div className="grid grid-cols-2 gap-4">
           <div className="relative rounded-lg border overflow-hidden">
-            <img
+            <LazyLoadImage
               src={originalImage}
               alt={originalLabel}
               className="w-full aspect-video object-cover"
+              effect="opacity"
+              threshold={100}
+              placeholder={
+                <SkeletonLoader width="100%" height="auto" className="aspect-video" />
+              }
             />
             <div className="absolute top-4 left-4 bg-black/70 text-white text-sm px-3 py-1 rounded">
               {originalLabel}
             </div>
           </div>
           <div className="relative rounded-lg border overflow-hidden">
-            <img
+            <LazyLoadImage
               src={generatedImage}
               alt={generatedLabel}
               className="w-full aspect-video object-cover"
+              effect="opacity"
+              threshold={100}
+              placeholder={
+                <SkeletonLoader width="100%" height="auto" className="aspect-video" />
+              }
             />
             <div className="absolute top-4 left-4 bg-black/70 text-white text-sm px-3 py-1 rounded">
               {generatedLabel}
@@ -158,15 +178,24 @@ export default function ImageComparison({
       {/* Modo Sobreposição */}
       {mode === "overlay" && (
         <div className="relative w-full aspect-video rounded-lg border overflow-hidden">
-          <img
+          <LazyLoadImage
             src={originalImage}
             alt={originalLabel}
             className="absolute inset-0 w-full h-full object-cover"
+            effect="opacity"
+            threshold={0}
+            wrapperProps={{ style: { position: 'absolute', inset: 0 } }}
+            placeholder={
+              <SkeletonLoader width="100%" height="100%" />
+            }
           />
-          <img
+          <LazyLoadImage
             src={generatedImage}
             alt={generatedLabel}
             className="absolute inset-0 w-full h-full object-cover opacity-50"
+            effect="opacity"
+            threshold={0}
+            wrapperProps={{ style: { position: 'absolute', inset: 0 } }}
           />
           <div className="absolute top-4 left-4 bg-black/70 text-white text-sm px-3 py-1 rounded">
             {originalLabel} + {generatedLabel}

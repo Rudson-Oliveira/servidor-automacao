@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { X, Download, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import SkeletonLoader from "@/components/SkeletonLoader";
 
 interface Screenshot {
   id: number;
@@ -75,10 +78,15 @@ export default function ScreenshotGallery({ screenshots, title = "Screenshots" }
             className="relative group cursor-pointer rounded-lg overflow-hidden border hover:border-primary transition-colors"
             onClick={() => openLightbox(screenshot, index)}
           >
-            <img
+            <LazyLoadImage
               src={screenshot.filePath}
               alt={`Screenshot ${screenshot.section || index + 1}`}
               className="w-full h-48 object-cover"
+              effect="blur"
+              threshold={100}
+              placeholder={
+                <SkeletonLoader width="100%" height="192px" className="rounded-t-lg" />
+              }
             />
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
               <ZoomIn className="w-8 h-8 text-white" />
@@ -128,10 +136,12 @@ export default function ScreenshotGallery({ screenshots, title = "Screenshots" }
 
             {/* Imagem */}
             <div className="flex-1 flex items-center justify-center">
-              <img
+              <LazyLoadImage
                 src={selectedImage.filePath}
                 alt={`Screenshot ${selectedImage.section || selectedIndex + 1}`}
                 className="max-w-full max-h-full object-contain"
+                effect="opacity"
+                threshold={0}
               />
             </div>
 
