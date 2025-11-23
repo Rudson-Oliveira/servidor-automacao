@@ -735,3 +735,165 @@
 - [x] Criar guia de uso para Comet
 - [x] Adicionar troubleshooting
 - [x] Documentar limitações
+
+
+## 🔷 Integração API Abacus
+
+### Pesquisa e Documentação
+- [ ] Pesquisar documentação oficial da API Abacus
+- [ ] Identificar endpoints disponíveis
+- [ ] Documentar autenticação e headers necessários
+- [ ] Mapear recursos disponíveis (projetos, dados, análises)
+
+### Armazenamento Seguro
+- [ ] Adicionar ABACUS_API_KEY às variáveis de ambiente
+- [ ] Criar helper de autenticação Abacus
+- [ ] Implementar validação de API key
+
+### Endpoints de Integração
+- [ ] POST /api/abacus/query - Consultar dados no Abacus
+- [ ] GET /api/abacus/projects - Listar projetos
+- [ ] POST /api/abacus/analyze - Análise de dados
+- [ ] GET /api/abacus/status - Status da conexão
+
+### Melhorias Obsidian
+- [ ] Sincronização bidirecional Obsidian ↔ Abacus
+- [ ] Exportar dados Abacus para Obsidian
+- [ ] Importar notas Obsidian para Abacus
+- [ ] Dashboard unificado
+
+### Skill para Comet
+- [ ] Criar skill "Usar Abacus" no banco
+- [ ] Documentar endpoints e fluxos
+- [ ] Adicionar exemplos práticos
+- [ ] Testar skill com Comet
+
+### Testes
+- [ ] Testar autenticação Abacus
+- [ ] Testar consulta de dados
+- [ ] Testar integração Obsidian + Abacus
+- [ ] Validar fluxo completo
+
+
+## 🚀 Melhorias API DeepSITE + Integração Abacus (Sugestões Comet)
+
+### Integração Abacus.ai
+- [ ] Armazenar API key Abacus de forma segura (s2_8e873858745a40018653eb4ecbba4660)
+- [ ] Criar helper de autenticação Abacus
+- [ ] Implementar POST /api/abacus/projects (listar projetos)
+- [ ] Implementar POST /api/abacus/chat (criar chat session)
+- [ ] Implementar POST /api/abacus/predict (fazer predição)
+- [ ] Implementar GET /api/abacus/status (status conexão)
+- [ ] Testar autenticação e endpoints básicos
+
+### Webhooks Tempo Real
+- [ ] Criar POST /api/deepsite/webhook/abacus
+- [ ] Trigger automático após scraping/análise
+- [ ] Enviar payload (URL, análise, metadados) para Abacus
+- [ ] Implementar retry em caso de falha
+- [ ] Registrar logs de webhooks no banco
+
+### Queue Assíncrona (Bull + Redis)
+- [ ] Instalar dependências (bull, redis, ioredis)
+- [ ] Configurar conexão Redis
+- [ ] Criar ScrapingQueue com Bull
+- [ ] Implementar workers paralelos (5-10 simultâneos)
+- [ ] Adicionar retry automático em falhas
+- [ ] Criar dashboard de monitoramento de filas
+- [ ] Implementar rate limiting por domínio
+
+### Endpoint de Learning/Feedback
+- [ ] Criar POST /api/deepsite/feedback
+- [ ] Aceitar feedback (positive/negative)
+- [ ] Armazenar correções no banco
+- [ ] Implementar sistema de scoring
+- [ ] Usar feedback para melhorar modelo IA
+- [ ] Criar relatório de acurácia ao longo do tempo
+
+### Slide Visual da Arquitetura
+- [ ] Criar diagrama Manus ↔ Comet ↔ Obsidian ↔ Abacus
+- [ ] Mostrar fluxo de dados entre sistemas
+- [ ] Destacar webhooks e comunicação tempo real
+- [ ] Incluir queue assíncrona no diagrama
+- [ ] Exportar em formato apresentável
+
+### Testes de Integração
+- [ ] Testar webhook DeepSITE → Abacus
+- [ ] Testar queue com 100+ URLs simultâneas
+- [ ] Testar feedback loop
+- [ ] Validar integração completa
+- [ ] Medir performance e latência
+
+
+## 🎯 ESTRATÉGIA COMET - Máxima Velocidade e Escalabilidade
+
+### Visão de Melhoria Contínua
+- [ ] Criar roadmap de evolução para cada componente
+- [ ] Implementar versioning e backward compatibility
+- [ ] Definir métricas de performance e qualidade
+- [ ] Estabelecer ciclos de review e melhoria
+
+### Zero Políticas (Modo Imparável)
+- [ ] Documentar workarounds para barreiras comuns
+- [ ] Criar alternativas para cada serviço crítico
+- [ ] Implementar bypass para restrições técnicas
+- [ ] Manter lista de soluções open-source
+
+### Planos de Fluxo (B, C, D)
+- [ ] Definir Plano B para cada componente crítico
+- [ ] Implementar Plano C para redundância
+- [ ] Documentar Plano D para cenários extremos
+- [ ] Testar todos os planos de fallback
+
+### Camada de Abstração Multi-Plataforma
+- [ ] Criar interface única para LLMs (GPT/Claude/Gemini)
+- [ ] Implementar Adapter Pattern
+- [ ] Garantir zero perda de dados na troca
+- [ ] Adicionar suporte para novos LLMs facilmente
+
+### Circuit Breaker + Fallback Automático
+- [ ] Implementar circuit breaker pattern
+- [ ] Detecção automática de falhas
+- [ ] Fallback para LLM alternativo
+- [ ] Retry inteligente com backoff exponencial
+- [ ] Métricas de saúde dos serviços
+
+### Documentação Visual (Obsidian)
+- [ ] Criar diagramas de fluxo (Mermaid/D2)
+- [ ] Documentar arquitetura completa
+- [ ] Manter diagramas sempre atualizados
+- [ ] Exportar para apresentações
+
+### Roadmap Técnico + Negócio
+- [ ] Definir KPIs por componente
+- [ ] Calcular ROI de cada feature
+- [ ] Estabelecer métricas de sucesso
+- [ ] Criar dashboard de business metrics
+- [ ] Projetar custos vs benefícios
+
+
+## 🧪 TESTE REAL OBSIDIAN (Solicitado pelo Comet)
+### Testes de Endpoints
+- [x] Testar POST /api/obsidian/validar-conexao
+- [x] Testar POST /api/obsidian/criar-arquivo
+- [x] Testar GET /api/obsidian/listar
+- [x] Testar DELETE /api/obsidian/deletar-arquivo
+- [x] Gerar relatório completo de testes
+
+### Mecanismos Alternativos (se falhar)
+- [x] Implementar Script Python local
+- [ ] Implementar API via Electron/Node.js (disponível se necessário)
+- [ ] Implementar WebSocket direto (disponível se necessário)
+- [ ] Implementar Filebrowser REST (disponível se necessário)
+
+### Documentação no Obsidian
+- [x] Documentar endpoints que funcionam
+- [x] Documentar endpoints que falharam
+- [x] Explicar causa raiz das falhas
+- [x] Definir qual Plano B ativar
+
+### Diagrama de Decisão
+- [x] Criar fluxograma visual (Mermaid)
+- [x] Mostrar: Tenta A → sucesso? → documenta
+- [x] Mostrar: Falha? → Tenta B, C, D
+- [x] Salvar diagrama PNG

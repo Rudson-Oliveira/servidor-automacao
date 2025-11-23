@@ -440,3 +440,299 @@ router.delete('/deletar-arquivo', async (req, res) => {
 });
 
 export { router as obsidianRouter };
+
+
+/**
+ * POST /api/obsidian/gerar-script-criacao
+ * Gera script Python para criar arquivo no Obsidian (execução local no CPU do usuário)
+ * Solução 100% automática - sem intervenção manual
+ */
+router.post('/gerar-script-criacao', async (req, res) => {
+  try {
+    const { vault_path, arquivo_nome, conteudo } = req.body;
+    
+    if (!vault_path || !arquivo_nome || !conteudo) {
+      return res.status(400).json({
+        sucesso: false,
+        erro: 'Parâmetros obrigatórios: vault_path, arquivo_nome, conteudo'
+      });
+    }
+    
+    // Gerar script Python
+    const scriptPython = `#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Script gerado automaticamente para criar arquivo no Obsidian
+Gerado por: Manus AI
+Data: ${new Date().toISOString()}
+Modo: 100% Automático (ZERO intervenção manual)
+"""
+
+import os
+import sys
+from pathlib import Path
+
+# Caminho do vault Obsidian
+VAULT_PATH = r"${vault_path}"
+
+# Nome do arquivo
+ARQUIVO_NOME = "${arquivo_nome}"
+
+# Conteúdo do arquivo
+CONTEUDO = """${conteudo.replace(/"/g, '\\"')}"""
+
+def criar_arquivo():
+    """Cria arquivo no vault Obsidian"""
+    
+    print("=" * 60)
+    print("CRIAÇÃO AUTOMÁTICA DE ARQUIVO NO OBSIDIAN")
+    print("=" * 60)
+    print()
+    
+    # Validar vault
+    if not os.path.exists(VAULT_PATH):
+        print(f"❌ ERRO: Vault não encontrado em {VAULT_PATH}")
+        return False
+    
+    print(f"✅ Vault encontrado: {VAULT_PATH}")
+    
+    # Caminho completo do arquivo
+    arquivo_path = os.path.join(VAULT_PATH, ARQUIVO_NOME)
+    print(f"📄 Criando: {ARQUIVO_NOME}")
+    
+    try:
+        # Criar diretório se necessário
+        dir_path = os.path.dirname(arquivo_path)
+        if dir_path and not os.path.exists(dir_path):
+            os.makedirs(dir_path, exist_ok=True)
+            print(f"📁 Diretório criado: {dir_path}")
+        
+        # Criar arquivo
+        with open(arquivo_path, 'w', encoding='utf-8') as f:
+            f.write(CONTEUDO)
+        
+        # Validar
+        if os.path.exists(arquivo_path):
+            tamanho = os.path.getsize(arquivo_path)
+            print(f"✅ Arquivo criado com sucesso!")
+            print(f"📊 Tamanho: {tamanho} bytes")
+            print()
+            print("=" * 60)
+            print("SUCESSO: Arquivo criado no Obsidian!")
+            print("=" * 60)
+            return True
+        else:
+            print("❌ ERRO: Arquivo não foi criado")
+            return False
+            
+    except Exception as e:
+        print(f"❌ ERRO: {e}")
+        return False
+
+if __name__ == "__main__":
+    sucesso = criar_arquivo()
+    sys.exit(0 if sucesso else 1)
+`;
+    
+    // Registrar operação no banco
+    const db = await getDb();
+    if (db) {
+      await db.insert(obsidianOperations).values({
+        operacao: 'gerar_script',
+        caminhoArquivo: arquivo_nome,
+        status: 'sucesso',
+        detalhes: JSON.stringify({ mensagem: 'Script Python gerado automaticamente' })
+      });
+    }
+    
+    res.json({
+      sucesso: true,
+      script: scriptPython,
+      instrucoes: {
+        passo1: 'Salvar script como arquivo .py',
+        passo2: 'Executar: python script.py',
+        passo3: 'Verificar arquivo criado no Obsidian',
+        nota: '100% automático - ZERO intervenção manual necessária'
+      },
+      metadados: {
+        vault_path,
+        arquivo_nome,
+        tamanho_conteudo: conteudo.length,
+        gerado_em: new Date().toISOString()
+      }
+    });
+    
+  } catch (erro: any) {
+    console.error('[Obsidian] Erro ao gerar script:', erro);
+    res.status(500).json({
+      sucesso: false,
+      erro: erro.message || 'Erro ao gerar script Python'
+    });
+  }
+});
+
+/**
+ * POST /api/obsidian/criar-arquivo-teste-comet
+ * Endpoint específico para criar arquivo de teste do Comet
+ * Gera script Python customizado para o teste
+ */
+router.post('/criar-arquivo-teste-comet', async (req, res) => {
+  try {
+    const { vault_path } = req.body;
+    
+    if (!vault_path) {
+      return res.status(400).json({
+        sucesso: false,
+        erro: 'Parâmetro obrigatório: vault_path'
+      });
+    }
+    
+    const conteudo = `# 08_TESTE Comet Manus
+
+## 🗓️ Revisão do Projeto TESTE Obsidian
+
+### Checklist de Validação
+
+- [ ] Revisar Teste Obsidian
+- [ ] Checar toda implementação
+- [ ] Está ok
+- [ ] Seguir para a próxima etapa
+
+---
+
+## 📊 Detalhes da Revisão
+
+### Status dos Endpoints
+- ❌ POST /api/obsidian/validar-conexao - FALHOU (plugin não instalado)
+- ❌ POST /api/obsidian/criar-arquivo - NÃO TESTADO
+- ❌ GET /api/obsidian/listar - NÃO TESTADO
+- ❌ DELETE /api/obsidian/deletar-arquivo - NÃO TESTADO
+
+### Plano B Ativado
+✅ Script Python local criando arquivos diretamente no filesystem
+
+### Implementação
+- ✅ API DeepSITE (9 endpoints)
+- ✅ Documentação completa
+- ✅ Slide visual criado
+- ❌ Circuit Breaker (pendente)
+- ❌ Integração Abacus (pendente)
+- ❌ Bull Queue + Redis (pendente)
+
+### Próximos Passos
+1. Completar Circuit Breaker (6-8h)
+2. Integrar Abacus.ai (12h)
+3. Implementar Bull Queue + Redis (8h)
+4. Deploy em Vercel
+
+---
+
+**Criado por:** Manus AI via Script Python (Plano B - 100% Automático)  
+**Data:** ${new Date().toISOString()}  
+**Status:** Teste de criação automática de arquivo no Obsidian
+`;
+    
+    // Gerar script Python
+    const scriptPython = `#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Script AUTOMÁTICO para criar arquivo de teste do Comet no Obsidian
+Gerado por: Manus AI
+Data: ${new Date().toISOString()}
+Modo: 100% Automático (ZERO intervenção manual)
+"""
+
+import os
+import sys
+
+VAULT_PATH = r"${vault_path}"
+ARQUIVO_NOME = "08_TESTE_Comet_Manus.md"
+
+CONTEUDO = """${conteudo.replace(/"/g, '\\"')}"""
+
+def criar_arquivo_teste():
+    print("=" * 60)
+    print("CRIAÇÃO AUTOMÁTICA - ARQUIVO TESTE COMET")
+    print("=" * 60)
+    print()
+    
+    if not os.path.exists(VAULT_PATH):
+        print(f"❌ ERRO: Vault não encontrado em {VAULT_PATH}")
+        return False
+    
+    print(f"✅ Vault encontrado: {VAULT_PATH}")
+    
+    arquivo_path = os.path.join(VAULT_PATH, ARQUIVO_NOME)
+    print(f"📄 Criando: {ARQUIVO_NOME}")
+    
+    try:
+        with open(arquivo_path, 'w', encoding='utf-8') as f:
+            f.write(CONTEUDO)
+        
+        if os.path.exists(arquivo_path):
+            tamanho = os.path.getsize(arquivo_path)
+            print(f"✅ Arquivo criado com sucesso!")
+            print(f"📊 Tamanho: {tamanho} bytes")
+            print()
+            print("=" * 60)
+            print("SUCESSO: Arquivo de teste criado!")
+            print("=" * 60)
+            print()
+            print("🔍 Próximos passos AUTOMÁTICOS:")
+            print("1. Comet abre Obsidian")
+            print("2. Comet localiza arquivo '08_TESTE_Comet_Manus.md'")
+            print("3. Comet marca checkboxes automaticamente")
+            return True
+        else:
+            print("❌ ERRO: Arquivo não foi criado")
+            return False
+            
+    except Exception as e:
+        print(f"❌ ERRO: {e}")
+        return False
+
+if __name__ == "__main__":
+    sucesso = criar_arquivo_teste()
+    sys.exit(0 if sucesso else 1)
+`;
+    
+    // Registrar no banco
+    const db = await getDb();
+    if (db) {
+      await db.insert(obsidianOperations).values({
+        operacao: 'gerar_script_teste_comet',
+        caminhoArquivo: '08_TESTE_Comet_Manus.md',
+        status: 'sucesso',
+        detalhes: JSON.stringify({ mensagem: 'Script de teste gerado automaticamente para Comet' })
+      });
+    }
+    
+    res.json({
+      sucesso: true,
+      script: scriptPython,
+      arquivo_nome: '08_TESTE_Comet_Manus.md',
+      instrucoes_automaticas: {
+        para_comet: 'Salvar script e executar automaticamente no CPU do Rudson',
+        comando: 'python criar_arquivo_teste_comet.py',
+        validacao: 'Verificar arquivo criado no Obsidian',
+        modo: '100% AUTOMÁTICO - ZERO intervenção manual'
+      },
+      metadados: {
+        vault_path,
+        tamanho_conteudo: conteudo.length,
+        gerado_em: new Date().toISOString(),
+        modo_operacao: 'automatico'
+      }
+    });
+    
+  } catch (erro: any) {
+    console.error('[Obsidian] Erro ao gerar script de teste:', erro);
+    res.status(500).json({
+      sucesso: false,
+      erro: erro.message || 'Erro ao gerar script de teste'
+    });
+  }
+});
+
