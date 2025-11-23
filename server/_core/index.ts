@@ -22,6 +22,7 @@ import buscaLocalRouter from "../routes/busca-local";
 import userAuthRouter from "../routes/user-auth";
 import testConnectionRouter from "../routes/test-connection";
 import { obsidianRouter } from "../routes/obsidian";
+import deepsiteRouter from "../routes/deepsite";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
 
 function isPortAvailable(port: number): Promise<boolean> {
@@ -72,6 +73,7 @@ async function startServer() {
   app.use("/api/integration", testConnectionRouter); // Teste de conexão de APIs
   app.use("/api/busca-local", buscaLocalRouter);
   app.use("/api/obsidian", obsidianRouter);
+  app.use("/api/deepsite", deepsiteRouter);
   // tRPC API
   app.use(
     "/api/trpc",

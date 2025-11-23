@@ -651,3 +651,65 @@
 - [ ] Criar skill "Organizar Vault Obsidian"
 - [ ] Criar skill "Gerar Dashboard OKR"
 - [ ] Cadastrar skills no banco de dados
+
+
+## 🌐 API DeepSITE - Web Scraping e Análise (Solicitação do Comet)
+
+### Arquitetura e Design
+- [x] Projetar arquitetura da API DeepSITE
+- [x] Definir estrutura de endpoints REST
+- [x] Criar diagrama de fluxo de dados
+- [x] Documentar decisões arquiteturais
+
+### Sistema de Caching Inteligente
+- [x] Implementar cache em memória (Map/LRU)
+- [x] Configurar TTL por tipo de conteúdo
+- [x] Criar sistema de invalidação de cache
+- [ ] Implementar cache warming para URLs frequentes
+
+### Endpoints de Scraping
+- [x] POST /api/deepsite/scrape - Scraping básico de URL
+- [x] POST /api/deepsite/scrape-batch - Scraping em lote
+- [x] GET /api/deepsite/cache/:url - Verificar cache
+- [x] DELETE /api/deepsite/cache/:url - Limpar cache específico
+
+### Análise de Conteúdo com IA
+- [x] POST /api/deepsite/analyze - Análise com LLM
+- [ ] POST /api/deepsite/extract-data - Extração estruturada
+- [x] POST /api/deepsite/summarize - Resumo de conteúdo
+- [ ] GET /api/deepsite/analysis/:id - Buscar análise
+
+### Validação e Segurança
+- [x] Implementar validação de URLs
+- [ ] Criar sistema de sanitização de HTML
+- [ ] Validar dados extraídos (schema validation)
+- [ ] Implementar detecção de conteúdo malicioso
+
+### Rate Limiting e Robots.txt
+- [ ] Implementar rate limiting por domínio
+- [ ] Criar parser de robots.txt
+- [ ] Respeitar Crawl-Delay
+- [ ] Implementar User-Agent configurável
+- [ ] Criar sistema de fila para requisições
+
+### Banco de Dados
+- [x] Criar tabela deepsite_scrapes (histórico)
+- [x] Criar tabela deepsite_cache (cache persistente)
+- [x] Criar tabela deepsite_analyses (análises de IA)
+- [x] Criar tabela deepsite_rate_limits (controle de taxa)
+- [x] Aplicar migrations
+
+### Testes e Documentação
+- [ ] Criar testes unitários (scraping)
+- [ ] Criar testes unitários (caching)
+- [ ] Criar testes unitários (rate limiting)
+- [ ] Criar testes unitários (análise IA)
+- [ ] Documentar API completa (OpenAPI/Swagger)
+- [ ] Criar guia de uso para Comet
+- [ ] Adicionar exemplos práticos
+
+### Integração
+- [ ] Integrar com sistema de autenticação
+- [ ] Criar skill "Analisar Website" para Comet
+- [ ] Testar integração end-to-end
+- [ ] Validar performance e otimizações

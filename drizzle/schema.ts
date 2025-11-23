@@ -278,3 +278,92 @@ export const obsidianOperations = mysqlTable("obsidian_operations", {
 
 export type ObsidianOperation = typeof obsidianOperations.$inferSelect;
 export type InsertObsidianOperation = typeof obsidianOperations.$inferInsert;
+
+/**
+ * Tabela de scrapes do DeepSITE
+ * Armazena histórico de scraping de websites
+ */
+export const deepsiteScrapes = mysqlTable("deepsite_scrapes", {
+  id: int("id").autoincrement().primaryKey(),
+  url: varchar("url", { length: 2048 }).notNull(),
+  html: text("html"), // HTML completo (pode ser grande)
+  metadata: text("metadata"), // JSON com title, description, og:tags, etc
+  status: mysqlEnum("status", ["success", "failed", "pending"]).default("pending").notNull(),
+  error: text("error"),
+  responseTime: int("response_time"), // em milissegundos
+  scrapedAt: timestamp("scraped_at").defaultNow().notNull(),
+  expiresAt: timestamp("expires_at"), // TTL do cache
+}, (table) => ({
+  urlIdx: index("url_idx").on(table.url),
+  scrapedAtIdx: index("scraped_at_idx").on(table.scrapedAt),
+  expiresAtIdx: index("expires_at_idx").on(table.expiresAt),
+  statusIdx: index("status_idx").on(table.status),
+}));
+
+export type DeepsiteScrape = typeof deepsiteScrapes.$inferSelect;
+export type InsertDeepsiteScrape = typeof deepsiteScrapes.$inferInsert;
+
+/**
+ * Tabela de análises de IA do DeepSITE
+ * Armazena resultados de análise de conteúdo com LLM
+ */
+export const deepsiteAnalyses = mysqlTable("deepsite_analyses", {
+  id: int("id").autoincrement().primaryKey(),
+  scrapeId: int("scrape_id").notNull(),
+  analysisType: varchar("analysis_type", { length: 50 }).notNull(), // 'full', 'summary', 'extract', 'classify'
+  summary: text("summary"),
+  entities: text("entities"), // JSON com entidades extraídas
+  category: varchar("category", { length: 100 }),
+  language: varchar("language", { length: 10 }),
+  sentiment: varchar("sentiment", { length: 20 }),
+  confidence: int("confidence"), // 0-100
+  analyzedAt: timestamp("analyzed_at").defaultNow().notNull(),
+}, (table) => ({
+  scrapeIdIdx: index("scrape_id_idx").on(table.scrapeId),
+  analysisTypeIdx: index("analysis_type_idx").on(table.analysisType),
+  analyzedAtIdx: index("analyzed_at_idx").on(table.analyzedAt),
+}));
+
+export type DeepsiteAnalysis = typeof deepsiteAnalyses.$inferSelect;
+export type InsertDeepsiteAnalysis = typeof deepsiteAnalyses.$inferInsert;
+
+/**
+ * Tabela de rate limits do DeepSITE
+ * Controla taxa de requisições por domínio
+ */
+export const deepsiteRateLimits = mysqlTable("deepsite_rate_limits", {
+  id: int("id").autoincrement().primaryKey(),
+  domain: varchar("domain", { length: 255 }).notNull().unique(),
+  crawlDelay: int("crawl_delay").default(1000), // em milissegundos
+  lastRequest: timestamp("last_request"),
+  requestCount: int("request_count").default(0),
+  robotsTxt: text("robots_txt"), // Conteúdo do robots.txt
+  robotsUpdatedAt: timestamp("robots_updated_at"),
+}, (table) => ({
+  domainIdx: index("domain_idx").on(table.domain),
+  lastRequestIdx: index("last_request_idx").on(table.lastRequest),
+}));
+
+export type DeepsiteRateLimit = typeof deepsiteRateLimits.$inferSelect;
+export type InsertDeepsiteRateLimit = typeof deepsiteRateLimits.$inferInsert;
+
+/**
+ * Tabela de metadados de cache do DeepSITE
+ * Rastreia estatísticas e performance do cache
+ */
+export const deepsiteCacheMetadata = mysqlTable("deepsite_cache_metadata", {
+  id: int("id").autoincrement().primaryKey(),
+  url: varchar("url", { length: 2048 }).notNull().unique(),
+  scrapeId: int("scrape_id").notNull(),
+  cachedAt: timestamp("cached_at").defaultNow().notNull(),
+  expiresAt: timestamp("expires_at"),
+  hitCount: int("hit_count").default(0),
+  size: int("size"), // tamanho em bytes
+}, (table) => ({
+  urlIdx: index("url_idx").on(table.url),
+  expiresAtIdx: index("expires_at_idx").on(table.expiresAt),
+  scrapeIdIdx: index("scrape_id_idx").on(table.scrapeId),
+}));
+
+export type DeepsiteCacheMetadata = typeof deepsiteCacheMetadata.$inferSelect;
+export type InsertDeepsiteCacheMetadata = typeof deepsiteCacheMetadata.$inferInsert;
