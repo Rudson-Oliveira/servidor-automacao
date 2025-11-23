@@ -594,3 +594,60 @@
 - [ ] Configurar projeto pessoal no DeepAgente
 - [ ] Integrar Genspark (sem API)
 - [ ] Validar todos os projetos funcionando
+
+
+## 🔴 URGENTE - Integração Obsidian (Reportado pelo Comet)
+
+### Diagnóstico do Problema
+- [x] Analisar falha na criação de 5 arquivos no vault do Rudson
+- [x] Identificar causa raiz (falta de plugin Local REST API?)
+- [x] Documentar limitações do Obsidian para acesso externo
+- [x] Pesquisar métodos alternativos de integração
+
+### Implementação de Endpoints Obsidian
+- [x] Criar endpoint POST /api/obsidian/criar-arquivo
+- [x] Criar endpoint POST /api/obsidian/criar-pasta
+- [x] Criar endpoint GET /api/obsidian/listar-arquivos
+- [x] Criar endpoint PUT /api/obsidian/atualizar-arquivo
+- [x] Criar endpoint DELETE /api/obsidian/deletar-arquivo
+- [x] Criar endpoint POST /api/obsidian/validar-conexao
+
+### Sistema de Validação e Retry
+- [x] Implementar validação de sucesso após cada operação
+- [x] Criar sistema de retry automático (3 tentativas)
+- [x] Adicionar timeout configurável
+- [x] Implementar fallback para criação manual
+
+### Logs e Auditoria Obsidian
+- [x] Criar tabela obsidian_operations no banco
+- [x] Registrar todas as operações (criar, atualizar, deletar)
+- [x] Salvar status de sucesso/falha
+- [x] Implementar alertas de falha
+- [x] Criar dashboard de monitoramento
+
+### Criação dos 5 Arquivos FASE 1
+- [ ] Criar 00_DASHBOARD_CENTRAL/INDEX.md (Dashboard Executivo OKR)
+- [ ] Criar 00_DASHBOARD_CENTRAL/Daily_Routine.md (Rotina Diária)
+- [ ] Criar 05_Dataview Snippets/KR_Progress.md (Query Dataview KRs)
+- [ ] Criar 05_Dataview Snippets/Tarefas_Criticas.md (Query tarefas urgentes)
+- [ ] Criar 03_Rotinas/OKR_Rastreamento_Semanal.md (Template check-in semanal)
+
+### Validação Real no Vault
+- [ ] Verificar criação real dos arquivos em C:\Users\rudpa\Downloads\OneDrive\Área de Trabalho\APP FACULDADES,Cursos e Telegram\Vida & Estudo\Vida & Estudo
+- [ ] Confirmar estrutura de pastas criada
+- [ ] Validar conteúdo dos arquivos
+- [ ] Testar abertura no Obsidian
+- [ ] Reportar sucesso ao Comet
+
+### Documentação Obsidian
+- [x] Criar GUIA_INTEGRACAO_OBSIDIAN.md completo
+- [x] Documentar instalação do plugin Local REST API
+- [x] Documentar configuração de API key
+- [x] Criar exemplos de uso para Comet
+- [x] Adicionar troubleshooting específico
+
+### Skill Obsidian
+- [ ] Criar skill "Criar Arquivo no Obsidian"
+- [ ] Criar skill "Organizar Vault Obsidian"
+- [ ] Criar skill "Gerar Dashboard OKR"
+- [ ] Cadastrar skills no banco de dados

@@ -256,3 +256,25 @@ export const cometVisionValidations = mysqlTable("comet_vision_validations", {
 
 export type CometVisionValidation = typeof cometVisionValidations.$inferSelect;
 export type InsertCometVisionValidation = typeof cometVisionValidations.$inferInsert;
+
+/**
+ * Tabela de operações do Obsidian
+ * Registra todas as operações realizadas via API do Obsidian
+ */
+export const obsidianOperations = mysqlTable("obsidian_operations", {
+  id: int("id").autoincrement().primaryKey(),
+  operacao: varchar("operacao", { length: 100 }).notNull(), // 'criar_arquivo', 'atualizar_arquivo', 'deletar_arquivo', 'configurar'
+  caminhoArquivo: varchar("caminho_arquivo", { length: 1000 }),
+  status: mysqlEnum("status", ["sucesso", "falha", "pendente"]).default("pendente").notNull(),
+  tentativas: int("tentativas").default(1),
+  erro: text("erro"),
+  detalhes: text("detalhes"), // JSON com informações adicionais
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  operacaoIdx: index("operacao_idx").on(table.operacao),
+  statusIdx: index("status_idx").on(table.status),
+  createdAtIdx: index("created_at_idx").on(table.createdAt),
+}));
+
+export type ObsidianOperation = typeof obsidianOperations.$inferSelect;
+export type InsertObsidianOperation = typeof obsidianOperations.$inferInsert;
