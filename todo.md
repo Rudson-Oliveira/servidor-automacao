@@ -567,3 +567,30 @@
 - [ ] Validar conformidade LGPD/ISO 27001
 - [ ] Criar documentação completa da API
 - [ ] Criar guia de integração para equipe Hospitalar
+
+
+## 🔗 Integração Completa de IAs (Abacus, DeepSite, DeepAgente, Genspark, Comet)
+
+### Documentação de API Keys
+- [ ] Criar instruções para solicitar API key da Abacus.ai
+- [ ] Criar instruções para solicitar API key do DeepSite
+- [ ] Criar instruções para solicitar API key do DeepAgente
+- [ ] Criar template de mensagem para copiar/colar
+
+### Sistema de Interligação
+- [ ] Implementar ponte entre Comet e Manus
+- [ ] Configurar Comet para agir como Manus
+- [ ] Criar fluxo de comunicação bidirecional
+- [ ] Implementar sistema de relay de mensagens
+
+### Fluxo de Trabalho Integrado
+- [ ] Documentar como Comet reporta para Manus
+- [ ] Documentar como Manus delega para Comet
+- [ ] Criar exemplos de uso integrado
+- [ ] Testar fluxo completo
+
+### Projetos Pessoais
+- [ ] Configurar projeto pessoal na Abacus.ai
+- [ ] Configurar projeto pessoal no DeepAgente
+- [ ] Integrar Genspark (sem API)
+- [ ] Validar todos os projetos funcionando
