@@ -713,3 +713,25 @@
 - [ ] Criar skill "Analisar Website" para Comet
 - [ ] Testar integração end-to-end
 - [ ] Validar performance e otimizações
+
+
+## 🎯 Skill "Analisar Website" para Comet
+
+### Criação da Skill
+- [x] Criar skill "Analisar Website" no banco de dados
+- [x] Documentar todos os endpoints DeepSITE disponíveis
+- [x] Adicionar exemplos práticos de uso
+- [x] Incluir tratamento de erros
+- [x] Definir casos de uso comuns
+
+### Testes da Skill
+- [x] Testar scraping básico de URL
+- [x] Testar análise com IA
+- [x] Testar resumo de conteúdo
+- [x] Testar validação de URLs
+- [x] Testar cache management
+
+### Documentação
+- [x] Criar guia de uso para Comet
+- [x] Adicionar troubleshooting
+- [x] Documentar limitações
