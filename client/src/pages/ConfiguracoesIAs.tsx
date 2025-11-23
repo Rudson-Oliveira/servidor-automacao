@@ -15,6 +15,11 @@ interface IAConfig {
   cor: string;
   icone: string;
   disponivel: boolean;
+  linkDocumentacao?: string;
+  camposAdicionais?: {
+    porta?: number;
+    usarHttps?: boolean;
+  };
 }
 
 export default function ConfiguracoesIAs() {
@@ -28,6 +33,7 @@ export default function ConfiguracoesIAs() {
       cor: "bg-blue-500",
       icone: "🔍",
       disponivel: true,
+      linkDocumentacao: "https://docs.perplexity.ai/docs/getting-started",
     },
     manus: {
       nome: "Manus",
@@ -37,6 +43,7 @@ export default function ConfiguracoesIAs() {
       cor: "bg-purple-500",
       icone: "💻",
       disponivel: true,
+      linkDocumentacao: "https://docs.manus.im/api",
     },
     genspark: {
       nome: "Genspark",
@@ -55,6 +62,7 @@ export default function ConfiguracoesIAs() {
       cor: "bg-orange-500",
       icone: "📊",
       disponivel: true,
+      linkDocumentacao: "https://api.abacus.ai/docs",
     },
     deepagente: {
       nome: "DeepAgente",
@@ -64,6 +72,21 @@ export default function ConfiguracoesIAs() {
       cor: "bg-red-500",
       icone: "🤖",
       disponivel: true,
+      linkDocumentacao: "https://deepagente.com/docs/api",
+    },
+    obsidian: {
+      nome: "Obsidian",
+      descricao: "Sistema de notas e conhecimento pessoal",
+      apiKey: "9158ad0eb1c3be5ba7ac1b743c4404e9ebc25464ef88f9bec0bc07528e0b2383",
+      status: 'desconectado',
+      cor: "bg-indigo-500",
+      icone: "📝",
+      disponivel: true,
+      linkDocumentacao: "https://coddingtonbear.github.io/obsidian-local-rest-api/",
+      camposAdicionais: {
+        porta: 27123,
+        usarHttps: false,
+      },
     },
   });
 
@@ -71,6 +94,32 @@ export default function ConfiguracoesIAs() {
     setIas(prev => ({
       ...prev,
       [iaId]: { ...prev[iaId], apiKey: valor }
+    }));
+  };
+
+  const alterarPorta = (iaId: string, porta: number) => {
+    setIas(prev => ({
+      ...prev,
+      [iaId]: { 
+        ...prev[iaId], 
+        camposAdicionais: { 
+          ...prev[iaId].camposAdicionais, 
+          porta 
+        } 
+      }
+    }));
+  };
+
+  const toggleHttps = (iaId: string) => {
+    setIas(prev => ({
+      ...prev,
+      [iaId]: { 
+        ...prev[iaId], 
+        camposAdicionais: { 
+          ...prev[iaId].camposAdicionais, 
+          usarHttps: !prev[iaId].camposAdicionais?.usarHttps 
+        } 
+      }
     }));
   };
 
@@ -96,38 +145,47 @@ export default function ConfiguracoesIAs() {
     }));
 
     try {
-      // Fazer teste REAL de conexão com a API
-      const response = await fetch('/api/integration/test-connection', {
+      // Fazer teste REAL de conexão com a API via tRPC
+      const response = await fetch('/api/trpc/integration.testConnection', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           iaId,
           apiKey: ia.apiKey,
           nome: ia.nome,
+          porta: ia.camposAdicionais?.porta,
+          usarHttps: ia.camposAdicionais?.usarHttps,
         }),
       });
 
       const data = await response.json();
+      const result = data.result?.data;
 
-      if (response.ok && data.sucesso) {
+      if (response.ok && result?.sucesso) {
         setIas(prev => ({
           ...prev,
           [iaId]: { ...prev[iaId], status: 'conectado' }
         }));
-        toast.success(`✅ TESTE REALIZADO E CONCLUÍDO COM SUCESSO! ${ia.nome} está funcionando corretamente.`);
+        
+        // Mensagem especial para Obsidian
+        if (result.mensagem) {
+          toast.success(result.mensagem, { duration: 8000 });
+        } else {
+          toast.success(`✅ TESTE REALIZADO E CONCLUÍDO COM SUCESSO! ${ia.nome} está funcionando corretamente.`);
+        }
       } else {
         setIas(prev => ({
           ...prev,
           [iaId]: { ...prev[iaId], status: 'desconectado' }
         }));
-        toast.error(`❌ Falha no teste: ${data.erro || 'API key inválida ou serviço indisponível'}`);
+        toast.error(`❌ Falha no teste: ${result?.erro || data.error?.message || 'API key inválida ou serviço indisponível'}`);
       }
-    } catch (error) {
+    } catch (error: any) {
       setIas(prev => ({
         ...prev,
         [iaId]: { ...prev[iaId], status: 'desconectado' }
       }));
-      toast.error(`❌ Erro de conexão: Verifique sua internet e a chave de API`);
+      toast.error(`❌ Erro de conexão: ${error.message || 'Verifique sua internet e a chave de API'}`);
     }
   };
 
@@ -261,6 +319,60 @@ export default function ConfiguracoesIAs() {
                       </div>
                     </div>
 
+                    {/* Campos Adicionais (Obsidian) */}
+                    {ia.camposAdicionais && (
+                      <div className="space-y-3 border-t pt-3">
+                        {/* Porta */}
+                        {ia.camposAdicionais.porta !== undefined && (
+                          <div className="space-y-2">
+                            <Label htmlFor={`${iaId}-porta`}>Porta da API Local</Label>
+                            <Input
+                              id={`${iaId}-porta`}
+                              type="number"
+                              placeholder="27123"
+                              value={ia.camposAdicionais.porta}
+                              onChange={(e) => alterarPorta(iaId, parseInt(e.target.value))}
+                            />
+                            <p className="text-xs text-gray-500">
+                              Porta padrão: 27123 (HTTP) ou 27124 (HTTPS)
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Toggle HTTPS */}
+                        {ia.camposAdicionais.usarHttps !== undefined && (
+                          <div className="flex items-center justify-between">
+                            <div className="space-y-0.5">
+                              <Label>Usar HTTPS</Label>
+                              <p className="text-xs text-gray-500">
+                                Ativar conexão segura (certificado auto-assinado)
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => toggleHttps(iaId)}
+                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                                ia.camposAdicionais.usarHttps ? 'bg-blue-600' : 'bg-gray-200'
+                              }`}
+                            >
+                              <span
+                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                  ia.camposAdicionais.usarHttps ? 'translate-x-6' : 'translate-x-1'
+                                }`}
+                              />
+                            </button>
+                          </div>
+                        )}
+
+                        {/* Informação sobre conexão local */}
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                          <p className="text-xs text-blue-800">
+                            💡 <strong>Atenção:</strong> O Obsidian deve estar aberto no seu computador com o plugin "Local REST API" ativo.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Botões de Ação */}
                     <div className="flex gap-2">
                       <Button
@@ -306,10 +418,12 @@ export default function ConfiguracoesIAs() {
                 {ia.disponivel && (
                   <div className="pt-2 border-t">
                     <a
-                      href="#"
+                      href={ia.linkDocumentacao || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
                     >
-                      📖 Como obter a chave de API do {ia.nome}?
+                      📚 {iaId === 'obsidian' ? 'Documentação do Plugin Local REST API' : `Como obter a chave de API do ${ia.nome}?`}
                     </a>
                   </div>
                 )}

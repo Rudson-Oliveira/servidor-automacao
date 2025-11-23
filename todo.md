@@ -926,3 +926,26 @@
 - [x] Validar parâmetros de entrada (3 testes de validação)
 - [x] Testar com diferentes tipos de conteúdo (markdown, checklist, OKR)
 - [ ] Validar criação de arquivo no Obsidian local (requer execução manual)
+
+## Atualização da Página de Configurações de IAs
+
+### Card do Obsidian
+- [x] Adicionar card do Obsidian na página /configuracoes/ias
+- [x] Campo para API Key do Obsidian (pré-preenchido)
+- [x] Campo para porta (padrão: 27123)
+- [x] Toggle para HTTPS/HTTP
+- [x] Botão de teste de conexão
+- [x] Link para documentação do plugin
+
+### Preencher APIs Vazias
+- [x] Verificar quais APIs estão sem informações
+- [x] Adicionar links de documentação (Perplexity, Manus, Abacus, DeepAgente)
+- [x] Atualizar interface com campos adicionais do Obsidian
+
+### Teste de Conexão
+- [x] Endpoint tRPC integration.testConnection implementado
+- [x] Validar API key do Obsidian (comprimento mínimo)
+- [x] Validar porta (1-65535)
+- [x] Feedback visual de sucesso/erro
+- [x] Mensagem especial para Obsidian (conexão local)
+- [ ] Teste manual no Obsidian (aguardando usuário)
