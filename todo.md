@@ -897,3 +897,32 @@
 - [x] Mostrar: Tenta A → sucesso? → documenta
 - [x] Mostrar: Falha? → Tenta B, C, D
 - [x] Salvar diagrama PNG
+
+## Integração Obsidian - Criação Automática de Arquivos
+
+### Endpoint de Geração de Script
+- [x] Endpoint POST /api/trpc/obsidian.gerarScriptCriacao - Gerar script Python/PowerShell
+- [x] Endpoint POST /api/trpc/obsidian.criarArquivoTesteComet - Teste rápido
+- [x] Validação de parâmetros (nome arquivo, conteúdo, caminho)
+- [x] Suporte para Windows (PowerShell + Python)
+- [x] Suporte para Linux/Mac (Python + bash)
+
+### Skill para Comet
+- [x] Skill "Criar Arquivo no Obsidian" no banco de dados
+- [x] Documentação completa da skill (13 seções)
+- [x] Exemplos de uso para o Comet
+- [x] Integração com API Local REST do Obsidian
+
+### Documentação
+- [x] Criar GUIA_INTEGRACAO_OBSIDIAN_COMET.md (completo)
+- [x] Documentar fluxo completo (Comet → Manus → Script → Obsidian)
+- [x] Adicionar troubleshooting (5 problemas comuns)
+- [x] Exemplos práticos de criação de arquivos (3 exemplos)
+- [x] FAQ com 10 perguntas frequentes
+
+### Testes
+- [x] Testar geração de script Python (15 testes unitários)
+- [x] Testar geração de script PowerShell (15 testes unitários)
+- [x] Validar parâmetros de entrada (3 testes de validação)
+- [x] Testar com diferentes tipos de conteúdo (markdown, checklist, OKR)
+- [ ] Validar criação de arquivo no Obsidian local (requer execução manual)
