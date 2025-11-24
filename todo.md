@@ -979,3 +979,38 @@
 - [x] Criar guia de exemplo para Comet (GUIA_EXEMPLO_COMET.md)
 - [x] Validar criação real no Obsidian (arquivo 08_TESTE_Comet_Manus.md criado)
 - [x] Criar resumo executivo para Comet (RESUMO_PARA_COMET.md)
+
+## Integração API Perplexity
+
+### Endpoint tRPC
+- [x] Criar router perplexity.ts
+- [x] Endpoint consultar (query, model, temperature)
+- [x] Endpoint testarConexao
+- [x] Validação de API key (mínimo 20 caracteres)
+- [x] Tratamento de erros (API, rede, validação)
+- [x] Suporte para 3 modelos (small, large, huge)
+- [x] Adicionar ao appRouter
+
+### Skill no Banco
+- [x] Skill "Consultar Perplexity AI" (ID: 330002)
+- [x] Documentação completa nas instruções
+- [x] Exemplos de uso (4 exemplos)
+- [x] Parâmetros e respostas detalhados
+- [x] Tags e categoria configuradas
+
+### Testes
+- [x] Testes unitários do endpoint (13 testes)
+- [x] Validação de parâmetros (query, apiKey, temperature, maxTokens)
+- [x] Teste de erro (API key inválida)
+- [x] Teste de erro de rede
+- [x] Teste de sucesso com mock
+- [x] Teste de valores padrão
+- [x] 100% dos testes passando
+
+### Documentação
+- [x] Criar GUIA_INTEGRACAO_PERPLEXITY.md (completo)
+- [x] Exemplos práticos (4 exemplos)
+- [x] Troubleshooting (5 problemas comuns)
+- [x] FAQ (10 perguntas frequentes)
+- [x] Documentação de modelos
+- [x] Boas práticas
