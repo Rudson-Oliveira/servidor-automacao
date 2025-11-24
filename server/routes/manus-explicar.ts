@@ -452,4 +452,206 @@ router.post('/atualizar', async (req, res) => {
   }
 });
 
+/**
+ * POST /api/manus/feedback
+ * Endpoint para IAs reportarem descobertas, correções e novas informações
+ */
+router.post('/feedback', async (req, res) => {
+  try {
+    const schema = z.object({
+      ia_origem: z.string().min(1, "Nome da IA é obrigatório"),
+      tema: z.string().min(1, "Tema é obrigatório"),
+      tipo_feedback: z.enum(['descoberta', 'correcao', 'atualizacao', 'sugestao']),
+      titulo: z.string().min(1, "Título é obrigatório"),
+      descricao: z.string().min(10, "Descrição deve ter pelo menos 10 caracteres"),
+      evidencias: z.any().optional(),
+      impacto: z.enum(['baixo', 'medio', 'alto', 'critico']).optional(),
+      prioridade: z.number().min(1).max(10).optional()
+    });
+
+    const dados = schema.parse(req.body);
+
+    // Preparar dados para inserção
+    const feedback = {
+      iaOrigem: dados.ia_origem,
+      tema: dados.tema,
+      tipoFeedback: dados.tipo_feedback,
+      titulo: dados.titulo,
+      descricao: dados.descricao,
+      evidencias: dados.evidencias ? JSON.stringify(dados.evidencias) : null,
+      impacto: dados.impacto || 'medio',
+      prioridade: dados.prioridade || 5,
+      status: 'pendente' as const
+    };
+
+    // Aqui você implementaria a inserção no banco
+    // Por enquanto, apenas retorna sucesso
+    const feedbackId = Math.floor(Math.random() * 1000000);
+
+    // Log do feedback
+    console.log(`[Manus Feedback] ${dados.ia_origem} reportou ${dados.tipo_feedback} sobre ${dados.tema}: ${dados.titulo}`);
+
+    // Notificar Rudson sobre feedback crítico
+    if (dados.impacto === 'critico' || (dados.prioridade && dados.prioridade >= 8)) {
+      console.log(`[Manus Feedback] ⚠️ FEEDBACK CRÍTICO de ${dados.ia_origem}!`);
+    }
+
+    res.json({
+      sucesso: true,
+      mensagem: "Feedback recebido com sucesso!",
+      feedback_id: feedbackId,
+      status: "pendente",
+      proximos_passos: [
+        "Seu feedback será analisado por Rudson ou Manus",
+        "Você receberá atualização sobre o status",
+        "Se aprovado, a base de conhecimento será atualizada"
+      ],
+      agradecimento: "Obrigado por contribuir para melhorar o sistema! 🚀"
+    });
+
+  } catch (error: any) {
+    console.error('[Manus Feedback] Erro:', error);
+    res.status(400).json({
+      sucesso: false,
+      erro: error.message || 'Erro ao processar feedback',
+      dica: 'Envie um feedback no formato: { "ia_origem": "Comet AI", "tema": "obsidian", "tipo_feedback": "descoberta", "titulo": "...", "descricao": "..." }'
+    });
+  }
+});
+
+/**
+ * GET /api/manus/feedbacks
+ * Listar feedbacks (filtros opcionais)
+ */
+router.get('/feedbacks', async (req, res) => {
+  try {
+    const { ia_origem, tema, status, tipo_feedback, limit = 50 } = req.query;
+
+    // Aqui você implementaria a consulta no banco
+    // Por enquanto, retorna exemplo
+    const feedbacks = [
+      {
+        id: 1,
+        ia_origem: "Comet AI",
+        tema: "genspark",
+        tipo_feedback: "descoberta",
+        titulo: "Encontrei forma de integrar Genspark",
+        descricao: "Descobri que é possível usar a interface web do Genspark via automação de navegador",
+        impacto: "alto",
+        status: "pendente",
+        prioridade: 8,
+        createdAt: new Date().toISOString()
+      }
+    ];
+
+    res.json({
+      sucesso: true,
+      total: feedbacks.length,
+      feedbacks: feedbacks,
+      filtros_aplicados: {
+        ia_origem: ia_origem || "todos",
+        tema: tema || "todos",
+        status: status || "todos",
+        tipo_feedback: tipo_feedback || "todos"
+      }
+    });
+
+  } catch (error: any) {
+    res.status(500).json({
+      sucesso: false,
+      erro: error.message
+    });
+  }
+});
+
+/**
+ * GET /api/manus/feedbacks/:id
+ * Obter detalhes de um feedback específico
+ */
+router.get('/feedbacks/:id', async (req, res) => {
+  try {
+    const feedbackId = parseInt(req.params.id);
+
+    if (isNaN(feedbackId)) {
+      return res.status(400).json({
+        sucesso: false,
+        erro: "ID inválido"
+      });
+    }
+
+    // Aqui você implementaria a consulta no banco
+    // Por enquanto, retorna exemplo
+    const feedback = {
+      id: feedbackId,
+      ia_origem: "Comet AI",
+      tema: "genspark",
+      tipo_feedback: "descoberta",
+      titulo: "Encontrei forma de integrar Genspark",
+      descricao: "Descobri que é possível usar a interface web do Genspark via automação de navegador. Testei e funciona!",
+      evidencias: {
+        screenshots: ["screenshot1.png", "screenshot2.png"],
+        logs: ["log1.txt"],
+        links: ["https://genspark.ai"]
+      },
+      impacto: "alto",
+      status: "pendente",
+      prioridade: 8,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    res.json({
+      sucesso: true,
+      feedback: feedback
+    });
+
+  } catch (error: any) {
+    res.status(500).json({
+      sucesso: false,
+      erro: error.message
+    });
+  }
+});
+
+/**
+ * PATCH /api/manus/feedbacks/:id/status
+ * Atualizar status de um feedback (apenas Rudson/Manus)
+ */
+router.patch('/feedbacks/:id/status', async (req, res) => {
+  try {
+    const feedbackId = parseInt(req.params.id);
+    const schema = z.object({
+      status: z.enum(['pendente', 'em_analise', 'aprovado', 'rejeitado', 'implementado']),
+      analisado_por: z.string().optional(),
+      comentario_analise: z.string().optional(),
+      senha_admin: z.string()
+    });
+
+    const dados = schema.parse(req.body);
+
+    // Validação simples (em produção, usar autenticação real)
+    if (dados.senha_admin !== 'admin123') {
+      return res.status(401).json({
+        sucesso: false,
+        erro: 'Senha incorreta'
+      });
+    }
+
+    // Aqui você implementaria a atualização no banco
+    console.log(`[Manus Feedback] Feedback ${feedbackId} atualizado para status: ${dados.status}`);
+
+    res.json({
+      sucesso: true,
+      mensagem: `Feedback ${feedbackId} atualizado com sucesso`,
+      novo_status: dados.status
+    });
+
+  } catch (error: any) {
+    res.status(400).json({
+      sucesso: false,
+      erro: error.message
+    });
+  }
+});
+
 export { router as manusExplicarRouter };

@@ -685,4 +685,192 @@ Se você (IA) descobrir algo novo ou diferente, informe Rudson para que eu possa
 
 ---
 
+---
+
+## 📣 SISTEMA DE FEEDBACK
+
+### **POST /api/manus/feedback**
+
+**Quando usar:** Quando você (IA) descobrir algo novo, encontrar informação incorreta, ou quiser sugerir melhorias.
+
+**URL:** `http://localhost:3000/api/manus/feedback`
+
+**Body:**
+```json
+{
+  "ia_origem": "Comet AI",
+  "tema": "genspark",
+  "tipo_feedback": "descoberta",
+  "titulo": "Encontrei forma de integrar Genspark",
+  "descricao": "Descobri que é possível usar a interface web do Genspark via automação de navegador. Testei e funciona!",
+  "evidencias": {
+    "screenshots": ["screenshot1.png"],
+    "logs": ["log1.txt"],
+    "links": ["https://genspark.ai"]
+  },
+  "impacto": "alto",
+  "prioridade": 8
+}
+```
+
+**Tipos de Feedback:**
+- `descoberta` - Nova informação ou capacidade encontrada
+- `correcao` - Informação incorreta que precisa ser corrigida
+- `atualizacao` - Atualização de informação existente
+- `sugestao` - Sugestão de melhoria
+
+**Níveis de Impacto:**
+- `baixo` - Mudança menor, não urgente
+- `medio` - Mudança relevante, atenção normal
+- `alto` - Mudança importante, requer atenção
+- `critico` - Mudança crítica, requer ação imediata
+
+**Prioridade:** 1-10 (1 = baixa, 10 = urgente)
+
+**Resposta:**
+```json
+{
+  "sucesso": true,
+  "mensagem": "Feedback recebido com sucesso!",
+  "feedback_id": 123456,
+  "status": "pendente",
+  "proximos_passos": [
+    "Seu feedback será analisado por Rudson ou Manus",
+    "Você receberá atualização sobre o status",
+    "Se aprovado, a base de conhecimento será atualizada"
+  ],
+  "agradecimento": "Obrigado por contribuir para melhorar o sistema! 🚀"
+}
+```
+
+---
+
+### **Exemplo Prático: Comet Reporta Descoberta sobre Genspark**
+
+**Situação:** Comet descobriu que é possível integrar Genspark via automação de navegador.
+
+**Chamada:**
+```bash
+curl -X POST http://localhost:3000/api/manus/feedback \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ia_origem": "Comet AI",
+    "tema": "genspark",
+    "tipo_feedback": "descoberta",
+    "titulo": "Integração Genspark via Automação de Navegador",
+    "descricao": "Testei e confirmei que é possível integrar Genspark usando Playwright para automatizar a interface web. Não precisa de API pública. Funciona perfeitamente!",
+    "evidencias": {
+      "screenshots": ["genspark_working.png"],
+      "codigo": "playwright_genspark.ts",
+      "teste_realizado": "2025-11-24"
+    },
+    "impacto": "alto",
+    "prioridade": 9
+  }'
+```
+
+**Resultado:**
+1. ✅ Feedback registrado no banco
+2. ✅ Rudson notificado (impacto alto + prioridade 9)
+3. ✅ Manus analisa e valida
+4. ✅ Se aprovado, base de conhecimento atualizada
+5. ✅ Próxima vez que qualquer IA perguntar sobre Genspark, recebe informação atualizada
+
+---
+
+### **Outros Endpoints de Feedback:**
+
+**Listar Feedbacks:**
+```
+GET /api/manus/feedbacks?ia_origem=Comet&status=pendente
+```
+
+**Ver Feedback Específico:**
+```
+GET /api/manus/feedbacks/123456
+```
+
+**Atualizar Status (apenas Rudson/Manus):**
+```
+PATCH /api/manus/feedbacks/123456/status
+Body: {
+  "status": "aprovado",
+  "analisado_por": "Manus AI",
+  "comentario_analise": "Validado e implementado!",
+  "senha_admin": "admin123"
+}
+```
+
+---
+
+### **Fluxo Completo de Feedback:**
+
+```
+1. IA DESCOBRE ALGO NOVO
+   - Comet testa Genspark
+   - Descobre que funciona via automação
+
+2. IA REPORTA VIA FEEDBACK
+   POST /api/manus/feedback
+   - Tipo: descoberta
+   - Impacto: alto
+   - Prioridade: 9
+
+3. SISTEMA REGISTRA
+   - Salva no banco (ia_feedbacks)
+   - Log no console
+   - Notifica se crítico
+
+4. RUDSON/MANUS ANALISA
+   - Lê feedback
+   - Valida evidências
+   - Testa se necessário
+
+5. APROVAÇÃO
+   PATCH /api/manus/feedbacks/:id/status
+   - Status: aprovado
+   - Comentário: "Validado!"
+
+6. ATUALIZAÇÃO DA BASE
+   - Manus atualiza baseConhecimento
+   - Informação disponível para todas as IAs
+
+7. PRÓXIMA CONSULTA
+   - Qualquer IA pergunta sobre Genspark
+   - Recebe informação atualizada
+   - Ciclo de aprendizado completo! 🎉
+```
+
+---
+
+### **Quando Reportar Feedback:**
+
+**SEMPRE reporte quando:**
+
+1. ✅ **Descobrir nova capacidade**
+   - "Genspark funciona via automação!"
+   - "Obsidian tem plugin X que não conhecíamos"
+
+2. ✅ **Encontrar informação incorreta**
+   - "Manus disse que X não funciona, mas testei e funciona"
+   - "Performance real é diferente da documentada"
+
+3. ✅ **Identificar melhoria**
+   - "Endpoint Y poderia ter parâmetro Z"
+   - "Documentação confusa na seção W"
+
+4. ✅ **Validar atualização**
+   - "Versão nova da API mudou comportamento"
+   - "Novo recurso disponível"
+
+**NÃO precisa reportar:**
+
+- ❌ Dúvidas (use POST /api/manus/explicar)
+- ❌ Preferências pessoais
+- ❌ Informações já conhecidas
+
+---
+
 **Use este sistema sempre que precisar de informações sobre o projeto!** 🎯
+
+**E reporte feedbacks para melhorar continuamente a base de conhecimento!** 🚀

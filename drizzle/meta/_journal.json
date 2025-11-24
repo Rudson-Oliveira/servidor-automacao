@@ -85,6 +85,13 @@
       "when": 1763931406823,
       "tag": "0011_red_daimon_hellstrom",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "5",
+      "when": 1763973104723,
+      "tag": "0012_naive_bulldozer",
+      "breakpoints": true
     }
   ]
 }

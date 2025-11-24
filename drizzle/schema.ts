@@ -47,6 +47,39 @@ export const auditLogs = mysqlTable("audit_logs", {
 export type AuditLog = typeof auditLogs.$inferSelect;
 export type InsertAuditLog = typeof auditLogs.$inferInsert;
 
+/**
+ * Tabela de feedbacks de IAs
+ * Armazena descobertas, correções e novas informações reportadas pelas IAs
+ */
+export const iaFeedbacks = mysqlTable("ia_feedbacks", {
+  id: int("id").autoincrement().primaryKey(),
+  iaOrigem: varchar("ia_origem", { length: 100 }).notNull(), // Nome da IA (Comet, Abacus, etc.)
+  tema: varchar("tema", { length: 100 }).notNull(), // obsidian, perplexity, genspark, etc.
+  tipoFeedback: mysqlEnum("tipo_feedback", ["descoberta", "correcao", "atualizacao", "sugestao"]).notNull(),
+  titulo: varchar("titulo", { length: 255 }).notNull(),
+  descricao: text("descricao").notNull(),
+  evidencias: text("evidencias"), // JSON com links, screenshots, logs, etc.
+  impacto: mysqlEnum("impacto", ["baixo", "medio", "alto", "critico"]).default("medio"),
+  status: mysqlEnum("status", ["pendente", "em_analise", "aprovado", "rejeitado", "implementado"]).default("pendente"),
+  prioridade: int("prioridade").default(5), // 1-10
+  analisadoPor: varchar("analisado_por", { length: 100 }), // Quem analisou (Rudson, Manus, etc.)
+  comentarioAnalise: text("comentario_analise"),
+  dataAnalise: timestamp("data_analise"),
+  dataImplementacao: timestamp("data_implementacao"),
+  versaoAntes: varchar("versao_antes", { length: 50 }),
+  versaoDepois: varchar("versao_depois", { length: 50 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  iaOrigemIdx: index("ia_origem_idx").on(table.iaOrigem),
+  temaIdx: index("tema_idx").on(table.tema),
+  statusIdx: index("status_idx").on(table.status),
+  tipoFeedbackIdx: index("tipo_feedback_idx").on(table.tipoFeedback),
+}));
+
+export type IaFeedback = typeof iaFeedbacks.$inferSelect;
+export type InsertIaFeedback = typeof iaFeedbacks.$inferInsert;
+
 // TODO: Add your tables here
 
 /**
