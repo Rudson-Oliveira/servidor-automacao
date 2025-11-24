@@ -1014,3 +1014,28 @@
 - [x] FAQ (10 perguntas frequentes)
 - [x] Documentação de modelos
 - [x] Boas práticas
+
+## Atualização Configurações IAs
+
+- [x] Verificar card Perplexity em /configuracoes/ias (já existe)
+- [x] Campo API key Perplexity (implementado)
+- [x] Botão teste de conexão (implementado)
+- [x] Link documentação (implementado)
+
+## Roadmap Integração Genspark
+
+- [x] Criar roadmap completo (ROADMAP_GENSPARK.md)
+- [x] Definir arquitetura de chamadas de voz
+- [x] Planejar sistema de contatos
+- [x] Planejar notificações multi-canal
+- [x] Planejar transcrição e logs
+- [ ] Pesquisar API Genspark (próximo passo)
+- [ ] Implementar endpoints
+
+## Preservação do Projeto
+
+- [x] Criar CODIGO_PRONTO_COPIAR_COLAR.md
+- [x] Documentar API keys
+- [x] Documentar estrutura do projeto
+- [x] Documentar comandos úteis
+- [x] Checklist de preservação
