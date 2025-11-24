@@ -1039,3 +1039,13 @@
 - [x] Documentar estrutura do projeto
 - [x] Documentar comandos úteis
 - [x] Checklist de preservação
+
+## Pesquisa API Genspark
+
+- [ ] Buscar documentação oficial Genspark
+- [ ] Identificar endpoints disponíveis
+- [ ] Verificar sistema de autenticação
+- [ ] Pesquisar pricing e limites
+- [ ] Investigar capacidades de chamadas de voz
+- [ ] Documentar descobertas
+- [ ] Atualizar roadmap com informações reais
