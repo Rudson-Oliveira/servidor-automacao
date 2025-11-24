@@ -1077,3 +1077,56 @@
 - [ ] Documentar uso de webhooks
 - [ ] Documentar uso de URI callbacks
 - [ ] Criar exemplos práticos para Comet
+
+
+## Interface Web para Catalogar Links no Obsidian
+
+### Componentes React
+- [ ] Criar página ObsidianCatalog.tsx
+- [ ] Formulário para adicionar links
+- [ ] Botão "Copiar URI" para área de transferência
+- [ ] Feedback visual ao copiar (toast)
+- [ ] Preview do conteúdo markdown
+
+### Funcionalidades
+- [ ] Adicionar/remover links dinamicamente
+- [ ] Organizar por categorias
+- [ ] Gerar URI automaticamente
+- [ ] Copiar URI com um clique
+- [ ] Abrir Obsidian diretamente
+
+### Testes
+- [ ] Testar botão de copiar
+- [ ] Validar geração de URI
+- [ ] Testar com diferentes quantidades de links
+
+
+## ✅ Interface Web para Catalogar Links no Obsidian (CONCLUÍDO)
+
+### Componentes React
+- [x] Criar página ObsidianCatalog.tsx
+- [x] Formulário para adicionar links
+- [x] Botão "Copiar URI" para área de transferência
+- [x] Feedback visual ao copiar (toast)
+- [x] Preview do conteúdo markdown
+
+### Funcionalidades
+- [x] Adicionar/remover links dinamicamente
+- [x] Organizar por categorias
+- [x] Gerar URI automaticamente
+- [x] Copiar URI com um clique (navigator.clipboard)
+- [x] Abrir Obsidian diretamente (window.location.href)
+- [x] Validação de dados (pelo menos 1 link válido)
+- [x] Botão de acesso rápido na Home
+
+### Testes
+- [x] Testar botão de copiar (funcional)
+- [x] Validar geração de URI (sucesso)
+- [x] Testar com diferentes quantidades de links (1 link testado)
+- [x] Verificar feedback visual (toast + botão verde)
+- [x] Validar instruções de uso (exibidas corretamente)
+
+### Rota e Navegação
+- [x] Adicionar rota /obsidian/catalogar no App.tsx
+- [x] Criar botão "Catalogar Links (Obsidian)" na Home
+- [x] Testar navegação end-to-end

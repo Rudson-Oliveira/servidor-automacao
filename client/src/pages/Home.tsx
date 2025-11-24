@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Settings } from 'lucide-react';
+import { Settings, BookOpen } from 'lucide-react';
 import { Link } from 'wouter';
 
 interface Message {
@@ -148,11 +148,17 @@ export default function Home() {
             <CardDescription className="text-lg">
               Interface de Comunicação Comet/Manus ↔ Automação
             </CardDescription>
-            <div className="mt-4">
+            <div className="mt-4 flex gap-3 flex-wrap justify-center">
               <Link href="/configuracoes/ias">
                 <Button variant="outline" className="gap-2">
                   <Settings className="h-4 w-4" />
                   Configurar IAs
+                </Button>
+              </Link>
+              <Link href="/obsidian/catalogar">
+                <Button variant="outline" className="gap-2 border-purple-300 text-purple-700 hover:bg-purple-50">
+                  <BookOpen className="h-4 w-4" />
+                  Catalogar Links (Obsidian)
                 </Button>
               </Link>
             </div>

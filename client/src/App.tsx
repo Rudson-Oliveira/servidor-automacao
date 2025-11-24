@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import ConfiguracoesIAs from "./pages/ConfiguracoesIAs";
 import Cadastro from "./pages/Cadastro";
 import Login from "./pages/Login";
+import ObsidianCatalog from "./pages/ObsidianCatalog";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -19,6 +20,7 @@ function Router() {
       <Route path={"/configuracoes/ias"} component={ConfiguracoesIAs} />
       <Route path={"/cadastro"} component={Cadastro} />
       <Route path={"/login"} component={Login} />
+      <Route path={"/obsidian/catalogar"} component={ObsidianCatalog} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
