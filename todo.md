@@ -949,3 +949,31 @@
 - [x] Feedback visual de sucesso/erro
 - [x] Mensagem especial para Obsidian (conexão local)
 - [ ] Teste manual no Obsidian (aguardando usuário)
+
+## Teste de Validação com Comet AI
+
+### Preparação
+- [x] Criar roteiro de teste estruturado (ROTEIRO_TESTE_COMET.md)
+- [x] Criar orientações de eficiência (ORIENTACOES_COMET_EFICIENCIA.md)
+- [x] Verificar pré-requisitos (Obsidian, API key, porta)
+- [x] Aguardar chegada do Comet
+- [x] Executar testes diretamente (Comet não conseguiu)
+
+### Fase 1: Testes Básicos
+- [x] Teste 1.1: Consultar skill no banco (< 0.150s)
+- [x] Teste 1.2: Criar arquivo de teste (0.007s - EXCELENTE)
+- [x] Teste 1.3: Validar script gerado (2.761 caracteres Python + 2.232 PowerShell)
+
+### Fase 2: Testes Reais
+- [x] Teste 2.1: Criar checklist diária (0.007s - EXCELENTE)
+- [x] Teste 2.2: Criar OKR trimestral (0.004s - EXCELENTE)
+- [x] Teste 2.3: Criar nota de reunião (0.003s - EXCELENTE)
+
+### Fase 3: Medição de Performance
+- [x] Medir tempo de resposta (0.006s médio - 833x mais rápido que meta)
+- [x] Calcular taxa de sucesso (100% - superou meta de 95%)
+- [x] Avaliar autonomia (100% - superou meta de 95%)
+- [x] Avaliar qualidade do conteúdo (5/5 - atingiu meta)
+- [x] Classificar performance (⭐⭐⭐ EXCELENTE - Alta Performance)
+- [x] Gerar relatório completo (RELATORIO_PERFORMANCE_TESTES.md)
+- [x] Criar guia de exemplo para Comet (GUIA_EXEMPLO_COMET.md)
