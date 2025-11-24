@@ -404,7 +404,95 @@ POST /api/busca-local/processar-resultado
 
 ---
 
-## 🛡️ CATEGORIA 5: SISTEMA (Interno)
+## 🤖 CATEGORIA 5: MANUS EXPLICAR (Consulta Inteligente)
+
+### **Endpoint 1: Consultar Manus AI**
+
+```
+POST /api/manus/explicar
+```
+
+**Quando usar:** Quando você (Comet ou outra IA) tiver QUALQUER dúvida sobre o projeto, integrações, skills, endpoints, etc.
+
+**Body:**
+```json
+{
+  "pergunta": "Sua pergunta aqui",
+  "contexto": "Contexto adicional (opcional)",
+  "ia_origem": "Comet AI"
+}
+```
+
+**Exemplo:**
+```json
+{
+  "pergunta": "Obsidian tem API?",
+  "ia_origem": "Comet AI"
+}
+```
+
+**Resposta:**
+```json
+{
+  "sucesso": true,
+  "tema": "Integração Obsidian",
+  "resumo": "Obsidian TEM API local via plugin 'Local REST API'. Está 100% funcional com 15 testes passando. Use skill 330001 para criar arquivos.",
+  "resposta": {
+    "status": "✅ FUNCIONAL - 100% Implementado",
+    "tem_api": true,
+    "tipo_api": "API Local REST (não pública)",
+    "skill_id": 330001,
+    "endpoints": [...],
+    "como_usar": "..."
+  },
+  "documentacao_recomendada": [...],
+  "contato_manus": {...}
+}
+```
+
+**Temas disponíveis:**
+- obsidian
+- perplexity
+- deepsite
+- genspark
+- skills
+- testes
+- endpoints
+- documentação
+- performance
+- banco de dados
+- projeto geral
+
+**Por que usar:**
+- ✅ Evita informações desatualizadas
+- ✅ Previne erros como "Obsidian não tem API"
+- ✅ Garante precisão técnica
+- ✅ Economiza tempo de pesquisa
+- ✅ Acesso a conhecimento sempre atualizado
+
+**Documentação completa:** `/servidor-automacao/GUIA_IAS_CONSULTAR_MANUS.md`
+
+---
+
+### **Endpoint 2: Status do Manus Explicar**
+
+```
+GET /api/manus/status
+```
+
+**Resposta:**
+```json
+{
+  "status": "online",
+  "servico": "Manus Explicar",
+  "versao": "1.0.0",
+  "temas_disponiveis": [...]
+}
+```
+
+---
+
+## 🛡️ CATEGORIA 6: SISTEMA (Interno)
 
 ### **Endpoint 1: Status do Sistema**
 
