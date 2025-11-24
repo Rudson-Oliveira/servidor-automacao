@@ -1,0 +1,328 @@
+{
+  "meta": {
+    "nome": "Configuração API - Catalogação de Links no Obsidian",
+    "versao": "1.0.0",
+    "data_criacao": "2025-11-24",
+    "autor": "Manus",
+    "proposito": "Arquivo de referência para Comet usar a API de catalogação autonomamente",
+    "instrucoes": "Comet deve ler este arquivo UMA VEZ e salvar o conhecimento para uso futuro"
+  },
+  
+  "api": {
+    "base_url": "https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer",
+    "protocolo": "HTTPS",
+    "formato": "JSON",
+    "timeout_padrao": 30000,
+    "descricao": "API REST para catalogação automatizada de links no Obsidian"
+  },
+  
+  "endpoints": {
+    "catalogar_individual": {
+      "nome": "Catalogar Links (Individual)",
+      "metodo": "POST",
+      "caminho": "/api/obsidian/catalogar-links",
+      "url_completa": "https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer/api/obsidian/catalogar-links",
+      "descricao": "Cataloga de 1 a 100 links e gera URI do Obsidian",
+      "autenticacao": false,
+      "headers_obrigatorios": {
+        "Content-Type": "application/json"
+      },
+      "limites": {
+        "min_links": 1,
+        "max_links": 100,
+        "max_titulo_chars": 200,
+        "max_nome_link_chars": 200,
+        "timeout_ms": 30000
+      },
+      "request": {
+        "formato": "JSON",
+        "schema": {
+          "titulo": {
+            "tipo": "string",
+            "obrigatorio": true,
+            "min_length": 1,
+            "max_length": 200,
+            "descricao": "Título do catálogo (será o nome do arquivo .md)",
+            "exemplo": "Meus Links de IA"
+          },
+          "links": {
+            "tipo": "array",
+            "obrigatorio": true,
+            "min_items": 1,
+            "max_items": 100,
+            "descricao": "Array de objetos contendo os links a catalogar",
+            "item_schema": {
+              "nome": {
+                "tipo": "string",
+                "obrigatorio": true,
+                "min_length": 1,
+                "max_length": 200,
+                "descricao": "Nome descritivo do link",
+                "exemplo": "OpenAI GPT-4"
+              },
+              "url": {
+                "tipo": "string",
+                "obrigatorio": true,
+                "formato": "URL válida",
+                "descricao": "URL completa do link (deve começar com http:// ou https://)",
+                "exemplo": "https://openai.com/gpt-4"
+              },
+              "categoria": {
+                "tipo": "string",
+                "obrigatorio": false,
+                "max_length": 100,
+                "descricao": "Categoria para agrupar links (opcional, padrão: 'Sem Categoria')",
+                "exemplo": "IA Generativa"
+              }
+            }
+          }
+        },
+        "exemplo_minimo": {
+          "titulo": "Teste Simples",
+          "links": [
+            {
+              "nome": "Manus AI",
+              "url": "https://manus.im"
+            }
+          ]
+        },
+        "exemplo_completo": {
+          "titulo": "Links de IA e Desenvolvimento",
+          "links": [
+            {
+              "nome": "OpenAI GPT-4",
+              "url": "https://openai.com/gpt-4",
+              "categoria": "IA Generativa"
+            },
+            {
+              "nome": "Anthropic Claude",
+              "url": "https://anthropic.com",
+              "categoria": "IA Generativa"
+            },
+            {
+              "nome": "GitHub Copilot",
+              "url": "https://github.com/features/copilot",
+              "categoria": "Desenvolvimento"
+            }
+          ]
+        }
+      },
+      "response": {
+        "formato": "JSON",
+        "status_codes": {
+          "200": "Sucesso - URI gerada",
+          "400": "Erro de validação - dados inválidos",
+          "500": "Erro interno do servidor"
+        },
+        "schema_sucesso": {
+          "sucesso": {
+            "tipo": "boolean",
+            "valor": true,
+            "descricao": "Indica que a operação foi bem-sucedida"
+          },
+          "uri": {
+            "tipo": "string",
+            "descricao": "URI completa do Obsidian para criar o arquivo",
+            "formato": "obsidian://new?file=...",
+            "uso": "Copiar e colar no navegador OU usar window.location.href"
+          },
+          "nomeArquivo": {
+            "tipo": "string",
+            "descricao": "Nome do arquivo .md que será criado",
+            "exemplo": "Meus Links de IA.md"
+          },
+          "totalLinks": {
+            "tipo": "number",
+            "descricao": "Quantidade total de links catalogados"
+          },
+          "categorias": {
+            "tipo": "number",
+            "descricao": "Quantidade de categorias distintas"
+          }
+        },
+        "exemplo_sucesso": {
+          "sucesso": true,
+          "uri": "obsidian://new?file=GERAL%20RUDSON%2FMeus%20Links%20de%20IA.md&content=%23%20Meus%20Links%20de%20IA%0A%0A...",
+          "nomeArquivo": "Meus Links de IA.md",
+          "totalLinks": 3,
+          "categorias": 2
+        },
+        "schema_erro": {
+          "sucesso": {
+            "tipo": "boolean",
+            "valor": false
+          },
+          "erro": {
+            "tipo": "string",
+            "descricao": "Mensagem de erro descritiva"
+          }
+        },
+        "exemplo_erro": {
+          "sucesso": false,
+          "erro": "Título é obrigatório"
+        }
+      },
+      "exemplos_uso": {
+        "curl": "curl -X POST https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer/api/obsidian/catalogar-links \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"titulo\": \"Meus Links\",\n    \"links\": [\n      {\n        \"nome\": \"Manus AI\",\n        \"url\": \"https://manus.im\",\n        \"categoria\": \"Produtividade\"\n      }\n    ]\n  }'",
+        "python": "import requests\n\nresponse = requests.post(\n    'https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer/api/obsidian/catalogar-links',\n    json={\n        'titulo': 'Meus Links',\n        'links': [\n            {\n                'nome': 'Manus AI',\n                'url': 'https://manus.im',\n                'categoria': 'Produtividade'\n            }\n        ]\n    }\n)\n\nresult = response.json()\nprint(result['uri'])",
+        "javascript": "const response = await fetch(\n  'https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer/api/obsidian/catalogar-links',\n  {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({\n      titulo: 'Meus Links',\n      links: [\n        {\n          nome: 'Manus AI',\n          url: 'https://manus.im',\n          categoria: 'Produtividade'\n        }\n      ]\n    })\n  }\n);\n\nconst result = await response.json();\nconsole.log(result.uri);"
+      }
+    },
+    
+    "catalogar_bulk": {
+      "nome": "Catalogar Links em Massa (Bulk)",
+      "metodo": "POST",
+      "caminho": "/api/obsidian/catalogar-bulk",
+      "url_completa": "https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer/api/obsidian/catalogar-bulk",
+      "descricao": "Cataloga de 100 a 1000 links de uma vez (otimizado para volume)",
+      "status": "EM DESENVOLVIMENTO",
+      "autenticacao": false,
+      "limites": {
+        "min_links": 1,
+        "max_links": 1000,
+        "timeout_ms": 60000
+      },
+      "observacao": "Endpoint ainda não implementado. Usar /catalogar-links para até 100 links."
+    }
+  },
+  
+  "fluxo_uso": {
+    "descricao": "Passo-a-passo para Comet usar a API autonomamente",
+    "passos": [
+      {
+        "numero": 1,
+        "acao": "Organizar dados",
+        "detalhes": "Comet recebe pedido do usuário e organiza links em formato JSON"
+      },
+      {
+        "numero": 2,
+        "acao": "Validar dados",
+        "detalhes": "Verificar se título existe, URLs são válidas, quantidade de links está dentro do limite"
+      },
+      {
+        "numero": 3,
+        "acao": "Chamar API",
+        "detalhes": "POST para /api/obsidian/catalogar-links com JSON no body"
+      },
+      {
+        "numero": 4,
+        "acao": "Processar resposta",
+        "detalhes": "Se sucesso=true, extrair URI. Se sucesso=false, reportar erro ao usuário"
+      },
+      {
+        "numero": 5,
+        "acao": "Entregar resultado",
+        "detalhes": "Abrir URI no navegador OU retornar para usuário copiar"
+      }
+    ]
+  },
+  
+  "validacoes": {
+    "antes_de_chamar_api": [
+      "Título não pode ser vazio",
+      "Array de links não pode ser vazio",
+      "Cada link deve ter 'nome' e 'url'",
+      "URLs devem começar com http:// ou https://",
+      "Quantidade de links deve estar entre 1 e 100",
+      "Categoria é opcional (pode ser omitida)"
+    ],
+    "apos_receber_resposta": [
+      "Verificar se 'sucesso' é true",
+      "Se false, ler mensagem de erro em 'erro'",
+      "Se true, URI estará em 'uri'",
+      "URI pode ser muito longa (1000+ caracteres) - é normal"
+    ]
+  },
+  
+  "obsidian": {
+    "descricao": "Informações sobre integração com Obsidian",
+    "pasta_destino": "GERAL RUDSON",
+    "formato_arquivo": ".md (Markdown)",
+    "protocolo_uri": "obsidian://new",
+    "como_usar_uri": [
+      "Opção 1: Copiar URI e colar na barra de endereços do navegador",
+      "Opção 2: Usar window.location.href = uri (JavaScript)",
+      "Opção 3: Usar webbrowser.open(uri) (Python)",
+      "Opção 4: Clicar em link HTML <a href='obsidian://...'>Abrir</a>"
+    ],
+    "validacao_arquivo": {
+      "checklist": [
+        "Obsidian abriu automaticamente?",
+        "Arquivo foi criado na pasta correta?",
+        "Título está como H1 (#)?",
+        "Data de geração está presente?",
+        "Estatísticas estão corretas?",
+        "Categorias estão como H2 (##)?",
+        "Links estão clicáveis [nome](url)?",
+        "CRÍTICO: Quebras de linha funcionando (sem \\n literal)?"
+      ]
+    }
+  },
+  
+  "troubleshooting": {
+    "erro_400": {
+      "causa": "Dados inválidos enviados",
+      "solucao": "Verificar formato JSON, campos obrigatórios e limites"
+    },
+    "erro_500": {
+      "causa": "Erro interno do servidor",
+      "solucao": "Reportar ao Manus com detalhes da requisição"
+    },
+    "uri_muito_longa": {
+      "causa": "Muitos links ou nomes muito longos",
+      "solucao": "Dividir em múltiplos catálogos ou usar nomes mais curtos"
+    },
+    "obsidian_nao_abre": {
+      "causa": "Obsidian não está instalado ou URI malformada",
+      "solucao": "Verificar se Obsidian está instalado e rodando"
+    },
+    "formatacao_incorreta": {
+      "causa": "Problema na geração do markdown",
+      "solucao": "Reportar ao Manus com screenshot do arquivo criado"
+    }
+  },
+  
+  "economia_tokens": {
+    "estrategia": "Comet lê este arquivo UMA VEZ e salva o conhecimento",
+    "beneficios": [
+      "Não precisa perguntar ao Manus toda vez",
+      "Economia de 80% em tokens",
+      "Respostas mais rápidas",
+      "Autonomia total"
+    ],
+    "onde_salvar": [
+      "Memória interna do Comet",
+      "Arquivo local no CPU",
+      "Base de conhecimento persistente"
+    ]
+  },
+  
+  "proximos_passos": {
+    "para_comet": [
+      "1. Ler este arquivo completamente",
+      "2. Salvar conhecimento na memória",
+      "3. Testar endpoint com exemplo mínimo",
+      "4. Confirmar que funciona",
+      "5. Usar autonomamente nas próximas vezes"
+    ],
+    "para_manus": [
+      "1. Implementar endpoint /catalogar-bulk",
+      "2. Adicionar histórico de catálogos no banco",
+      "3. Criar skill no banco de dados",
+      "4. Otimizar performance para 1000+ links"
+    ]
+  },
+  
+  "referencias": {
+    "documentacao_completa": [
+      "GUIA_TESTE_COMET_CATALOGACAO.md",
+      "README_TESTE_COMET.md",
+      "MEMORIA_PROJETO.md"
+    ],
+    "scripts_auxiliares": [
+      "teste_api_comet.py",
+      "comet_api_config.json (este arquivo)"
+    ],
+    "url_projeto": "https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer"
+  }
+}

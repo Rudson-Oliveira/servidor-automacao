@@ -400,3 +400,189 @@ export const deepsiteCacheMetadata = mysqlTable("deepsite_cache_metadata", {
 
 export type DeepsiteCacheMetadata = typeof deepsiteCacheMetadata.$inferSelect;
 export type InsertDeepsiteCacheMetadata = typeof deepsiteCacheMetadata.$inferInsert;
+
+
+/**
+ * ========================================
+ * MENTOR E LEITOR DE ENDPOINTS
+ * Sistema de mapeamento e raspagem de servidores de rede
+ * ========================================
+ */
+
+/**
+ * Tabela de servidores monitorados
+ * Armazena informações dos servidores de rede (SMB/Windows/Linux)
+ */
+export const servidores = mysqlTable("servidores", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 200 }).notNull(),
+  endereco: varchar("endereco", { length: 255 }).notNull(), // IP ou hostname (ex: 192.168.50.11)
+  tipo: mysqlEnum("tipo", ["smb", "ftp", "sftp", "http", "local"]).default("smb"),
+  descricao: text("descricao"),
+  autenticacaoTipo: varchar("autenticacao_tipo", { length: 50 }), // 'ntlm', 'basic', 'key'
+  usuario: varchar("usuario", { length: 255 }),
+  porta: int("porta").default(445), // 445 para SMB, 21 para FTP, etc
+  ativo: int("ativo").default(1).notNull(),
+  ultimaMapeamento: timestamp("ultima_mapeamento"),
+  ultimaRaspagem: timestamp("ultima_raspagem"),
+  totalDepartamentos: int("total_departamentos").default(0),
+  totalArquivos: int("total_arquivos").default(0),
+  tamanhoTotal: int("tamanho_total").default(0), // em bytes
+  status: mysqlEnum("status", ["online", "offline", "erro", "mapeando", "raspando"]).default("offline"),
+  mensagemErro: text("mensagem_erro"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  enderecoIdx: index("endereco_idx").on(table.endereco),
+  statusIdx: index("status_idx").on(table.status),
+  ativoIdx: index("ativo_idx").on(table.ativo),
+}));
+
+export type Servidor = typeof servidores.$inferSelect;
+export type InsertServidor = typeof servidores.$inferInsert;
+
+/**
+ * Tabela de departamentos/pastas principais
+ * Estrutura organizacional do servidor
+ */
+export const departamentos = mysqlTable("departamentos", {
+  id: int("id").autoincrement().primaryKey(),
+  servidorId: int("servidor_id").notNull(),
+  nome: varchar("nome", { length: 255 }).notNull(),
+  caminho: text("caminho").notNull(), // Caminho completo (ex: \\192.168.50.11\psicologia)
+  descricao: text("descricao"),
+  categoria: varchar("categoria", { length: 100 }), // 'administrativo', 'clinico', 'financeiro', etc
+  totalSubpastas: int("total_subpastas").default(0),
+  totalArquivos: int("total_arquivos").default(0),
+  tamanhoTotal: int("tamanho_total").default(0), // em bytes
+  ultimaAtualizacao: timestamp("ultima_atualizacao"),
+  permissoes: text("permissoes"), // JSON com permissões de acesso
+  ativo: int("ativo").default(1).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  servidorIdIdx: index("servidor_id_idx").on(table.servidorId),
+  nomeIdx: index("nome_idx").on(table.nome),
+  categoriaIdx: index("categoria_idx").on(table.categoria),
+}));
+
+export type Departamento = typeof departamentos.$inferSelect;
+export type InsertDepartamento = typeof departamentos.$inferInsert;
+
+/**
+ * Tabela de arquivos mapeados
+ * Índice completo de todos os arquivos do servidor
+ */
+export const arquivosMapeados = mysqlTable("arquivos_mapeados", {
+  id: int("id").autoincrement().primaryKey(),
+  departamentoId: int("departamento_id").notNull(),
+  nome: varchar("nome", { length: 500 }).notNull(),
+  caminhoCompleto: text("caminho_completo").notNull(),
+  caminhoRelativo: text("caminho_relativo"), // Relativo ao departamento
+  extensao: varchar("extensao", { length: 20 }),
+  tipoArquivo: varchar("tipo_arquivo", { length: 100 }), // 'documento', 'planilha', 'imagem', 'pdf', etc
+  tamanho: int("tamanho").default(0), // em bytes
+  dataCriacao: timestamp("data_criacao"),
+  dataModificacao: timestamp("data_modificacao"),
+  dataAcesso: timestamp("data_acesso"),
+  hash: varchar("hash", { length: 64 }), // MD5 ou SHA256 para detectar duplicatas
+  conteudoIndexado: text("conteudo_indexado"), // Primeiros 1000 caracteres para busca
+  metadados: text("metadados"), // JSON com metadados extras (autor, título, etc)
+  tags: varchar("tags", { length: 500 }),
+  importante: int("importante").default(0), // Flag para arquivos importantes
+  observacoes: text("observacoes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  departamentoIdIdx: index("departamento_id_idx").on(table.departamentoId),
+  nomeIdx: index("nome_idx").on(table.nome),
+  extensaoIdx: index("extensao_idx").on(table.extensao),
+  tipoArquivoIdx: index("tipo_arquivo_idx").on(table.tipoArquivo),
+  hashIdx: index("hash_idx").on(table.hash),
+}));
+
+export type ArquivoMapeado = typeof arquivosMapeados.$inferSelect;
+export type InsertArquivoMapeado = typeof arquivosMapeados.$inferInsert;
+
+/**
+ * Tabela de logs de raspagem
+ * Histórico de todas as operações de mapeamento e raspagem
+ */
+export const logsRaspagem = mysqlTable("logs_raspagem", {
+  id: int("id").autoincrement().primaryKey(),
+  servidorId: int("servidor_id").notNull(),
+  tipoOperacao: mysqlEnum("tipo_operacao", ["mapeamento", "raspagem_completa", "raspagem_incremental", "verificacao"]).notNull(),
+  status: mysqlEnum("status", ["iniciado", "em_progresso", "concluido", "erro", "cancelado"]).default("iniciado"),
+  iniciadoPor: varchar("iniciado_por", { length: 100 }), // 'Comet', 'Manus', 'Rudson', 'Agendado'
+  departamentosProcessados: int("departamentos_processados").default(0),
+  arquivosNovos: int("arquivos_novos").default(0),
+  arquivosAtualizados: int("arquivos_atualizados").default(0),
+  arquivosRemovidos: int("arquivos_removidos").default(0),
+  errosEncontrados: int("erros_encontrados").default(0),
+  tempoExecucao: int("tempo_execucao"), // em segundos
+  detalhes: text("detalhes"), // JSON com detalhes da operação
+  mensagemErro: text("mensagem_erro"),
+  dataInicio: timestamp("data_inicio").defaultNow().notNull(),
+  dataFim: timestamp("data_fim"),
+}, (table) => ({
+  servidorIdIdx: index("servidor_id_idx").on(table.servidorId),
+  statusIdx: index("status_idx").on(table.status),
+  tipoOperacaoIdx: index("tipo_operacao_idx").on(table.tipoOperacao),
+  dataInicioIdx: index("data_inicio_idx").on(table.dataInicio),
+}));
+
+export type LogRaspagem = typeof logsRaspagem.$inferSelect;
+export type InsertLogRaspagem = typeof logsRaspagem.$inferInsert;
+
+/**
+ * Tabela de alertas e notificações
+ * Sistema de monitoramento e alertas automáticos
+ */
+export const alertasServidor = mysqlTable("alertas_servidor", {
+  id: int("id").autoincrement().primaryKey(),
+  servidorId: int("servidor_id").notNull(),
+  tipo: mysqlEnum("tipo", ["espaco_disco", "arquivo_modificado", "acesso_negado", "servidor_offline", "erro_raspagem", "arquivo_importante"]).notNull(),
+  severidade: mysqlEnum("severidade", ["info", "aviso", "erro", "critico"]).default("info"),
+  titulo: varchar("titulo", { length: 255 }).notNull(),
+  mensagem: text("mensagem").notNull(),
+  detalhes: text("detalhes"), // JSON com informações adicionais
+  lido: int("lido").default(0).notNull(),
+  resolvido: int("resolvido").default(0).notNull(),
+  dataResolucao: timestamp("data_resolucao"),
+  resolvidoPor: varchar("resolvido_por", { length: 100 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  servidorIdIdx: index("servidor_id_idx").on(table.servidorId),
+  tipoIdx: index("tipo_idx").on(table.tipo),
+  severidadeIdx: index("severidade_idx").on(table.severidade),
+  lidoIdx: index("lido_idx").on(table.lido),
+  resolvidoIdx: index("resolvido_idx").on(table.resolvido),
+}));
+
+export type AlertaServidor = typeof alertasServidor.$inferSelect;
+export type InsertAlertaServidor = typeof alertasServidor.$inferInsert;
+
+/**
+ * Tabela de catálogos Obsidian gerados
+ * Histórico de catálogos enviados para o Obsidian
+ */
+export const catalogosObsidian = mysqlTable("catalogos_obsidian", {
+  id: int("id").autoincrement().primaryKey(),
+  servidorId: int("servidor_id"),
+  departamentoId: int("departamento_id"),
+  titulo: varchar("titulo", { length: 255 }).notNull(),
+  tipo: mysqlEnum("tipo", ["servidor_completo", "departamento", "tipo_arquivo", "personalizado"]).notNull(),
+  uri: text("uri").notNull(), // URI do Obsidian
+  nomeArquivo: varchar("nome_arquivo", { length: 255 }).notNull(),
+  totalLinks: int("total_links").default(0),
+  categorias: int("categorias").default(0),
+  geradoPor: varchar("gerado_por", { length: 100 }), // 'Comet', 'Manus', 'Agendado'
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  servidorIdIdx: index("servidor_id_idx").on(table.servidorId),
+  departamentoIdIdx: index("departamento_id_idx").on(table.departamentoId),
+  tipoIdx: index("tipo_idx").on(table.tipo),
+}));
+
+export type CatalogoObsidian = typeof catalogosObsidian.$inferSelect;
+export type InsertCatalogoObsidian = typeof catalogosObsidian.$inferInsert;

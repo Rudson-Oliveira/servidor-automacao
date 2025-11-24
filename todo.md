@@ -1138,3 +1138,114 @@
 - [x] Testar URI corrigida no Obsidian
 - [x] Validar formatação markdown correta
 - [x] Verificar que \n é interpretado como quebra de linha
+
+
+## 🚀 Endpoint Batch para Catalogação em Massa (436+ Links)
+
+### Backend - API Batch Endpoint
+- [ ] Criar endpoint POST /api/obsidian/catalogar-bulk
+- [ ] Implementar validação de array de links
+- [ ] Adicionar limite máximo (ex: 1000 links)
+- [ ] Otimizar geração de markdown para volume
+- [ ] Implementar tratamento de erros robusto
+- [ ] Adicionar logging de performance
+- [ ] Retornar estatísticas detalhadas (tempo, sucesso, falhas)
+
+### Validações e Otimizações
+- [ ] Validar formato de cada link
+- [ ] Detectar duplicatas
+- [ ] Validar URLs (opcional)
+- [ ] Agrupar por categoria automaticamente
+- [ ] Ordenar alfabeticamente
+- [ ] Limitar tamanho da URI (se necessário)
+
+### Script de Teste
+- [ ] Criar script Python para teste batch
+- [ ] Gerar dados de exemplo (50, 100, 436 links)
+- [ ] Medir tempo de processamento
+- [ ] Validar resultado no Obsidian
+
+### Documentação
+- [ ] Documentar endpoint no README
+- [ ] Adicionar exemplos de uso
+- [ ] Criar guia de performance
+
+
+## 🏥 Mentor e Leitor de Endpoints - Servidor Hospitalar
+
+### Análise e Planejamento
+- [ ] Mapear estrutura completa do servidor 192.168.50.11
+- [ ] Identificar tipos de arquivos por departamento
+- [ ] Definir permissões de acesso necessárias
+- [ ] Planejar arquitetura da solução
+
+### Banco de Dados
+- [ ] Criar tabela `servidores` (URL, nome, tipo, status)
+- [ ] Criar tabela `departamentos` (nome, caminho, servidor_id)
+- [ ] Criar tabela `arquivos_mapeados` (nome, caminho, tipo, tamanho, data, departamento_id)
+- [ ] Criar tabela `logs_raspagem` (timestamp, status, arquivos_processados)
+- [ ] Implementar migrations
+
+### Backend - API
+- [ ] POST /api/servidor/mapear (mapeia estrutura do servidor)
+- [ ] GET /api/servidor/departamentos (lista departamentos)
+- [ ] GET /api/servidor/arquivos/:departamento (lista arquivos)
+- [ ] POST /api/servidor/raspar (inicia raspagem)
+- [ ] GET /api/servidor/status (status da raspagem)
+- [ ] GET /api/servidor/logs (histórico de raspagens)
+
+### Script Python (Comet)
+- [x] Criar network_scanner.py (mapeia servidor SMB/Windows)
+- [x] Implementar autenticação Windows (NTLM)
+- [x] Raspar estrutura de pastas recursivamente
+- [x] Extrair metadados dos arquivos
+- [x] Enviar dados para API
+- [x] Tratamento de permissões negadas
+
+### Frontend
+- [ ] Página /servidor/mapear (interface de mapeamento)
+- [ ] Página /servidor/departamentos (lista departamentos)
+- [ ] Página /servidor/arquivos (explorador de arquivos)
+- [ ] Dashboard com estatísticas
+- [ ] Visualização em árvore da estrutura
+- [ ] Filtros e busca
+
+### Integração Obsidian
+- [ ] Gerar catálogo por departamento
+- [ ] Criar índice geral do servidor
+- [ ] Links para arquivos importantes
+- [ ] Documentação automática da estrutura
+
+### Testes e Validação
+- [ ] Testar mapeamento completo
+- [ ] Validar permissões de acesso
+- [ ] Testar raspagem de diferentes tipos de arquivo
+- [ ] Validar integração com Obsidian
+
+
+## ✅ Backend API Completo (tRPC)
+
+### Arquivos Criados
+- [x] server/db-servidor.ts - Funções de banco de dados
+- [x] server/routers/servidor.ts - Router tRPC completo
+- [x] Integrado no server/routers.ts
+
+### Endpoints Implementados (via tRPC)
+- [x] servidor.upsertServidor - Registra/atualiza servidor
+- [x] servidor.listarServidores - Lista todos os servidores
+- [x] servidor.getServidor - Busca servidor por ID
+- [x] servidor.atualizarStatus - Atualiza status do servidor
+- [x] servidor.getEstatisticas - Estatísticas completas
+- [x] servidor.upsertDepartamento - Registra/atualiza departamento
+- [x] servidor.listarDepartamentos - Lista departamentos
+- [x] servidor.inserirArquivosLote - Insere arquivos em lote (PRINCIPAL)
+- [x] servidor.listarArquivos - Lista arquivos
+- [x] servidor.buscarArquivos - Busca por nome
+- [x] servidor.verificarDuplicata - Verifica duplicatas por hash
+- [x] servidor.iniciarRaspagem - Inicia log de raspagem
+- [x] servidor.atualizarRaspagem - Atualiza progresso
+- [x] servidor.listarLogs - Histórico de raspagens
+- [x] servidor.criarAlerta - Cria alertas
+- [x] servidor.listarAlertas - Lista alertas pendentes
+- [x] servidor.registrarCatalogo - Registra catálogo Obsidian
+- [x] servidor.listarCatalogos - Lista catálogos gerados
