@@ -1130,3 +1130,11 @@
 - [x] Adicionar rota /obsidian/catalogar no App.tsx
 - [x] Criar botão "Catalogar Links (Obsidian)" na Home
 - [x] Testar navegação end-to-end
+
+
+## 🔧 Correção de Formatação URI Obsidian (URGENTE)
+
+- [x] Corrigir codificação de quebras de linha na URI
+- [x] Testar URI corrigida no Obsidian
+- [x] Validar formatação markdown correta
+- [x] Verificar que \n é interpretado como quebra de linha

@@ -113,20 +113,20 @@ router.post('/catalogar-links', async (req, res) => {
     });
 
     // Gerar conteúdo markdown
-    let conteudo = `# ${titulo}\\n\\n`;
-    conteudo += `> Catálogo gerado automaticamente em ${new Date().toLocaleString('pt-BR')}\\n\\n`;
-    conteudo += `## 📊 Estatísticas\\n\\n`;
-    conteudo += `- **Total de Links:** ${links.length}\\n`;
-    conteudo += `- **Categorias:** ${Object.keys(linksPorCategoria).length}\\n\\n`;
-    conteudo += `---\\n\\n`;
+    let conteudo = `# ${titulo}\n\n`;
+    conteudo += `> Catálogo gerado automaticamente em ${new Date().toLocaleString('pt-BR')}\n\n`;
+    conteudo += `## 📊 Estatísticas\n\n`;
+    conteudo += `- **Total de Links:** ${links.length}\n`;
+    conteudo += `- **Categorias:** ${Object.keys(linksPorCategoria).length}\n\n`;
+    conteudo += `---\n\n`;
 
     // Adicionar links por categoria
     Object.entries(linksPorCategoria).forEach(([categoria, linksCategoria]) => {
-      conteudo += `## ${categoria}\\n\\n`;
+      conteudo += `## ${categoria}\n\n`;
       linksCategoria.forEach(link => {
-        conteudo += `- [${link.nome}](${link.url})\\n`;
+        conteudo += `- [${link.nome}](${link.url})\n`;
       });
-      conteudo += `\\n`;
+      conteudo += `\n`;
     });
 
     // Nome do arquivo
