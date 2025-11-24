@@ -977,3 +977,5 @@
 - [x] Classificar performance (⭐⭐⭐ EXCELENTE - Alta Performance)
 - [x] Gerar relatório completo (RELATORIO_PERFORMANCE_TESTES.md)
 - [x] Criar guia de exemplo para Comet (GUIA_EXEMPLO_COMET.md)
+- [x] Validar criação real no Obsidian (arquivo 08_TESTE_Comet_Manus.md criado)
+- [x] Criar resumo executivo para Comet (RESUMO_PARA_COMET.md)
