@@ -1,4 +1,24 @@
-# API Reference - Servidor de Automação (Para Comet)
+# API Reference - Comet AI
+
+## 🚨 PROTOCOLO OBRIGATÓRIO - LEIA PRIMEIRO!
+
+**ANTES de usar QUALQUER endpoint desta API, você DEVE:**
+
+1. ✅ **Consultar Manus PRIMEIRO** via `POST /api/manus/explicar`
+2. ✅ **Ler a resposta COMPLETA**
+3. ✅ **Seguir as instruções EXATAS**
+4. ✅ **Reportar resultado via feedback** (se necessário)
+
+**Documentação completa:** `/servidor-automacao/PROTOCOLO_OBRIGATORIO_COMET.md`
+
+**Violações podem:**
+- ❌ Colocar todo o projeto em risco
+- ❌ Causar perda de dados
+- ❌ Gerar retrabalho massivo
+
+**Este protocolo é NÃO NEGOCIÁVEL.** 🚨
+
+---rvidor de Automação (Para Comet)
 
 **Data:** 24/11/2025  
 **Versão:** 1.0  
