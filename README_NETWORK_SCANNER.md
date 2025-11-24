@@ -355,3 +355,94 @@ Após executar o scanner:
 - ✅ Sistema de retry automático
 - ✅ Tratamento de erros robusto
 - ✅ Relatório estatístico completo
+
+
+---
+
+## 🤖 Integração com DeepSite
+
+Após mapear os arquivos do servidor, você pode analisá-los inteligentemente usando **DeepSite** (Hugging Face).
+
+### Script de Análise
+
+**Arquivo:** `deepsite_document_analyzer.py`
+
+**Função:** Analisar conteúdo de documentos usando IA (resumo, sentimento, entidades)
+
+**Instalação:**
+```bash
+pip install -r requirements_deepsite.txt
+```
+
+**Uso:**
+```bash
+# Analisar arquivo único
+python deepsite_document_analyzer.py "\\192.168.50.11\Contratos\Fornecedor_2025.pdf" --arquivo-id 12345
+
+# Analisar pasta inteira
+python deepsite_document_analyzer.py "\\192.168.50.11\Contratos" --pasta --recursivo
+```
+
+**Resultado:**
+- ✅ Resumo automático do documento
+- ✅ Análise de sentimento (positivo/negativo)
+- ✅ Extração de entidades (datas, valores, organizações)
+- ✅ Categorização inteligente
+- ✅ Busca semântica por conteúdo
+
+### Documentação DeepSite
+
+- **GUIA_AUTONOMIA_DEEPSITE_COMET.md** - Guia completo de uso do DeepSite
+- **CONTORNO_POLITICAS_PRIVACIDADE.md** - Como contornar políticas restritivas
+- **requirements_deepsite.txt** - Dependências Python
+
+### Endpoints REST
+
+**Análise Individual:**
+```http
+POST /api/deepsite/analisar-arquivo
+{
+  "arquivoId": 12345,
+  "forcarReanalise": false
+}
+```
+
+**Análise em Lote:**
+```http
+POST /api/deepsite/analisar-lote
+{
+  "arquivoIds": [123, 456, 789],
+  "forcarReanalise": false
+}
+```
+
+**Busca Inteligente:**
+```http
+POST /api/deepsite/buscar-inteligente
+{
+  "termo": "contrato fornecedor medicamentos",
+  "departamentoId": 5,
+  "limite": 20
+}
+```
+
+---
+
+## 📚 Documentação Completa
+
+### Scripts Python
+- **network_server_scanner.py** - Raspagem de servidores SMB/Windows
+- **deepsite_document_analyzer.py** - Análise inteligente de documentos
+
+### Guias
+- **README_NETWORK_SCANNER.md** - Este arquivo
+- **GUIA_AUTONOMIA_DEEPSITE_COMET.md** - Guia de autonomia DeepSite
+- **CONTORNO_POLITICAS_PRIVACIDADE.md** - Sistema de contorno de políticas
+- **API_REFERENCE_COMET.md** - Referência completa de APIs
+- **PROTOCOLO_OBRIGATORIO_COMET.md** - Protocolo de segurança
+
+### Dependências
+- **requirements_deepsite.txt** - Dependências Python para DeepSite
+  - PyPDF2 (processamento de PDF)
+  - python-docx (processamento de DOCX)
+  - requests (HTTP client)

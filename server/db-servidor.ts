@@ -369,6 +369,34 @@ export async function listarAlertasPendentes(servidorId?: number): Promise<Alert
 }
 
 // ========================================
+// ARQUIVOS - FUNÇÕES AUXILIARES
+// ========================================
+
+/**
+ * Busca arquivo por ID
+ */
+export async function getArquivoById(id: number): Promise<ArquivoMapeado | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+
+  const result = await db.select().from(arquivosMapeados).where(eq(arquivosMapeados.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+/**
+ * Atualiza arquivo
+ */
+export async function atualizarArquivo(
+  id: number,
+  data: Partial<InsertArquivoMapeado>
+): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+
+  await db.update(arquivosMapeados).set(data).where(eq(arquivosMapeados.id, id));
+}
+
+// ========================================
 // CATÁLOGOS OBSIDIAN
 // ========================================
 

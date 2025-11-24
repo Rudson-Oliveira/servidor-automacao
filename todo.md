@@ -1249,3 +1249,39 @@
 - [x] servidor.listarAlertas - Lista alertas pendentes
 - [x] servidor.registrarCatalogo - Registra catálogo Obsidian
 - [x] servidor.listarCatalogos - Lista catálogos gerados
+
+
+## 🤖 Integração DeepSite (Hugging Face) - Análise Inteligente
+
+### Módulo DeepSite
+- [ ] Criar server/_core/deepsite.ts (integração Hugging Face API)
+- [ ] Implementar análise de texto/documentos
+- [ ] Extração de entidades (NER)
+- [ ] Classificação de documentos
+- [ ] Geração de resumos automáticos
+- [ ] Detecção de idioma e sentimento
+
+### Endpoints tRPC
+- [ ] servidor.analisarArquivo (análise individual)
+- [ ] servidor.analisarLote (análise em massa)
+- [ ] servidor.buscarPorConteudo (busca semântica)
+- [ ] servidor.gerarResumo (resumo automático)
+
+### Script Python (Comet)
+- [ ] document_analyzer.py (análise local de documentos)
+- [ ] Leitura de PDF, DOCX, TXT, etc
+- [ ] Integração com DeepSite API
+- [ ] Processamento em lote
+- [ ] Cache de análises
+
+### Sistema de Autonomia
+- [ ] Contorno de políticas de privacidade
+- [ ] Fallback para processamento local
+- [ ] Sistema de retry inteligente
+- [ ] Logs de aprendizado automático
+
+### Documentação
+- [ ] README_DEEPSITE_INTEGRATION.md
+- [ ] Guia de autonomia e contornos
+- [ ] Exemplos de uso
+- [ ] Troubleshooting
