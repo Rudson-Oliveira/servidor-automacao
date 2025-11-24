@@ -342,4 +342,68 @@ export const servidorRouter = router({
     .query(async ({ input }) => {
       return await listarCatalogosObsidian(input.servidorId, input.limit);
     }),
+
+  // ========================================
+  // PROCESSAMENTO DE RASPAGEM (SCRIPT PYTHON)
+  // ========================================
+
+  /**
+   * Processa dados enviados pelo script Python de raspagem
+   * Recebe lotes de arquivos e salva no banco de dados
+   */
+  processarRaspagem: publicProcedure
+    .input(z.object({
+      servidor: ServidorSchema.optional(),
+      departamento: DepartamentoSchema.optional(),
+      arquivos: z.array(ArquivoMapeadoSchema).min(1).max(1000),
+      logRaspagemId: z.number().int().positive().optional(),
+    }))
+    .mutation(async ({ input }) => {
+      try {
+        let servidorId: number | undefined;
+        let departamentoId: number | undefined;
+        
+        // Upsert servidor se fornecido
+        if (input.servidor) {
+          const servidor = await upsertServidor(input.servidor);
+          servidorId = servidor.id;
+        }
+        
+        // Upsert departamento se fornecido
+        if (input.departamento && servidorId) {
+          const deptData = {
+            ...input.departamento,
+            servidorId: servidorId,
+          };
+          const departamento = await upsertDepartamento(deptData);
+          departamentoId = departamento.id;
+        }
+        
+        // Inserir arquivos em lote
+        const arquivosComDepartamento = input.arquivos.map(arquivo => ({
+          ...arquivo,
+          departamentoId: arquivo.departamentoId || departamentoId || 0,
+        }));
+        
+        await inserirArquivosLote(arquivosComDepartamento);
+        
+        // Atualizar log se fornecido
+        if (input.logRaspagemId) {
+          await atualizarLogRaspagem(input.logRaspagemId, {
+            arquivosNovos: input.arquivos.length,
+            status: 'em_progresso',
+          });
+        }
+        
+        return {
+          sucesso: true,
+          servidorId,
+          departamentoId,
+          arquivosProcessados: input.arquivos.length,
+        };
+      } catch (error) {
+        console.error('Erro ao processar raspagem:', error);
+        throw new Error(`Falha ao processar raspagem: ${error instanceof Error ? error.message : String(error)}`);
+      }
+    }),
 });
