@@ -10,6 +10,9 @@ psutil>=5.9.0
 # Requisições HTTP
 requests>=2.31.0
 
+# Agendamento automático
+schedule>=1.2.0
+
 # Windows only (detecção de janelas)
 # Descomente se estiver no Windows:
 # pywin32>=306

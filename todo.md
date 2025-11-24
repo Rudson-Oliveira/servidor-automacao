@@ -1340,3 +1340,28 @@
 - [ ] Validar envio para API
 - [ ] Testar análise com Comet Vision
 - [ ] Verificar histórico de capturas
+
+
+## Melhorias Desktop Capture
+
+### Integração Comet Vision
+- [x] Substituir placeholder de análise por API real do Comet Vision
+- [x] Implementar detecção de objetos na tela
+- [x] Adicionar OCR (extração de texto) automático
+- [x] Identificar elementos da interface (botões, campos, menus)
+- [x] Salvar análise estruturada no banco de dados
+
+### Agendamento Automático
+- [x] Criar script Python para agendamento (desktop_scheduler.py)
+- [x] Implementar captura a cada X minutos (configurável)
+- [x] Gerar relatório semanal de produtividade
+- [x] Criar arquivo .bat para Task Scheduler do Windows (setup_scheduler.bat)
+- [x] Documentar configuração do Task Scheduler
+- [x] Adicionar logs de execução automática
+
+### Arquivos para Download
+- [x] Preparar desktop_capture.py para download
+- [x] Preparar requirements_desktop_capture.txt (com schedule)
+- [x] Criar arquivo .bat de instalação automática (instalar_desktop_capture.bat)
+- [x] Criar guia completo com instruções passo-a-passo (GUIA_INSTALACAO_DESKTOP_CAPTURE.md)
+- [ ] Empacotar tudo em ZIP para fácil distribuição

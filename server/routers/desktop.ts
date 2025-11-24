@@ -229,15 +229,75 @@ export const desktopRouter = router({
       
       const captura = capturaResult[0]!;
       
-      // TODO: Integrar com Comet Vision para análise real
-      // Por enquanto, retornar análise simulada
-      const analise = `Análise da captura #${input.id}:
+      // Integrar com Comet Vision para análise real
+      let analise = "";
       
+      try {
+        // Fazer requisição para Comet Vision API
+        const cometVisionUrl = process.env.COMET_VISION_API_URL || "https://api.comet.vision/analyze";
+        const cometVisionKey = process.env.COMET_VISION_API_KEY;
+        
+        if (!cometVisionKey) {
+          console.warn("[Desktop] COMET_VISION_API_KEY não configurada, usando análise básica");
+          throw new Error("API key not configured");
+        }
+        
+        // Chamar Comet Vision
+        const response = await fetch(cometVisionUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${cometVisionKey}`,
+          },
+          body: JSON.stringify({
+            image_url: captura.screenshotUrl,
+            tasks: ["object_detection", "ocr", "ui_elements"],
+            prompt: input.prompt || "Analise esta captura de tela e descreva o que você vê. Identifique programas, janelas, textos visíveis e elementos da interface.",
+          }),
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Comet Vision API error: ${response.status}`);
+        }
+        
+        const visionData = await response.json();
+        
+        // Formatar análise
+        analise = `Análise da Captura #${input.id} (Comet Vision)
+
+📊 INFORMAÇÕES BÁSICAS:
 Resolução: ${captura.resolucaoLargura}x${captura.resolucaoAltura}
 Programas detectados: ${captura.totalProgramas}
 Janelas abertas: ${captura.totalJanelas}
 
-${input.prompt ? `Análise customizada: ${input.prompt}` : "Análise visual em desenvolvimento..."}`;
+🔍 ANÁLISE VISUAL (IA):
+${visionData.description || "N/A"}
+
+📝 TEXTO DETECTADO (OCR):
+${visionData.ocr_text ? visionData.ocr_text.slice(0, 500) : "Nenhum texto detectado"}
+
+🎯 OBJETOS IDENTIFICADOS:
+${visionData.objects ? visionData.objects.map((obj: any) => `- ${obj.label} (${Math.round(obj.confidence * 100)}%)`).join("\n") : "Nenhum objeto detectado"}
+
+🖥️ ELEMENTOS DE INTERFACE:
+${visionData.ui_elements ? visionData.ui_elements.map((el: any) => `- ${el.type}: ${el.text || "(sem texto)"}`).join("\n") : "Nenhum elemento detectado"}`;
+        
+      } catch (error) {
+        // Fallback para análise básica se Comet Vision falhar
+        console.error("[Desktop] Erro ao chamar Comet Vision:", error);
+        
+        analise = `Análise da Captura #${input.id} (Análise Básica)
+
+📊 INFORMAÇÕES:
+Resolução: ${captura.resolucaoLargura}x${captura.resolucaoAltura}
+Programas detectados: ${captura.totalProgramas}
+Janelas abertas: ${captura.totalJanelas}
+
+⚠️ Análise visual com IA não disponível.
+Configure COMET_VISION_API_KEY para habilitar detecção de objetos, OCR e análise de elementos de interface.
+
+${input.prompt ? `Prompt customizado: ${input.prompt}` : ""}`;
+      }
       
       // Atualizar captura com análise
       await db
