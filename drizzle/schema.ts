@@ -616,3 +616,68 @@ export const apisPersonalizadas = mysqlTable("apis_personalizadas", {
 
 export type ApiPersonalizada = typeof apisPersonalizadas.$inferSelect;
 export type InsertApiPersonalizada = typeof apisPersonalizadas.$inferInsert;
+
+
+/**
+ * Tabela de capturas de área de trabalho
+ * Armazena screenshots e análises visuais do desktop
+ */
+export const desktopCaptures = mysqlTable("desktop_captures", {
+  id: int("id").autoincrement().primaryKey(),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  screenshotUrl: text("screenshot_url").notNull(), // URL do screenshot no S3
+  resolucaoLargura: int("resolucao_largura").notNull(),
+  resolucaoAltura: int("resolucao_altura").notNull(),
+  totalProgramas: int("total_programas").default(0),
+  totalJanelas: int("total_janelas").default(0),
+  analisado: int("analisado").default(0), // 0=não, 1=sim
+  analiseTexto: text("analise_texto"), // Análise gerada pelo Comet Vision
+  tagsDetectadas: text("tags_detectadas"), // JSON com tags/categorias
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  timestampIdx: index("timestamp_idx").on(table.timestamp),
+  analisadoIdx: index("analisado_idx").on(table.analisado),
+}));
+
+export type DesktopCapture = typeof desktopCaptures.$inferSelect;
+export type InsertDesktopCapture = typeof desktopCaptures.$inferInsert;
+
+/**
+ * Tabela de programas detectados nas capturas
+ * Relaciona programas com capturas específicas
+ */
+export const desktopProgramas = mysqlTable("desktop_programas", {
+  id: int("id").autoincrement().primaryKey(),
+  captureId: int("capture_id").notNull(),
+  pid: int("pid").notNull(),
+  nome: varchar("nome", { length: 255 }).notNull(),
+  usuario: varchar("usuario", { length: 100 }),
+  memoriaMb: int("memoria_mb").default(0),
+  cpuPercent: int("cpu_percent").default(0),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  captureIdIdx: index("capture_id_idx").on(table.captureId),
+  nomeIdx: index("nome_idx").on(table.nome),
+}));
+
+export type DesktopPrograma = typeof desktopProgramas.$inferSelect;
+export type InsertDesktopPrograma = typeof desktopProgramas.$inferInsert;
+
+/**
+ * Tabela de janelas detectadas nas capturas
+ * Armazena informações sobre janelas abertas
+ */
+export const desktopJanelas = mysqlTable("desktop_janelas", {
+  id: int("id").autoincrement().primaryKey(),
+  captureId: int("capture_id").notNull(),
+  titulo: varchar("titulo", { length: 500 }).notNull(),
+  processo: varchar("processo", { length: 255 }),
+  pid: int("pid"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  captureIdIdx: index("capture_id_idx").on(table.captureId),
+  processoIdx: index("processo_idx").on(table.processo),
+}));
+
+export type DesktopJanela = typeof desktopJanelas.$inferSelect;
+export type InsertDesktopJanela = typeof desktopJanelas.$inferInsert;

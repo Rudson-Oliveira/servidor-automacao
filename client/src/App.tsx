@@ -7,6 +7,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import ConfiguracoesIAs from "./pages/ConfiguracoesIAs";
+import DesktopCaptures from "./pages/DesktopCaptures";
 import Cadastro from "./pages/Cadastro";
 import Login from "./pages/Login";
 import ObsidianCatalog from "./pages/ObsidianCatalog";
@@ -17,7 +18,8 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/dashboard/vision"} component={DashboardVision} />
-      <Route path={"/configuracoes/ias"} component={ConfiguracoesIAs} />
+        <Route path="/configuracoes/ias" component={ConfiguracoesIAs} />
+      <Route path="/desktop-captures" component={DesktopCaptures} />
       <Route path={"/cadastro"} component={Cadastro} />
       <Route path={"/login"} component={Login} />
       <Route path={"/obsidian/catalogar"} component={ObsidianCatalog} />

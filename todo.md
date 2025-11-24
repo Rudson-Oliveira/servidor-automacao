@@ -1309,3 +1309,34 @@
 - [x] Testar exclusão de API
 - [x] Validar criptografia de chaves
 - [ ] Testar integração com sistema de IAs
+
+
+## Visualização de Área de Trabalho (Comet Vision)
+
+### Script Python de Captura
+- [x] Criar script para capturar screenshot da área de trabalho
+- [x] Listar programas abertos (processos ativos)
+- [x] Identificar janelas ativas e posições
+- [x] Capturar informações de monitores múltiplos
+- [x] Enviar dados para API Manus
+
+### Endpoints API
+- [x] POST /api/desktop/capturar - Receber screenshot
+- [x] POST /api/desktop/analisar - Analisar com Comet Vision
+- [x] GET /api/desktop/listar - Histórico de capturas
+- [x] GET /api/desktop/buscarPorId - Detalhes de captura específica
+- [x] GET /api/desktop/estatisticas - Estatísticas gerais
+- [x] DELETE /api/desktop/deletar - Deletar captura
+
+### Interface Web
+- [x] Página para visualizar capturas em tempo real
+- [x] Grid de screenshots com timestamps
+- [x] Modal de detalhes com programas e janelas
+- [x] Botão de análise por captura
+- [x] Estatísticas de uso (total, analisadas, pendentes)
+
+### Testes
+- [ ] Testar captura de tela no Windows (requer execução local)
+- [ ] Validar envio para API
+- [ ] Testar análise com Comet Vision
+- [ ] Verificar histórico de capturas
