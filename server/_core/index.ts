@@ -22,6 +22,7 @@ import buscaLocalRouter from "../routes/busca-local";
 import userAuthRouter from "../routes/user-auth";
 import testConnectionRouter from "../routes/test-connection";
 import { obsidianRouter } from "../routes/obsidian";
+import obsidianUriRouter from "../routes/obsidian-uri";
 import deepsiteRouter from "../routes/deepsite";
 import { manusExplicarRouter } from "../routes/manus-explicar";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
@@ -74,6 +75,7 @@ async function startServer() {
   app.use("/api/integration", testConnectionRouter); // Teste de conexão de APIs
   app.use("/api/busca-local", buscaLocalRouter);
   app.use("/api/obsidian", obsidianRouter);
+  app.use("/api/obsidian", obsidianUriRouter);
   app.use("/api/deepsite", deepsiteRouter);
   app.use("/api/manus", manusExplicarRouter);
   // tRPC API

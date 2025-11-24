@@ -1049,3 +1049,31 @@
 - [ ] Investigar capacidades de chamadas de voz
 - [ ] Documentar descobertas
 - [ ] Atualizar roadmap com informações reais
+
+
+## Integração Robusta Obsidian com Webhooks/URI Callbacks
+
+### Análise de Opções
+- [x] Analisar plugin Webhooks do Obsidian
+- [x] Analisar URI callbacks (obsidian://new)
+- [x] Analisar workflows disponíveis
+- [x] Escolher melhor abordagem para catalogar links (URI callbacks)
+
+### Implementação
+- [x] Criar endpoint /api/obsidian/gerar-uri
+- [x] Criar endpoint /api/obsidian/catalogar-links
+- [x] Implementar sistema de URI callback
+- [x] Testar endpoint catalogar-links (8 links)
+- [x] Criar script PowerShell para abrir URI
+
+### Testes
+- [ ] Catalogar 8 links de teste no Obsidian
+- [ ] Validar que arquivo foi criado corretamente
+- [ ] Verificar formatação markdown
+- [ ] Confirmar organização por categorias
+
+### Documentação
+- [ ] Atualizar GUIA_COMET_CRIAR_CONTEUDO_OBSIDIAN.md
+- [ ] Documentar uso de webhooks
+- [ ] Documentar uso de URI callbacks
+- [ ] Criar exemplos práticos para Comet
