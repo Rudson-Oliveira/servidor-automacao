@@ -1285,3 +1285,27 @@
 - [ ] Guia de autonomia e contornos
 - [ ] Exemplos de uso
 - [ ] Troubleshooting
+
+
+## Configuração de APIs Personalizadas
+
+### Interface de Gerenciamento
+- [x] Adicionar botão "+" na página Configurações/IA
+- [x] Criar formulário modal para adicionar nova API
+- [x] Implementar validação de campos (nome, URL, chave API)
+- [ ] Adicionar lista de APIs cadastradas com opções de editar/excluir
+- [ ] Implementar teste de conexão com API antes de salvar
+
+### Backend
+- [x] Criar tabela `apis_personalizadas` no banco de dados
+- [x] Criar endpoints tRPC para CRUD de APIs
+- [x] Implementar validação de URL e formato de chave
+- [x] Adicionar criptografia para chaves API armazenadas
+- [x] Criar endpoint de teste de conexão com API
+
+### Testes
+- [x] Testar criação de nova API personalizada
+- [x] Testar edição de API existente
+- [x] Testar exclusão de API
+- [x] Validar criptografia de chaves
+- [ ] Testar integração com sistema de IAs

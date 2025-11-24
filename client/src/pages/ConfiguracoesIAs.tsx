@@ -6,6 +6,10 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Loader2, CheckCircle2, XCircle, Eye, EyeOff, HelpCircle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Plus } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 
 interface IAConfig {
   nome: string;
@@ -20,6 +24,175 @@ interface IAConfig {
     porta?: number;
     usarHttps?: boolean;
   };
+}
+
+function AdicionarApiDialog() {
+  const [open, setOpen] = useState(false);
+  const [nome, setNome] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [url, setUrl] = useState("");
+  const [metodo, setMetodo] = useState<"GET" | "POST" | "PUT" | "DELETE" | "PATCH">("POST");
+  const [chaveApi, setChaveApi] = useState("");
+  const [tipoAutenticacao, setTipoAutenticacao] = useState<"none" | "bearer" | "api_key" | "basic" | "custom">("bearer");
+  
+  const criarApiMutation = trpc.apisPersonalizadas.criar.useMutation({
+    onSuccess: () => {
+      toast.success("API personalizada adicionada com sucesso!");
+      setOpen(false);
+      // Limpar formulário
+      setNome("");
+      setDescricao("");
+      setUrl("");
+      setChaveApi("");
+    },
+    onError: (error) => {
+      toast.error(`Erro ao adicionar API: ${error.message}`);
+    },
+  });
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!nome || !url) {
+      toast.error("Nome e URL são obrigatórios");
+      return;
+    }
+    
+    criarApiMutation.mutate({
+      nome,
+      descricao,
+      url,
+      metodo,
+      chaveApi,
+      tipoAutenticacao,
+      ativa: 1,
+    });
+  };
+  
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="flex items-center gap-2">
+          <Plus className="h-4 w-4" />
+          Adicionar API
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Adicionar API Personalizada</DialogTitle>
+          <DialogDescription>
+            Configure uma nova integração com API externa
+          </DialogDescription>
+        </DialogHeader>
+        
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Nome */}
+          <div className="space-y-2">
+            <Label htmlFor="nome">Nome da API *</Label>
+            <Input
+              id="nome"
+              placeholder="Ex: OpenAI, Anthropic, Custom API"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+            />
+          </div>
+          
+          {/* Descrição */}
+          <div className="space-y-2">
+            <Label htmlFor="descricao">Descrição</Label>
+            <Input
+              id="descricao"
+              placeholder="Breve descrição da API"
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+            />
+          </div>
+          
+          {/* URL */}
+          <div className="space-y-2">
+            <Label htmlFor="url">URL do Endpoint *</Label>
+            <Input
+              id="url"
+              type="url"
+              placeholder="https://api.exemplo.com/v1/endpoint"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              required
+            />
+          </div>
+          
+          {/* Método HTTP */}
+          <div className="space-y-2">
+            <Label htmlFor="metodo">Método HTTP</Label>
+            <Select value={metodo} onValueChange={(v: any) => setMetodo(v)}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="GET">GET</SelectItem>
+                <SelectItem value="POST">POST</SelectItem>
+                <SelectItem value="PUT">PUT</SelectItem>
+                <SelectItem value="DELETE">DELETE</SelectItem>
+                <SelectItem value="PATCH">PATCH</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {/* Tipo de Autenticação */}
+          <div className="space-y-2">
+            <Label htmlFor="tipoAuth">Tipo de Autenticação</Label>
+            <Select value={tipoAutenticacao} onValueChange={(v: any) => setTipoAutenticacao(v)}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">Nenhuma</SelectItem>
+                <SelectItem value="bearer">Bearer Token</SelectItem>
+                <SelectItem value="api_key">API Key</SelectItem>
+                <SelectItem value="basic">Basic Auth</SelectItem>
+                <SelectItem value="custom">Customizada</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {/* Chave API */}
+          {tipoAutenticacao !== "none" && (
+            <div className="space-y-2">
+              <Label htmlFor="chaveApi">Chave de API / Token</Label>
+              <Input
+                id="chaveApi"
+                type="password"
+                placeholder="Cole sua chave de API aqui"
+                value={chaveApi}
+                onChange={(e) => setChaveApi(e.target.value)}
+              />
+              <p className="text-xs text-gray-500">
+                A chave será criptografada antes de ser salva
+              </p>
+            </div>
+          )}
+          
+          {/* Botões */}
+          <div className="flex gap-2 pt-4">
+            <Button type="button" variant="outline" onClick={() => setOpen(false)} className="flex-1">
+              Cancelar
+            </Button>
+            <Button type="submit" disabled={criarApiMutation.isPending} className="flex-1">
+              {criarApiMutation.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Salvando...
+                </>
+              ) : (
+                "Adicionar API"
+              )}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 export default function ConfiguracoesIAs() {
@@ -222,13 +395,16 @@ export default function ConfiguracoesIAs() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            ⚙️ Configurações de IAs
-          </h1>
-          <p className="text-lg text-gray-600">
-            Configure as chaves de API para conectar com diferentes IAs. É simples e rápido!
-          </p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              ⚙️ Configurações de IAs
+            </h1>
+            <p className="text-lg text-gray-600">
+              Configure as chaves de API para conectar com diferentes IAs. É simples e rápido!
+            </p>
+          </div>
+          <AdicionarApiDialog />
         </div>
 
         {/* Guia Rápido */}

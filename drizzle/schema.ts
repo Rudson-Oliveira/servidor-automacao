@@ -586,3 +586,33 @@ export const catalogosObsidian = mysqlTable("catalogos_obsidian", {
 
 export type CatalogoObsidian = typeof catalogosObsidian.$inferSelect;
 export type InsertCatalogoObsidian = typeof catalogosObsidian.$inferInsert;
+
+
+/**
+ * Tabela de APIs personalizadas configuradas pelo usuário
+ * Permite adicionar integrações com APIs externas customizadas
+ */
+export const apisPersonalizadas = mysqlTable("apis_personalizadas", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 200 }).notNull(),
+  descricao: text("descricao"),
+  url: varchar("url", { length: 500 }).notNull(),
+  metodo: mysqlEnum("metodo", ["GET", "POST", "PUT", "DELETE", "PATCH"]).default("POST").notNull(),
+  headers: text("headers"), // JSON com headers customizados
+  chaveApi: varchar("chave_api", { length: 500 }), // Criptografada
+  tipoAutenticacao: mysqlEnum("tipo_autenticacao", ["none", "bearer", "api_key", "basic", "custom"]).default("bearer"),
+  parametros: text("parametros"), // JSON com parâmetros padrão
+  ativa: int("ativa").default(1).notNull(),
+  testeConexao: int("teste_conexao").default(0), // 0=não testado, 1=sucesso, 2=falha
+  ultimoTeste: timestamp("ultimo_teste"),
+  mensagemErro: text("mensagem_erro"),
+  usoCount: int("uso_count").default(0),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  ativaIdx: index("ativa_idx").on(table.ativa),
+  nomeIdx: index("nome_idx").on(table.nome),
+}));
+
+export type ApiPersonalizada = typeof apisPersonalizadas.$inferSelect;
+export type InsertApiPersonalizada = typeof apisPersonalizadas.$inferInsert;
