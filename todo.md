@@ -1537,3 +1537,25 @@
 **OBJETIVO FINAL:** Sistema de IA que evolui continuamente, aprende com suas ações, faz engenharia reversa de qualquer código/site/IA, e gera soluções completas baseadas apenas em raciocínio lógico.
 
 **DIFERENCIAL:** IA que melhora suas próprias instruções, workflows e até mesmo seu próprio código - verdadeira auto-evolução.
+
+
+## 🐛 BUG CORRIGIDO: Flickering na Interface de Agentes Locais ✅
+
+### Descrição do Problema
+- [x] Tela da página /agentes-locais aparece e desaparece (flickering)
+- [x] Investigar causa raiz (provavelmente re-renders desnecessários)
+- [x] Corrigir problema de renderização
+- [x] Testar solução no navegador
+- [x] Verificar se não há outros componentes com o mesmo problema
+
+**CAUSA RAIZ:**
+- Loop infinito no useEffect que dependia de `agentes` e `agentesSelecionado`
+- Quando `agentes` mudava, setava `agentesSelecionado`, causando re-render infinito
+
+**SOLUÇÃO:**
+- Removido `agentesSelecionado` das dependências do useEffect
+- Mantido apenas `agentes` como dependência
+- Adicionado comentário explicativo e eslint-disable
+
+**ARQUIVO MODIFICADO:**
+- `client/src/pages/AgentesLocais.tsx` - Linha 131

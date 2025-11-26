@@ -127,7 +127,8 @@ export default function AgentesLocais() {
     if (agentes && agentes.length > 0 && !agentesSelecionado) {
       setAgenteSelecionado(agentes[0].idAgente);
     }
-  }, [agentes, agentesSelecionado]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [agentes]); // Remover agentesSelecionado das dependências para evitar loop infinito
 
   const handleEnviarComando = () => {
     if (!agentesSelecionado) {
