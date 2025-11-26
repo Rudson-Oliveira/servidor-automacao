@@ -1722,3 +1722,60 @@ Usar a API do DeepSite para obter orientações avançadas sobre como melhorar o
 4. Otimização de detecção de anomalias
 5. Estratégias avançadas de auto-correção
 6. Como implementar auto-evolução e aprendizado contínuo
+
+
+## ⚡ CIRCUIT BREAKER INTELIGENTE (Nova Solicitação)
+
+### Objetivo
+Implementar padrão Circuit Breaker para isolar automaticamente serviços com falhas recorrentes e prevenir cascata de falhas no sistema.
+
+### Funcionalidades
+- [x] Criar módulo de Circuit Breaker com 3 estados (Closed, Open, Half-Open)
+- [x] Implementar detecção de falhas recorrentes
+- [x] Criar lógica de isolamento automático
+- [x] Implementar tentativas de reconexão (half-open)
+- [x] Adicionar monitoramento de saúde de serviços
+- [x] Integrar com sistema imunológico
+- [ ] Criar tabela no banco para armazenar estado dos circuit breakers - NÃO NECESSÁRIO (em memória)
+- [x] Implementar métricas e estatísticas
+- [x] Criar interface UI/UX para monitoramento
+- [x] Adicionar alertas quando circuit breaker abre (via UI)
+- [x] Implementar fallbacks quando serviço está isolado
+
+**IMPLEMENTAÇÕES REALIZADAS:**
+
+1. ✅ **Módulo Circuit Breaker** (450+ linhas)
+   - Arquivo: `server/_core/circuit-breaker.ts`
+   - Classe `CircuitBreaker` com 3 estados
+   - Classe `CircuitBreakerManager` para gerenciar múltiplos breakers
+   - Decorator `@WithCircuitBreaker` para fácil uso
+   - Função helper `executeWithCircuitBreaker()`
+
+2. ✅ **Router tRPC** (130+ linhas)
+   - Arquivo: `server/routers/circuit-breaker.ts`
+   - 10 endpoints: listar, metricas, detalhes, saudeGeral, listarAbertos, listarNaoSaudaveis, forcarAbertura, forcarFechamento, reset, remover
+
+3. ✅ **Interface UI/UX** (400+ linhas)
+   - Arquivo: `client/src/pages/CircuitBreakers.tsx`
+   - Dashboard com saúde geral do sistema
+   - Lista de circuit breakers com métricas
+   - Detalhes de serviço com histórico de transições
+   - Controles: Forçar abertura/fechamento, reset
+   - Atualização automática a cada 5 segundos
+
+4. ✅ **Integração com Sistema Imunológico**
+   - Arquivo: `server/_core/sistema-imunologico.ts` (modificado)
+   - Verifica estado do circuit breaker antes de aplicar correção
+   - Isola serviços problemáticos automaticamente
+
+### Estados do Circuit Breaker
+1. **CLOSED (Fechado)** - Serviço funcionando normalmente
+2. **OPEN (Aberto)** - Serviço isolado devido a falhas recorrentes
+3. **HALF_OPEN (Meio-Aberto)** - Testando se serviço se recuperou
+
+### Métricas
+- Taxa de falha (failure rate)
+- Tempo em cada estado
+- Número de tentativas de reconexão
+- Tempo até próxima tentativa
+- Histórico de transições de estado
