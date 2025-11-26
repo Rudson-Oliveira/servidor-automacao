@@ -148,6 +148,13 @@
       "when": 1764164507252,
       "tag": "0020_handy_deathbird",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "5",
+      "when": 1764165667003,
+      "tag": "0021_jittery_viper",
+      "breakpoints": true
     }
   ]
 }

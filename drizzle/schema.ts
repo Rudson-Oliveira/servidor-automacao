@@ -685,3 +685,7 @@ export const desktopJanelas = mysqlTable("desktop_janelas", {
 
 export type DesktopJanela = typeof desktopJanelas.$inferSelect;
 export type InsertDesktopJanela = typeof desktopJanelas.$inferInsert;
+
+
+// Importar schemas de campanhas e templates
+export * from './schema-campaigns';

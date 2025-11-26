@@ -1657,3 +1657,59 @@ Integrar WhatsApp Web usando whatsapp-web.js para capturar status real de mensag
 - [x] Testar detecção de bloqueios (integrado)
 - [x] Validar múltiplas sessões (suportado)
 - [ ] **CHECKPOINT**
+
+
+---
+
+## 📤 Sistema de Envio em Massa e Campanhas WhatsApp
+
+### Objetivo
+Criar sistema completo de envio em massa com anti-bloqueio inteligente, templates dinâmicos e agendamento automático de campanhas.
+
+### Sistema Anti-Bloqueio Dinâmico
+- [x] Algoritmo de cálculo de risco em tempo real
+- [x] Cálculo dinâmico de tempo de pausa necessário
+- [x] Fatores: volume enviado, taxa de bloqueio, idade do número, histórico
+- [ ] Alerta visual quando modo anti-bloqueio acionado (frontend)
+- [ ] Countdown de tempo restante de pausa (frontend)
+- [x] Pausar automaticamente envios quando risco alto (backend)
+
+### Página de Envio em Massa (/whatsapp/send)
+- [ ] Seleção de sessão WhatsApp ativa
+- [ ] Upload de arquivo CSV com contatos
+- [ ] Parser de CSV (nome, telefone, variáveis customizadas)
+- [ ] Preview de mensagem com substituição de variáveis
+- [ ] Seleção de template
+- [ ] Barra de progresso em tempo real
+- [ ] Métricas: enviadas, entregues, lidas, falhadas, bloqueadas
+- [ ] Pausar/retomar envio manual
+- [ ] Cancelar envio em andamento
+- [ ] Exportar relatório de resultados
+
+### Sistema de Templates (/whatsapp/templates)
+- [x] CRUD de templates (criar, editar, deletar, listar) - backend
+- [x] Variáveis dinâmicas: {{nome}}, {{vaga}}, {{empresa}}, etc
+- [ ] Editor de template com syntax highlighting (frontend)
+- [x] Preview em tempo real com dados de exemplo - backend
+- [x] Validação de variáveis (extração automática)
+- [x] Templates pré-definidos (recrutamento, marketing, etc)
+- [x] Categorização de templates
+
+### Agendamento de Campanhas (/whatsapp/campaigns)
+- [x] Criar campanha com nome, descrição, template - backend
+- [ ] Upload de lista de contatos (CSV) - frontend
+- [x] Agendamento: data/hora início, data/hora fim - backend
+- [x] Horários permitidos (ex: 9h-18h) - backend
+- [x] Pausar/retomar automaticamente baseado em taxa de bloqueio - backend
+- [x] Limites: máximo de mensagens por hora/dia - backend
+- [x] Status: agendada, em andamento, pausada, concluída, cancelada - backend
+- [ ] Dashboard de campanhas ativas - frontend
+- [x] Relatórios detalhados por campanha - backend (progress endpoint)
+
+### Testes e Validação
+- [ ] Testar upload de CSV
+- [ ] Validar substituição de variáveis
+- [ ] Testar anti-bloqueio dinâmico
+- [ ] Validar agendamento automático
+- [ ] Testar pausar/retomar
+- [ ] **CHECKPOINT**

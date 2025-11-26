@@ -14,6 +14,8 @@ import { healthRouter } from "./routers/health";
 import { uriSchemesRouter } from "./routers/uri-schemes";
 import { whatsappRouter } from './routers/whatsapp';
 import { whatsappProtectionRouter } from './routers/whatsapp-protection';
+import { bulkSendRouter } from './routers/bulk-send';
+import { templatesRouter } from './routers/templates';
 import { whatsappWebRouter } from './routers/whatsapp-web';
 
 export const appRouter = router({
@@ -58,8 +60,10 @@ export const appRouter = router({
 
   // WhatsApp Anti-Bloqueio (Recrutamento)
   whatsapp: whatsappRouter,
-  whatsappProtection: whatsappProtectionRouter,
   whatsappWeb: whatsappWebRouter,
+  whatsappProtection: whatsappProtectionRouter,
+  bulkSend: bulkSendRouter,
+  templates: templatesRouter,
 
   // TODO: add feature routers here, e.g.
   // todo: router({
