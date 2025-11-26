@@ -26,6 +26,7 @@ import obsidianUriRouter from "../routes/obsidian-uri";
 import deepsiteRouter from "../routes/deepsite";
 import { manusExplicarRouter } from "../routes/manus-explicar";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
+import { initObsidianWebSocket } from "./obsidian-websocket";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -98,6 +99,14 @@ async function startServer() {
 
   if (port !== preferredPort) {
     console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
+  }
+
+  // Inicializar WebSocket para Obsidian
+  try {
+    initObsidianWebSocket(server);
+    console.log('[Obsidian] WebSocket server inicializado');
+  } catch (error) {
+    console.error('[Obsidian] Erro ao inicializar WebSocket:', error);
   }
 
   server.listen(port, () => {
