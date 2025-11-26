@@ -1746,3 +1746,14 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Validar botão voltar (funcionando)
 - [x] Verificar responsividade (mobile-friendly)
 - [ ] **CHECKPOINT**
+
+
+---
+
+## 🐛 Correção de Erro: Tags <a> Aninhadas
+
+- [x] Corrigir NavigationMenuLink no Header.tsx
+- [x] Remover Link do wouter dentro de NavigationMenuLink
+- [x] Usar href diretamente no NavigationMenuLink
+- [x] Testar navegação após correção (funcionando)
+- [ ] **CHECKPOINT**

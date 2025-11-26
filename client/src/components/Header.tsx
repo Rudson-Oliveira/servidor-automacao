@@ -185,22 +185,19 @@ export default function Header({ showBackButton = false, onBack }: HeaderProps) 
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
                   {menuCategories.whatsapp.items.map((item) => (
                     <li key={item.href}>
-                      <NavigationMenuLink asChild>
-                        <Link href={item.href}>
-                          <a
-                            className={`block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground ${
-                              location === item.href ? 'bg-accent' : ''
-                            }`}
-                          >
-                            <div className="flex items-center gap-2 text-sm font-medium leading-none">
-                              {item.icon}
-                              {item.title}
-                            </div>
-                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                              {item.description}
-                            </p>
-                          </a>
-                        </Link>
+                      <NavigationMenuLink
+                        href={item.href}
+                        className={`block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground ${
+                          location === item.href ? 'bg-accent' : ''
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 text-sm font-medium leading-none">
+                          {item.icon}
+                          {item.title}
+                        </div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          {item.description}
+                        </p>
                       </NavigationMenuLink>
                     </li>
                   ))}
@@ -218,22 +215,19 @@ export default function Header({ showBackButton = false, onBack }: HeaderProps) 
                 <ul className="grid w-[300px] gap-3 p-4">
                   {menuCategories.obsidian.items.map((item) => (
                     <li key={item.href}>
-                      <NavigationMenuLink asChild>
-                        <Link href={item.href}>
-                          <a
-                            className={`block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground ${
-                              location === item.href ? 'bg-accent' : ''
-                            }`}
-                          >
-                            <div className="flex items-center gap-2 text-sm font-medium leading-none">
-                              {item.icon}
-                              {item.title}
-                            </div>
-                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                              {item.description}
-                            </p>
-                          </a>
-                        </Link>
+                      <NavigationMenuLink
+                        href={item.href}
+                        className={`block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground ${
+                          location === item.href ? 'bg-accent' : ''
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 text-sm font-medium leading-none">
+                          {item.icon}
+                          {item.title}
+                        </div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          {item.description}
+                        </p>
                       </NavigationMenuLink>
                     </li>
                   ))}
@@ -283,22 +277,19 @@ export default function Header({ showBackButton = false, onBack }: HeaderProps) 
                 <ul className="grid w-[300px] gap-3 p-4">
                   {menuCategories.system.items.map((item) => (
                     <li key={item.href}>
-                      <NavigationMenuLink asChild>
-                        <Link href={item.href}>
-                          <a
-                            className={`block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground ${
-                              location === item.href ? 'bg-accent' : ''
-                            }`}
-                          >
-                            <div className="flex items-center gap-2 text-sm font-medium leading-none">
-                              {item.icon}
-                              {item.title}
-                            </div>
-                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                              {item.description}
-                            </p>
-                          </a>
-                        </Link>
+                      <NavigationMenuLink
+                        href={item.href}
+                        className={`block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground ${
+                          location === item.href ? 'bg-accent' : ''
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 text-sm font-medium leading-none">
+                          {item.icon}
+                          {item.title}
+                        </div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          {item.description}
+                        </p>
                       </NavigationMenuLink>
                     </li>
                   ))}
