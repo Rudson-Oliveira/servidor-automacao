@@ -28,8 +28,12 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
+// WhatsApp Blacklist e Proteção
+export * from './schema-whatsapp-blacklist';
+
+// TODO: Add your tables here
 /**
- * Tabela de auditoria para detecção de alucinações
+ * Tabela de logs de auditoria para detecção de alucinações
  */
 export const auditLogs = mysqlTable("audit_logs", {
   id: int("id").autoincrement().primaryKey(),

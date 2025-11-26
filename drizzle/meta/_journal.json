@@ -141,6 +141,13 @@
       "when": 1764157637038,
       "tag": "0019_giant_tusk",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1764164507252,
+      "tag": "0020_handy_deathbird",
+      "breakpoints": true
     }
   ]
 }

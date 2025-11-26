@@ -1568,3 +1568,44 @@ Criar sistema inteligente que evita bloqueios de spam do WhatsApp no setor de re
 - [x] Testar humanização
 - [x] Simular cenários de alto volume
 - [ ] **CHECKPOINT**
+
+
+---
+
+## 🛡️ Sistema de Proteção Contra Bloqueios WhatsApp
+
+### Objetivo
+Detectar automaticamente bloqueios/denúncias e remover contatos da lista ANTES que causem problemas, protegendo números da empresa de saúde.
+
+### Detecção de Bloqueios e Denúncias
+- [x] Criar módulo de detecção de status de mensagem
+- [x] Detectar "mensagem não entregue" (bloqueio)
+- [x] Detectar "número inválido/banido"
+- [x] Monitorar taxa de falha por destinatário
+- [x] Sistema de score de risco por contato
+
+### Lista de Exclusão Automática (Blacklist)
+- [x] Tabela no banco de dados para blacklist
+- [x] Adicionar automaticamente ao detectar bloqueio
+- [x] Motivos de exclusão (bloqueou, denunciou, inválido)
+- [x] Timestamp de quando foi bloqueado
+- [x] Impedir envios futuros para blacklist
+- [x] Interface de gerenciamento manual
+
+### Notificações em Tempo Real
+- [x] Notificar owner quando contato bloqueia
+- [x] Alertas de múltiplos bloqueios (>3 em 24h)
+- [x] Dashboard com lista de bloqueios recentes
+- [x] Exportar relatório de bloqueios
+
+### Dashboard de Monitoramento
+- [x] Página /whatsapp/blocked com lista de bloqueios
+- [x] Estatísticas de bloqueios por dia/semana
+- [x] Gráfico de tendência de bloqueios
+- [x] Ações: remover da blacklist, adicionar nota
+
+### Testes e Validação
+- [x] Testar detecção de bloqueios
+- [x] Validar exclusão automática
+- [x] Testar notificações
+- [ ] **CHECKPOINT**
