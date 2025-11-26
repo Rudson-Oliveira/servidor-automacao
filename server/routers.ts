@@ -9,6 +9,7 @@ import { integrationRouter } from "./routers/integration";
 import { perplexityRouter } from "./routers/perplexity";
 import { apisPersonalizadasRouter } from "./routers/apis-personalizadas";
 import { desktopRouter } from "./routers/desktop";
+import { autoHealingRouter } from "./routers/auto-healing";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -40,6 +41,9 @@ export const appRouter = router({
 
   // Desktop Captures (Comet Vision)
   desktop: desktopRouter,
+
+  // Auto-Healing (Auto-Diagnóstico e Auto-Correção)
+  autoHealing: autoHealingRouter,
 
   // TODO: add feature routers here, e.g.
   // todo: router({
