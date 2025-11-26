@@ -1,0 +1,9 @@
+{
+  "query": "ALTER TABLE skills ADD COLUMN versao VARCHAR(20) DEFAULT '1.0' AFTER ultima_execucao;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute ALTER TABLE skills ADD COLUMN versao VARCHAR(20) DEFAULT '1.0' AFTER ultima_execucao;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 609
+}
