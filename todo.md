@@ -1666,3 +1666,59 @@ Sistema revolucionário que detecta, diagnostica, corrige e previne erros automa
 - Tempo médio de correção: < 2 minutos
 - Redução de incidentes: > 70%
 - Uptime do sistema: > 99.9%
+
+
+## 🤖 CONSULTA AO DEEPSITE PARA MELHORIAS
+
+### Objetivo
+Usar a API do DeepSite para obter orientações avançadas sobre como melhorar o sistema de auto-healing.
+
+### Tarefas
+- [x] Verificar configuração atual do DeepSite no sistema
+- [x] Fazer consulta ao LLM Interno sobre melhorias de auto-healing
+- [x] Analisar recomendações recebidas
+- [x] Implementar sugestões do LLM - CONCLUÍDO
+
+**IMPLEMENTAÇÕES REALIZADAS:**
+
+1. ✅ **Banco de Anticorpos (KB)**
+   - Tabela `anticorpos` criada (12 campos)
+   - Tabela `feedback_correcoes` criada (11 campos)
+   - Armazena padrões de erro, sintomas, correções e effectiveness score
+
+2. ✅ **Sistema Imunológico Preventivo** (550+ linhas)
+   - Classe `EWMACalculator` para detecção precoce
+   - Detecção de sintomas com EWMA (1.5 sigma)
+   - Verificação de persistência de sintomas
+   - Aplicação de correções preventivas
+   - Registro de feedback para aprendizado
+   - Atualização automática de effectiveness score
+   - Aprendizado de novos padrões usando LLM
+
+3. ✅ **Arquivo:** `server/_core/sistema-imunologico.ts`
+
+**FUNCIONALIDADES:**
+- `carregarAnticorpos()` - Carrega padrões do banco
+- `adicionarAnticorpo()` - Adiciona novo padrão
+- `verificarSintomas()` - Detecta sintomas precoces
+- `aplicarCorrecaoPreventiva()` - Aplica fix preventivo
+- `registrarFeedback()` - Registra resultado da correção
+- `atualizarEfetividade()` - Atualiza score baseado em feedback
+- `aprenderNovoPadrao()` - Usa LLM para aprender novos padrões
+- [ ] Testar melhorias implementadas
+- [ ] Documentar resultados
+
+**RESULTADO DA CONSULTA:**
+- ✅ LLM Interno consultado com sucesso (Gemini 2.5 Flash)
+- ✅ Orientações completas recebidas e salvas
+- ✅ Arquivos: ORIENTACOES_LLM_AUTOHEALING.json e .md
+- ⚠️ DeepSite (Hugging Face) com problemas na API (404)
+- ✅ Sistema de fallback local funcionou perfeitamente
+
+### Perguntas para o DeepSite
+1. Como melhorar o sistema de auto-healing atual?
+2. Melhores práticas para sistema imunológico preventivo
+3. Técnicas de predição de falhas
+4. Otimização de detecção de anomalias
+5. Estratégias avançadas de auto-correção
+6. Como implementar auto-evolução e aprendizado contínuo

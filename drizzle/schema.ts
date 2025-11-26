@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, index } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, index, boolean, float } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -752,3 +752,50 @@ export const mensagensAgente = mysqlTable("mensagens_agente", {
 
 export type MensagemAgente = typeof mensagensAgente.$inferSelect;
 export type InsertMensagemAgente = typeof mensagensAgente.$inferInsert;
+
+
+// ============================================================================
+// SISTEMA DE AUTO-HEALING - BANCO DE ANTICORPOS
+// ============================================================================
+
+/**
+ * Tabela de Anticorpos (Knowledge Base)
+ * Armazena padrões de erro conhecidos e ações preventivas
+ */
+export const anticorpos = mysqlTable("anticorpos", {
+  id: int("id").autoincrement().primaryKey(),
+  patternName: varchar("pattern_name", { length: 255 }).notNull(),
+  symptoms: text("symptoms").notNull(), // JSON: [{metric, threshold, duration}]
+  rootCauseTags: text("root_cause_tags").notNull(), // JSON: ["tag1", "tag2"]
+  severity: mysqlEnum("severity", ["critico", "alto", "medio", "baixo"]).notNull(),
+  preventiveFix: text("preventive_fix").notNull(), // JSON: {type, params}
+  effectivenessScore: float("effectiveness_score").default(0.50).notNull(),
+  timesApplied: int("times_applied").default(0).notNull(),
+  timesSuccessful: int("times_successful").default(0).notNull(),
+  lastApplied: timestamp("last_applied"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+/**
+ * Tabela de Feedback de Correções
+ * Registra resultado de cada correção aplicada para aprendizado
+ */
+export const feedbackCorrecoes = mysqlTable("feedback_correcoes", {
+  id: int("id").autoincrement().primaryKey(),
+  anticorpoId: int("anticorpo_id"), // Pode ser null se correção não veio de anticorpo
+  erroId: varchar("erro_id", { length: 255 }).notNull(), // ID do erro original
+  tipoCorrecao: varchar("tipo_correcao", { length: 100 }).notNull(),
+  sucesso: boolean("sucesso").notNull(),
+  tempoExecucao: int("tempo_execucao").notNull(), // ms
+  metricasAntes: text("metricas_antes").notNull(), // JSON
+  metricasDepois: text("metricas_depois"), // JSON (null se falhou)
+  rollback: boolean("rollback").default(false).notNull(),
+  observacoes: text("observacoes"),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+});
+
+export type Anticorpo = typeof anticorpos.$inferSelect;
+export type InsertAnticorpo = typeof anticorpos.$inferInsert;
+export type FeedbackCorrecao = typeof feedbackCorrecoes.$inferSelect;
+export type InsertFeedbackCorrecao = typeof feedbackCorrecoes.$inferInsert;
