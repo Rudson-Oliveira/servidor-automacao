@@ -1575,3 +1575,94 @@
 
 **ARQUIVO MODIFICADO:**
 - `client/src/pages/AgentesLocais.tsx` - Múltiplas linhas (71-85, 205-215)
+
+
+## 🏥 SISTEMA DE AUTO-HEALING INTELIGENTE (Auto-Diagnóstico e Auto-Correção)
+
+### Visão Geral
+Sistema revolucionário que detecta, diagnostica, corrige e previne erros automaticamente, melhorando continuamente suas próprias capacidades de auto-regulação.
+
+### FASE 1: Monitor de Saúde 24/7 ✅ CONCLUÍDA
+- [x] Criar monitor de métricas do sistema (CPU, RAM, disco, rede)
+- [x] Implementar monitor de erros do servidor (logs, exceptions)
+- [ ] Criar monitor de queries lentas do banco de dados - PENDENTE
+- [ ] Implementar monitor de endpoints com timeout - PENDENTE
+- [x] Criar sistema de detecção de anomalias (baseline + desvios)
+- [x] Implementar alertas inteligentes (não apenas threshold)
+- [x] Criar dashboard de saúde em tempo real
+
+**ARQUIVOS CRIADOS:**
+- `server/_core/auto-healing.ts` - Sistema completo de auto-healing (700+ linhas)
+- `server/routers/auto-healing.ts` - Router tRPC com 6 endpoints
+- `client/src/pages/AutoHealing.tsx` - Dashboard UI/UX (400+ linhas)
+
+### FASE 2: Diagnóstico Automático com IA ✅ CONCLUÍDA
+- [x] Criar analisador de stack traces com IA
+- [x] Implementar correlação de eventos (causa raiz)
+- [x] Criar sistema de classificação de erros (crítico, médio, baixo)
+- [x] Implementar análise de padrões temporais
+- [x] Criar sistema de hipóteses de causa raiz
+- [x] Implementar validação de hipóteses
+- [x] Gerar relatórios de diagnóstico automáticos
+
+**IMPLEMENTAÇÃO:**
+- Função `diagnosticarErro()` usa LLM para análise completa
+- Retorna causa raiz, hipóteses, confiança, ação recomendada e urgência
+
+### FASE 3: Motor de Auto-Correção ✅ PARCIALMENTE CONCLUÍDA
+- [x] Criar biblioteca de fixes conhecidos (tipos de correção)
+- [x] Implementar aplicação automática de correções seguras
+- [x] Criar sistema de rollback automático se fix falhar
+- [ ] Implementar reinicialização inteligente de serviços - PENDENTE
+- [x] Criar limpeza automática de recursos (memória, cache) - Garbage collection
+- [ ] Implementar otimização automática de queries - PENDENTE
+- [ ] Criar sistema de self-healing para endpoints - PENDENTE
+- [ ] Implementar correção de configurações - PENDENTE
+
+**IMPLEMENTAÇÃO:**
+- Função `corrigirErro()` aplica correções automaticamente
+- Tipos: limpar_cache, otimizar_query, reiniciar_servico, ajustar_config, escalar_recursos
+
+### FASE 4: Sistema Imunológico Preventivo
+- [ ] Criar banco de dados de "anticorpos" (padrões de erro conhecidos)
+- [ ] Implementar detecção precoce de sintomas
+- [ ] Criar sistema de vacinação (patches preventivos)
+- [ ] Implementar quarentena de código suspeito
+- [ ] Criar análise preditiva de falhas
+- [ ] Implementar testes automáticos antes de deploy
+- [ ] Criar sistema de circuit breaker inteligente
+
+### FASE 5: Evolução Contínua e Auto-Regulação
+- [ ] Implementar aprendizado de novos padrões de erro
+- [ ] Criar sistema de melhoria de fixes (A/B testing)
+- [ ] Implementar otimização de thresholds de alerta
+- [ ] Criar sistema de auto-tuning de performance
+- [ ] Implementar evolução de estratégias de correção
+- [ ] Criar meta-aprendizado (aprender a aprender)
+- [ ] Implementar auto-documentação de soluções
+
+### FASE 6: Interface e Integração
+- [ ] Criar dashboard de auto-healing
+- [ ] Implementar histórico de correções automáticas
+- [ ] Criar visualização de "saúde do sistema"
+- [ ] Implementar modo manual/automático
+- [ ] Criar notificações de ações tomadas
+- [ ] Implementar aprovação humana para fixes críticos
+- [ ] Criar relatórios de eficácia do sistema
+
+### Funcionalidades Avançadas
+- [ ] **Auto-Scaling Inteligente** - Ajusta recursos automaticamente
+- [ ] **Predição de Falhas** - Prevê problemas antes de acontecerem
+- [ ] **Auto-Otimização** - Melhora performance continuamente
+- [ ] **Resiliência Adaptativa** - Ajusta estratégias baseado em contexto
+- [ ] **Aprendizado Federado** - Aprende com múltiplas instâncias
+- [ ] **Simulação de Falhas** - Testa resiliência proativamente
+- [ ] **Auto-Documentação** - Documenta suas próprias ações
+
+### Métricas de Sucesso
+- Taxa de detecção de erros: > 95%
+- Taxa de correção automática: > 80%
+- Tempo médio de detecção: < 30 segundos
+- Tempo médio de correção: < 2 minutos
+- Redução de incidentes: > 70%
+- Uptime do sistema: > 99.9%
