@@ -1,7 +1,6 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { obsidianRemoteRouter } from "./routers/obsidian-remote";
 import { servidorRouter } from "./routers/servidor";
 import { deepsiteRouter } from "./routers/deepsite";
 import { publicProcedure, router } from "./_core/trpc";
@@ -66,7 +65,6 @@ export const appRouter = router({
   bulkSend: bulkSendRouter,
   templates: templatesRouter,
 
-  obsidianRemote: obsidianRemoteRouter,
   // TODO: add feature routers here, e.g.
   // todo: router({
   //   list: protectedProcedure.query(({ ctx }) =>
