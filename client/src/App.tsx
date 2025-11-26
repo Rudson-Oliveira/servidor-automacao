@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
+import WhatsAppDashboard from "@/pages/WhatsAppDashboard";
 import DashboardVision from "@/pages/DashboardVision";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -17,8 +18,9 @@ function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
-      <Route path={"/dashboard/vision"} component={DashboardVision} />
-        <Route path="/configuracoes/ias" component={ConfiguracoesIAs} />
+      <Route path={"/whatsapp"} component={WhatsAppDashboard} />
+      <Route path="/dashboard-vision" component={DashboardVision} />
+      <Route path="/configuracoes/ias" component={ConfiguracoesIAs} />
       <Route path="/desktop-captures" component={DesktopCaptures} />
       <Route path={"/cadastro"} component={Cadastro} />
       <Route path={"/login"} component={Login} />
