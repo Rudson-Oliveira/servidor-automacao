@@ -1713,3 +1713,36 @@ Criar sistema completo de envio em massa com anti-bloqueio inteligente, template
 - [ ] Validar agendamento automático
 - [ ] Testar pausar/retomar
 - [ ] **CHECKPOINT**
+
+
+---
+
+## 🧭 Menu de Navegação e UX
+
+### Objetivo
+Criar menu de navegação completo e intuitivo que mostra todas as funcionalidades do sistema de forma clara e organizada, com botão voltar em todas as páginas.
+
+### Componente de Menu Principal
+- [x] Criar componente Header/Navbar reutilizável
+- [x] Organizar funcionalidades por categorias (WhatsApp, Obsidian, Desktop, etc)
+- [x] Menu dropdown com ícones e descrições curtas
+- [x] Responsivo (mobile-friendly)
+- [x] Indicador de página ativa
+
+### Botão Voltar
+- [x] Adicionar botão voltar em todas as páginas (via Header)
+- [x] Usar window.history.back()
+- [x] Posição consistente (canto superior esquerdo)
+- [x] Ícone + texto "Voltar"
+
+### Página Inicial (Dashboard)
+- [x] Visão geral do sistema com cards
+- [x] Resumo de cada funcionalidade principal
+- [x] Links rápidos para funcionalidades mais usadas
+- [x] Status do sistema (online, requisições, erros)
+
+### Testes
+- [x] Testar navegação entre páginas (funcionando)
+- [x] Validar botão voltar (funcionando)
+- [x] Verificar responsividade (mobile-friendly)
+- [ ] **CHECKPOINT**

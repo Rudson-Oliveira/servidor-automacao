@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import PageLayout from '@/components/PageLayout';
 import { trpc } from '@/lib/trpc';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -99,7 +100,8 @@ export default function WhatsAppBlocked() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50 p-6">
+    <PageLayout>
+      <div className="bg-gradient-to-br from-red-50 via-white to-orange-50 p-6 rounded-lg">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -320,6 +322,7 @@ export default function WhatsAppBlocked() {
           </CardContent>
         </Card>
       </div>
-    </div>
+      </div>
+    </PageLayout>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Header from '@/components/Header';
 import { trpc } from '@/lib/trpc';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,17 @@ import {
 } from 'lucide-react';
 
 export default function WhatsAppDashboard() {
+  return (
+    <div className="min-h-screen bg-background">
+      <Header showBackButton />
+      <div className="container py-8">
+        <WhatsAppDashboardContent />
+      </div>
+    </div>
+  );
+}
+
+function WhatsAppDashboardContent() {
   const [autoRefresh, setAutoRefresh] = useState(true);
 
   const { data: summary, refetch: refetchSummary } = trpc.whatsapp.getSystemSummary.useQuery(
