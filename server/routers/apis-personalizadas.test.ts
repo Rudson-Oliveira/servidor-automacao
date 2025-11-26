@@ -69,10 +69,13 @@ describe("apisPersonalizadas", () => {
 
     expect(Array.isArray(apis)).toBe(true);
     
-    // Verificar que chaves estão ocultas
+    // Verificar que chaves estão mascaradas (formato: sk-t...e-123)
     const apiComChave = apis.find(api => api.chaveApi);
     if (apiComChave) {
-      expect(apiComChave.chaveApi).toBe("***OCULTA***");
+      // Chave deve estar mascarada, não em texto plano
+      expect(apiComChave.chaveApi).not.toBe("secret-key-123");
+      // Deve conter "..." indicando mascaramento
+      expect(apiComChave.chaveApi).toContain("...");
     }
   });
 

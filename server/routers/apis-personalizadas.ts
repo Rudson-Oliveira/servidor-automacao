@@ -8,7 +8,7 @@ import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import { getDb } from "../db";
 import { apisPersonalizadas } from "../../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
-import crypto from "crypto";
+import { encrypt, decrypt, maskApiKey } from "../_core/encryption";
 
 // ========================================
 // SCHEMAS DE VALIDAÇÃO
@@ -30,38 +30,7 @@ const ApiPersonalizadaSchema = z.object({
 // FUNÇÕES AUXILIARES
 // ========================================
 
-/**
- * Criptografa chave API usando AES-256
- */
-function criptografarChave(chave: string): string {
-  const algorithm = "aes-256-cbc";
-  const key = crypto.scryptSync(process.env.JWT_SECRET || "default-secret", "salt", 32);
-  const iv = crypto.randomBytes(16);
-  
-  const cipher = crypto.createCipheriv(algorithm, key, iv);
-  let encrypted = cipher.update(chave, "utf8", "hex");
-  encrypted += cipher.final("hex");
-  
-  return iv.toString("hex") + ":" + encrypted;
-}
-
-/**
- * Descriptografa chave API
- */
-function descriptografarChave(chaveCriptografada: string): string {
-  const algorithm = "aes-256-cbc";
-  const key = crypto.scryptSync(process.env.JWT_SECRET || "default-secret", "salt", 32);
-  
-  const parts = chaveCriptografada.split(":");
-  const iv = Buffer.from(parts[0]!, "hex");
-  const encrypted = parts[1]!;
-  
-  const decipher = crypto.createDecipheriv(algorithm, key, iv);
-  let decrypted = decipher.update(encrypted, "hex", "utf8");
-  decrypted += decipher.final("utf8");
-  
-  return decrypted;
-}
+// Criptografia agora usa módulo seguro com AES-256-GCM
 
 /**
  * Testa conexão com API
@@ -76,9 +45,9 @@ async function testarConexaoApi(api: {
   try {
     const headersObj: Record<string, string> = api.headers ? JSON.parse(api.headers) : {};
     
-    // Adicionar autenticação
+    // SEGURANÇA: Descriptografar chave API de forma segura
     if (api.chaveApi && api.tipoAutenticacao) {
-      const chaveDescriptografada = descriptografarChave(api.chaveApi);
+      const chaveDescriptografada = decrypt(api.chaveApi);
       
       switch (api.tipoAutenticacao) {
         case "bearer":
@@ -137,11 +106,24 @@ export const apisPersonalizadasRouter = router({
         .from(apisPersonalizadas)
         .orderBy(desc(apisPersonalizadas.createdAt));
       
-      // Não retornar chaves API descriptografadas
-      return apis.map(api => ({
-        ...api,
-        chaveApi: api.chaveApi ? "***OCULTA***" : null,
-      }));
+      // Mascarar chaves API para exibição segura
+      return apis.map(api => {
+        let chaveMascarada = null;
+        
+        if (api.chaveApi) {
+          try {
+            chaveMascarada = maskApiKey(decrypt(api.chaveApi));
+          } catch (error) {
+            // Se falhar descriptografia, retornar mascarado genérico
+            chaveMascarada = "***ERRO***";
+          }
+        }
+        
+        return {
+          ...api,
+          chaveApi: chaveMascarada,
+        };
+      });
     }),
 
   /**
@@ -163,10 +145,20 @@ export const apisPersonalizadasRouter = router({
       
       const api = result[0]!;
       
-      // Não retornar chave API descriptografada
+      // Mascarar chave API para exibição segura
+      let chaveMascarada = null;
+      
+      if (api.chaveApi) {
+        try {
+          chaveMascarada = maskApiKey(decrypt(api.chaveApi));
+        } catch (error) {
+          chaveMascarada = "***ERRO***";
+        }
+      }
+      
       return {
         ...api,
-        chaveApi: api.chaveApi ? "***OCULTA***" : null,
+        chaveApi: chaveMascarada,
       };
     }),
 
@@ -179,8 +171,8 @@ export const apisPersonalizadasRouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
       
-      // Criptografar chave API se fornecida
-      const chaveCriptografada = input.chaveApi ? criptografarChave(input.chaveApi) : null;
+      // SEGURANÇA: Criptografar chave API com AES-256-GCM
+      const chaveCriptografada = input.chaveApi ? encrypt(input.chaveApi) : null;
       
       const result = await db.insert(apisPersonalizadas).values({
         ...input,
@@ -208,10 +200,10 @@ export const apisPersonalizadasRouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
       
-      // Criptografar chave API se fornecida
+      // SEGURANÇA: Criptografar chave API com AES-256-GCM
       const dadosAtualizados: any = { ...input.dados };
       if (input.dados.chaveApi) {
-        dadosAtualizados.chaveApi = criptografarChave(input.dados.chaveApi);
+        dadosAtualizados.chaveApi = encrypt(input.dados.chaveApi);
       }
       
       await db

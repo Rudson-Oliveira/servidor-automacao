@@ -29,7 +29,7 @@ except ImportError:
 # URL da API Manus (altere para sua URL)
 # Para uso local, deixe como localhost:3000
 # Para uso remoto, substitua pela URL do seu servidor publicado
-API_URL = "http://localhost:3000"
+API_URL = "https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer"
 
 # Chave de API (se necessário)
 API_KEY = None  # Defina se usar autenticação
@@ -211,11 +211,11 @@ def enviar_para_api(imagem, programas, janelas):
         if API_KEY:
             headers['Authorization'] = f'Bearer {API_KEY}'
         
-        # Enviar para API
-        print(f"\n📤 Enviando para API: {API_URL}/api/desktop/capturar")
+        # Enviar para API (endpoint tRPC)
+        print(f"\n📤 Enviando para API: {API_URL}/api/trpc/desktop.capturar")
         response = requests.post(
-            f"{API_URL}/api/desktop/capturar",
-            json=payload,
+            f"{API_URL}/api/trpc/desktop.capturar",
+            json={"json": payload},  # tRPC espera formato {"json": dados}
             headers=headers,
             timeout=30,
         )
@@ -318,3 +318,6 @@ if __name__ == "__main__":
         print(f"\n❌ ERRO FATAL: {e}")
         import traceback
         traceback.print_exc()
+    finally:
+        print("\n" + "=" * 70)
+        input("\nPressione ENTER para fechar...")

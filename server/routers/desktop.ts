@@ -29,17 +29,34 @@ const JanelaSchema = z.object({
   pid: z.number().int().optional(),
 });
 
+// Constantes de segurança
+const MAX_SCREENSHOT_SIZE = 10 * 1024 * 1024; // 10MB em base64
+const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]);
+const JPEG_SIGNATURE = Buffer.from([0xFF, 0xD8, 0xFF]);
+
 const CapturaSchema = z.object({
   timestamp: z.string(),
-  screenshot_base64: z.string(),
+  screenshot_base64: z.string()
+    .max(MAX_SCREENSHOT_SIZE, "Screenshot muito grande (máximo 10MB)")
+    .refine((val) => {
+      try {
+        const buffer = Buffer.from(val, 'base64');
+        // Validar que é PNG ou JPEG
+        const isPNG = buffer.slice(0, 8).equals(PNG_SIGNATURE);
+        const isJPEG = buffer.slice(0, 3).equals(JPEG_SIGNATURE);
+        return isPNG || isJPEG;
+      } catch {
+        return false;
+      }
+    }, "Screenshot deve ser PNG ou JPEG válido"),
   resolucao: z.object({
-    largura: z.number().int(),
-    altura: z.number().int(),
+    largura: z.number().int().min(320).max(7680), // Min: mobile, Max: 8K
+    altura: z.number().int().min(240).max(4320),
   }),
-  programas: z.array(ProgramaSchema),
-  janelas: z.array(JanelaSchema),
-  total_programas: z.number().int(),
-  total_janelas: z.number().int(),
+  programas: z.array(ProgramaSchema).max(1000, "Máximo 1000 programas"),
+  janelas: z.array(JanelaSchema).max(500, "Máximo 500 janelas"),
+  total_programas: z.number().int().min(0).max(10000),
+  total_janelas: z.number().int().min(0).max(5000),
 });
 
 // ========================================
@@ -80,10 +97,11 @@ export const desktopRouter = router({
   
   /**
    * Recebe captura de área de trabalho
+   * SEGURANÇA: Requer autenticação + validação de imagem
    */
-  capturar: publicProcedure
+  capturar: protectedProcedure
     .input(CapturaSchema)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const db = await getDb();
       if (!db) throw new Error("Database not available");
       
@@ -138,8 +156,15 @@ export const desktopRouter = router({
         };
         
       } catch (error) {
-        console.error("Erro ao processar captura:", error);
-        throw new Error(`Falha ao processar captura: ${error instanceof Error ? error.message : String(error)}`);
+        // Log interno (não expor detalhes ao usuário)
+        console.error("[SEGURANÇA] Erro ao processar captura:", {
+          userId: ctx.user.id,
+          error: error instanceof Error ? error.message : String(error),
+          timestamp: new Date().toISOString()
+        });
+        
+        // Mensagem genérica ao usuário
+        throw new Error("Falha ao processar captura. Tente novamente.");
       }
     }),
 

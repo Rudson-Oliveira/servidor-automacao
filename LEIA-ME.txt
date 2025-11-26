@@ -1,0 +1,66 @@
+========================================
+DESKTOP CAPTURE - GUIA RÁPIDO
+========================================
+
+INSTALAÇÃO EM 5 PASSOS:
+
+1. INSTALAR PYTHON
+   - Baixe: https://www.python.org/downloads/
+   - IMPORTANTE: Marque "Add Python to PATH"
+   - Reinicie o computador
+
+2. EXTRAIR ARQUIVOS
+   - Crie a pasta: C:\Comet
+   - Extraia todos os arquivos lá
+
+3. INSTALAR DEPENDÊNCIAS
+   - Clique com botão direito em: instalar_desktop_capture.bat
+   - Selecione: "Executar como administrador"
+   - Aguarde 1-2 minutos
+
+4. CONFIGURAR URL DA API
+   - Abra desktop_capture.py com Bloco de Notas
+   - Linha 25, mude para:
+     API_URL = "https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer"
+   - Salve (Ctrl+S)
+
+5. TESTAR
+   - Abra Prompt de Comando (cmd)
+   - Digite: cd C:\Comet
+   - Digite: python desktop_capture.py
+   - Deve aparecer: "Dados enviados com sucesso!"
+
+PRONTO! Acesse:
+https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer/desktop-captures
+
+========================================
+AGENDAMENTO AUTOMÁTICO (OPCIONAL):
+
+- Clique com botão direito em: setup_scheduler.bat
+- Selecione: "Executar como administrador"
+- Digite: S (Sim)
+
+Agora captura automaticamente a cada 30 minutos!
+
+========================================
+PROBLEMAS?
+
+1. "Python não encontrado"
+   → Reinstale Python e marque "Add to PATH"
+
+2. "pip não encontrado"
+   → Reinstale Python
+
+3. "API não acessível"
+   → Verifique se URL está correta em desktop_capture.py
+
+========================================
+ARQUIVOS NECESSÁRIOS:
+
+✓ desktop_capture.py
+✓ desktop_scheduler.py
+✓ requirements_desktop_capture.txt
+✓ instalar_desktop_capture.bat
+✓ setup_scheduler.bat
+
+========================================

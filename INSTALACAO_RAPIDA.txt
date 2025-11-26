@@ -1,0 +1,181 @@
+========================================
+INSTALAÇÃO RÁPIDA - DESKTOP CAPTURE
+Comet Vision - Manus
+========================================
+
+📦 PASSO 1: EXTRAIR ARQUIVOS
+----------------------------
+1. Extraia o arquivo Desktop_Capture_Windows.zip
+2. Coloque todos os arquivos em uma pasta (ex: C:\Comet\)
+
+Arquivos incluídos:
+✅ desktop_capture.py (script de captura)
+✅ desktop_scheduler.py (agendamento automático)
+✅ requirements_desktop_capture.txt (dependências)
+✅ instalar_desktop_capture.bat (instalador)
+✅ setup_scheduler.bat (configurador Task Scheduler)
+✅ GUIA_INSTALACAO_DESKTOP_CAPTURE.md (guia completo)
+✅ README_DESKTOP_CAPTURE.md (documentação)
+
+
+🐍 PASSO 2: INSTALAR PYTHON
+----------------------------
+Se você NÃO tem Python instalado:
+
+1. Baixe Python 3.8+ de: https://www.python.org/downloads/
+2. Durante a instalação, MARQUE a opção:
+   ☑️ "Add Python to PATH"
+3. Clique em "Install Now"
+4. Reinicie o computador
+
+
+⚙️ PASSO 3: INSTALAR DEPENDÊNCIAS
+----------------------------------
+1. Abra a pasta onde extraiu os arquivos
+2. Clique com BOTÃO DIREITO em: instalar_desktop_capture.bat
+3. Selecione: "Executar como administrador"
+4. Aguarde a instalação (1-2 minutos)
+
+O que será instalado:
+- Pillow (captura de screenshots)
+- psutil (listar programas)
+- requests (enviar para API)
+- schedule (agendamento automático)
+
+
+🔧 PASSO 4: CONFIGURAR URL DA API
+----------------------------------
+1. Abra desktop_capture.py com Bloco de Notas
+2. Encontre a linha (linha 25):
+   API_URL = "http://localhost:3000"
+
+3. Substitua pela URL do seu servidor:
+   
+   SE O SERVIDOR ESTÁ NO MESMO COMPUTADOR:
+   API_URL = "http://localhost:3000"
+   
+   SE O SERVIDOR ESTÁ EM OUTRO LUGAR:
+   API_URL = "https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer"
+   
+4. Salve o arquivo (Ctrl+S)
+
+
+✅ PASSO 5: TESTAR CAPTURA MANUAL
+----------------------------------
+1. Abra o Prompt de Comando (cmd)
+2. Navegue até a pasta:
+   cd C:\Comet
+
+3. Execute:
+   python desktop_capture.py
+
+4. Você deve ver:
+   ✅ Screenshot capturado: 1920x1080
+   ✅ 47 programas detectados
+   ✅ 12 janelas ativas detectadas
+   ✅ Dados enviados com sucesso!
+
+Se aparecer erro, veja o GUIA_INSTALACAO_DESKTOP_CAPTURE.md
+
+
+⏰ PASSO 6: CONFIGURAR AGENDAMENTO (OPCIONAL)
+----------------------------------------------
+Para capturar automaticamente a cada 30 minutos:
+
+1. Clique com BOTÃO DIREITO em: setup_scheduler.bat
+2. Selecione: "Executar como administrador"
+3. Quando perguntado, digite: S (Sim)
+4. Aguarde a confirmação
+
+Pronto! Agora o sistema captura automaticamente:
+- A cada 30 minutos
+- Toda segunda-feira às 09:00 gera relatório semanal
+
+
+📊 PASSO 7: VISUALIZAR CAPTURAS
+--------------------------------
+Acesse no navegador:
+https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer/desktop-captures
+
+Você verá:
+- Grid de screenshots
+- Estatísticas (total, analisadas, pendentes)
+- Botão "Detalhes" (programas + janelas)
+- Botão "Analisar" (Comet Vision IA)
+
+
+🔑 PASSO 8: CONFIGURAR COMET VISION (OPCIONAL)
+-----------------------------------------------
+Para habilitar análise com IA (OCR + objetos + UI):
+
+1. Obtenha uma chave de API do Comet Vision
+2. No servidor Manus, adicione a variável de ambiente:
+   COMET_VISION_API_KEY=sua-chave-aqui
+
+3. Reinicie o servidor
+4. Agora o botão "Analisar" funcionará com IA!
+
+
+❓ PROBLEMAS COMUNS
+-------------------
+1. "Python não encontrado"
+   → Instale Python e marque "Add to PATH"
+   → Reinicie o computador
+
+2. "API não está acessível"
+   → Verifique se o servidor está rodando
+   → Confirme a URL em desktop_capture.py
+
+3. "Tarefa não inicia automaticamente"
+   → Execute setup_scheduler.bat COMO ADMINISTRADOR
+   → Verifique no Agendador de Tarefas (Win+R → taskschd.msc)
+
+4. "Screenshot vazio ou preto"
+   → Feche aplicativos com DRM (Netflix, Prime Video)
+
+
+📞 SUPORTE
+----------
+Para ajuda detalhada, consulte:
+- GUIA_INSTALACAO_DESKTOP_CAPTURE.md (600+ linhas)
+- README_DESKTOP_CAPTURE.md (400+ linhas)
+
+
+========================================
+RESUMO DOS COMANDOS
+========================================
+
+# Instalar dependências (como admin)
+instalar_desktop_capture.bat
+
+# Testar captura manual
+python desktop_capture.py
+
+# Configurar agendamento (como admin)
+setup_scheduler.bat
+
+# Executar scheduler manualmente
+python desktop_scheduler.py
+
+# Ver logs
+notepad %USERPROFILE%\Desktop\comet_captures\scheduler.log
+
+
+========================================
+CHECKLIST DE INSTALAÇÃO
+========================================
+☐ Python 3.8+ instalado
+☐ Arquivos extraídos em C:\Comet\
+☐ Dependências instaladas (instalar_desktop_capture.bat)
+☐ URL da API configurada em desktop_capture.py
+☐ Teste manual executado com sucesso
+☐ Agendamento configurado (setup_scheduler.bat)
+☐ Interface web acessível
+☐ Primeira captura visualizada
+
+Tudo marcado? Você está pronto! 🎉
+
+
+Versão: 2.0.0
+Data: 2025-01-24
+Autor: Sistema de Automação Manus

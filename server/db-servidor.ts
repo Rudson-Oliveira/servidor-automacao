@@ -251,18 +251,21 @@ export async function listarArquivosPorDepartamento(
 
 /**
  * Busca arquivos por nome (busca textual)
- */
-export async function buscarArquivosPorNome(
+ */export async function buscarArquivosPorTermo(
   termo: string,
   limit: number = 50
 ): Promise<ArquivoMapeado[]> {
   const db = await getDb();
   if (!db) return [];
 
+  // SEGURANÇA: Sanitizar termo de busca para prevenir SQL injection
+  const termoSanitizado = termo.replace(/[%_\\]/g, '\\$&');
+  const padraoLike = `%${termoSanitizado}%`;
+
   return await db
     .select()
     .from(arquivosMapeados)
-    .where(sql`${arquivosMapeados.nome} LIKE ${`%${termo}%`}`)
+    .where(sql`${arquivosMapeados.nome} LIKE ${padraoLike}`)
     .limit(limit)
     .orderBy(desc(arquivosMapeados.dataModificacao));
 }

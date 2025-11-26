@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { publicProcedure, router } from "../_core/trpc";
+import { validarScriptPython, sanitizarInput, gerarRelatorioSeguranca } from "../_core/python-validator";
 
 /**
  * Router para integração com Obsidian Local REST API
@@ -27,7 +28,10 @@ export const obsidianRouter: ReturnType<typeof router> = router({
   gerarScriptCriacao: publicProcedure
     .input(gerarScriptCriacaoSchema)
     .mutation(async ({ input }) => {
-      const { nomeArquivo, conteudo, caminho, apiKey, porta, usarHttps } = input;
+      // SEGURANÇA: Sanitizar inputs antes de usar
+      const nomeArquivo = sanitizarInput(input.nomeArquivo);
+      const caminho = input.caminho ? sanitizarInput(input.caminho) : "";
+      const { conteudo, apiKey, porta, usarHttps } = input;
 
       // Construir o caminho completo do arquivo
       const caminhoCompleto = caminho 

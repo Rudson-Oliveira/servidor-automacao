@@ -15,7 +15,7 @@ import {
   inserirArquivosLote,
   buscarArquivoPorHash,
   listarArquivosPorDepartamento,
-  buscarArquivosPorNome,
+  buscarArquivosPorTermo,
   criarLogRaspagem,
   atualizarLogRaspagem,
   listarLogsRaspagem,
@@ -205,7 +205,7 @@ export const servidorRouter = router({
       limit: z.number().int().min(1).max(100).default(50),
     }))
     .query(async ({ input }) => {
-      return await buscarArquivosPorNome(input.termo, input.limit);
+      return await buscarArquivosPorTermo(input.termo, input.limit);
     }),
 
   /**

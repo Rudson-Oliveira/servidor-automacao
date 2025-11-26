@@ -22,7 +22,7 @@ import {
 import {
   getArquivoById,
   atualizarArquivo,
-  buscarArquivosPorNome,
+  buscarArquivosPorTermo,
   criarAlerta,
 } from "../db-servidor";
 import { getDb } from "../db";
