@@ -99,6 +99,7 @@ export const skills = mysqlTable("skills", {
   sucessoCount: int("sucesso_count").default(0),
   falhaCount: int("falha_count").default(0),
   ultimaExecucao: timestamp("ultima_execucao"),
+  versao: varchar("versao", { length: 20 }).default("1.0"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -125,6 +126,7 @@ export type InsertConversa = typeof conversas.$inferInsert;
  */
 export const execucoes = mysqlTable("execucoes", {
   id: int("id").autoincrement().primaryKey(),
+  skillId: int("skill_id"),
   tarefa: text("tarefa").notNull(),
   navegador: varchar("navegador", { length: 50 }),
   planoBAtivado: int("planoBAtivado").default(0),
@@ -132,6 +134,7 @@ export const execucoes = mysqlTable("execucoes", {
   tempoExecucao: int("tempoExecucao"), // em milissegundos
   resultado: text("resultado"),
   erro: text("erro"),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -681,3 +684,71 @@ export const desktopJanelas = mysqlTable("desktop_janelas", {
 
 export type DesktopJanela = typeof desktopJanelas.$inferSelect;
 export type InsertDesktopJanela = typeof desktopJanelas.$inferInsert;
+
+
+/**
+ * Tabela de agentes locais conectados
+ * Armazena informações sobre agentes instalados nos computadores dos usuários
+ */
+export const agentesLocais = mysqlTable("agentes_locais", {
+  id: int("id").autoincrement().primaryKey(),
+  idAgente: varchar("id_agente", { length: 200 }).notNull().unique(),
+  userId: int("user_id"), // Usuário dono do agente (opcional)
+  sistema: text("sistema"), // JSON com informações do sistema
+  permissoes: text("permissoes"), // JSON com permissões configuradas
+  status: mysqlEnum("status", ["conectado", "desconectado", "erro"]).default("desconectado"),
+  conectadoEm: timestamp("conectado_em"),
+  ultimoHeartbeat: timestamp("ultimo_heartbeat"),
+  versaoAgente: varchar("versao_agente", { length: 50 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  statusIdx: index("status_idx").on(table.status),
+  userIdIdx: index("user_id_idx").on(table.userId),
+}));
+
+export type AgenteLocal = typeof agentesLocais.$inferSelect;
+export type InsertAgenteLocal = typeof agentesLocais.$inferInsert;
+
+/**
+ * Tabela de comandos enviados para agentes
+ * Registra todos os comandos enviados e suas respostas
+ */
+export const comandosAgente = mysqlTable("comandos_agente", {
+  id: int("id").autoincrement().primaryKey(),
+  idComando: varchar("id_comando", { length: 100 }).notNull().unique(),
+  idAgente: varchar("id_agente", { length: 200 }).notNull(),
+  comando: varchar("comando", { length: 100 }).notNull(),
+  parametros: text("parametros"), // JSON com parâmetros
+  status: mysqlEnum("status", ["pendente", "executando", "sucesso", "erro", "timeout"]).default("pendente"),
+  resposta: text("resposta"), // JSON com resposta do agente
+  criadoEm: timestamp("criado_em").defaultNow().notNull(),
+  executadoEm: timestamp("executado_em"),
+  tempoExecucaoMs: int("tempo_execucao_ms"),
+}, (table) => ({
+  idAgenteIdx: index("id_agente_idx").on(table.idAgente),
+  statusIdx: index("status_idx").on(table.status),
+  comandoIdx: index("comando_idx").on(table.comando),
+}));
+
+export type ComandoAgente = typeof comandosAgente.$inferSelect;
+export type InsertComandoAgente = typeof comandosAgente.$inferInsert;
+
+/**
+ * Tabela de mensagens recebidas dos agentes
+ * Armazena eventos, screenshots, logs, etc enviados pelos agentes
+ */
+export const mensagensAgente = mysqlTable("mensagens_agente", {
+  id: int("id").autoincrement().primaryKey(),
+  idAgente: varchar("id_agente", { length: 200 }).notNull(),
+  tipo: varchar("tipo", { length: 100 }).notNull(), // heartbeat, desktop_capture, log, erro, etc
+  dados: text("dados"), // JSON com dados da mensagem
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+}, (table) => ({
+  idAgenteIdx: index("id_agente_idx").on(table.idAgente),
+  tipoIdx: index("tipo_idx").on(table.tipo),
+  timestampIdx: index("timestamp_idx").on(table.timestamp),
+}));
+
+export type MensagemAgente = typeof mensagensAgente.$inferSelect;
+export type InsertMensagemAgente = typeof mensagensAgente.$inferInsert;

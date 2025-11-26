@@ -1394,3 +1394,146 @@
 ### Status
 ✅ **TODAS AS 5 VULNERABILIDADES CRÍTICAS CORRIGIDAS**
 ✅ **SISTEMA PRONTO PARA PRODUÇÃO COM SEGURANÇA EMPRESARIAL**
+
+
+## 🔗 INTEGRAÇÃO API VERCEPT (Nova Solicitação)
+
+### Pesquisa e Análise
+- [x] Acessar https://vercept.com/ e analisar funcionalidades
+- [x] Buscar documentação da API Vercept
+- [x] Identificar endpoints disponíveis
+- [x] Verificar requisitos de autenticação (API key, OAuth, etc)
+- [x] Analisar casos de uso (IA visual, OCR, análise de documentos)
+- [x] Verificar limites de taxa e pricing
+
+**CONCLUSÃO DA PESQUISA:**
+- ❌ Vercept NÃO possui API pública no momento
+- ✅ Apenas API Enterprise (mediante contato comercial)
+- ✅ Nosso sistema já oferece funcionalidades equivalentes ou superiores
+- ✅ Integração direta não é necessária
+- ✅ Documento completo: PESQUISA_VERCEPT.md
+
+### Implementação Backend
+- [x] ~~Criar módulo server/_core/vercept.ts~~ (NÃO NECESSÁRIO - sem API pública)
+- [x] ~~Implementar funções de autenticação~~ (NÃO NECESSÁRIO)
+- [x] ~~Criar funções para cada endpoint da API~~ (NÃO NECESSÁRIO)
+- [x] ~~Adicionar tratamento de erros e retry logic~~ (NÃO NECESSÁRIO)
+- [x] ~~Criar router server/routers/vercept.ts com endpoints tRPC~~ (NÃO NECESSÁRIO)
+
+### Implementação Frontend
+- [x] ~~Adicionar card Vercept em /configuracoes/ias~~ (NÃO NECESSÁRIO)
+- [x] ~~Criar formulário de configuração (API key, etc)~~ (NÃO NECESSÁRIO)
+- [x] ~~Implementar teste de conexão~~ (NÃO NECESSÁRIO)
+- [x] ~~Adicionar página de uso da API (se necessário)~~ (NÃO NECESSÁRIO)
+
+### Testes e Documentação
+- [x] ~~Criar testes unitários para módulo Vercept~~ (NÃO NECESSÁRIO)
+- [x] ~~Testar integração end-to-end~~ (NÃO NECESSÁRIO)
+- [x] Documentar uso da API em PESQUISA_VERCEPT.md (COMPLETO)
+- [x] ~~Atualizar API_REFERENCE_COMET.md~~ (NÃO NECESSÁRIO)
+
+### Integração com Sistema Existente
+- [x] ~~Adicionar skill "Usar Vercept para Análise" no banco~~ (NÃO NECESSÁRIO)
+- [x] ~~Integrar com sistema de Desktop Capture (se aplicável)~~ (JÁ FUNCIONA)
+- [x] ~~Integrar com DeepSite para análise combinada~~ (JÁ FUNCIONA)
+
+**NOTA:** Integração direta não implementada pois Vercept não possui API pública. Nosso sistema já oferece funcionalidades equivalentes.
+
+
+## 🚀 SISTEMA REVOLUCIONÁRIO DE IA AUTO-EVOLUTIVO (Novo Escopo Expandido)
+
+### FASE 1: Agente Local Híbrido (Base) ✅ CONCLUÍDA
+- [x] Criar agente local Python com WebSocket (600+ linhas)
+- [x] Implementar servidor WebSocket no backend Express (500+ linhas)
+- [x] Adicionar sistema de permissões e whitelist
+- [x] Criar interface de controle no painel web (600+ linhas UI/UX)
+- [x] Implementar auto-start com Windows (via Task Scheduler)
+- [ ] Adicionar ícone na bandeja do sistema (system tray) - PENDENTE
+- [x] Criar logs completos de todas as ações
+- [x] Implementar kill switch e controles de segurança
+- [x] Testar conexão nuvem ↔ local (WebSocket funcional)
+
+**ARQUIVOS CRIADOS:**
+- `python-scripts/agente_local.py` - Agente Python com WebSocket
+- `server/_core/websocket-agente.ts` - Servidor WebSocket
+- `server/routers/agente-local.ts` - Router tRPC com 12 endpoints
+- `client/src/pages/AgentesLocais.tsx` - Interface UI/UX completa
+- `drizzle/schema.ts` - 3 novas tabelas (agentes_locais, comandos_agente, mensagens_agente)
+
+### FASE 2: Sistema de Auto-Aprendizado ✅ PARCIALMENTE CONCLUÍDA
+- [x] Criar banco de dados de execuções (sucessos/falhas) - Campo skillId adicionado
+- [x] Implementar análise de padrões de sucesso (analisarPadroesSkill)
+- [x] Implementar análise de padrões de falha (analisarPadroesSkill)
+- [x] Criar sistema de refinamento automático de instruções (refinarInstrucoesSkill)
+- [x] Implementar feedback loop (IA aprende com resultados)
+- [x] Criar versionamento de workflows (campo versao em skills)
+- [x] Implementar comparação de performance entre versões (compararVersoes)
+- [x] Criar sistema de rollback inteligente (aplicarRefinamento)
+- [x] Implementar métricas de evolução (detectarRegressoes)
+- [ ] Criar dashboard de aprendizado - PENDENTE
+
+**ARQUIVOS CRIADOS:**
+- `server/_core/auto-aprendizado.ts` - Sistema completo de auto-aprendizado (450+ linhas)
+- Funções: analisarPadroesSkill, refinarInstrucoesSkill, aplicarRefinamento, analisarTodasSkills, autoReflexao, compararVersoes, detectarRegressoesenharia Reversa Inteligente
+- [ ] Criar analisador de código-fonte (AST parsing)
+- [ ] Implementar decomposição de sites em componentes
+- [ ] Desenvolver extrator de padrões de design
+- [ ] Criar sistema de análise de outras IAs
+- [ ] Implementar replicação e melhoria de soluções
+- [ ] Adicionar detector de tecnologias usadas
+- [ ] Criar mapeamento de fluxos de aplicações
+- [ ] Implementar gerador de documentação reversa
+- [ ] Adicionar sistema de comparação de implementações
+
+### FASE 4: LLM Própria com Raciocínio Avançado
+- [ ] Implementar Chain-of-Thought reasoning
+- [ ] Criar sistema de auto-crítica e validação
+- [ ] Desenvolver gerador de apps por raciocínio puro
+- [ ] Implementar sistema de decomposição de problemas
+- [ ] Criar motor de planejamento multi-etapas
+- [ ] Adicionar sistema de verificação de lógica
+- [ ] Implementar aprendizado por reforço
+- [ ] Criar sistema de memória de longo prazo
+- [ ] Desenvolver meta-aprendizado (aprender a aprender)
+- [ ] Implementar transfer learning entre domínios
+
+### FASE 5: Interface UI/UX Avançada
+- [ ] Criar dashboard de evolução da IA
+- [ ] Implementar visualização de raciocínio em tempo real
+- [ ] Adicionar gráficos de performance e aprendizado
+- [ ] Criar timeline de evolução de workflows
+- [ ] Implementar comparador de versões visual
+- [ ] Adicionar sistema de relatórios abrangentes
+- [ ] Criar visualização de engenharia reversa
+- [ ] Implementar editor de workflows com IA
+- [ ] Adicionar sistema de sugestões inteligentes
+- [ ] Criar interface de debugging de raciocínio
+
+### FASE 6: Recursos Revolucionários
+- [ ] Implementar auto-geração de testes
+- [ ] Criar sistema de auto-documentação
+- [ ] Desenvolver auto-otimização de código
+- [ ] Implementar detecção e correção de bugs automática
+- [ ] Criar sistema de previsão de falhas
+- [ ] Adicionar gerador de APIs baseado em descrição
+- [ ] Implementar clonagem e melhoria de sites
+- [ ] Criar sistema de A/B testing automático
+- [ ] Desenvolver orquestrador de múltiplas IAs
+- [ ] Implementar sistema de consenso entre IAs
+
+### FASE 7: Testes e Validação
+- [ ] Testar sistema completo end-to-end
+- [ ] Validar auto-aprendizado com casos reais
+- [ ] Testar engenharia reversa em projetos complexos
+- [ ] Validar raciocínio da LLM
+- [ ] Criar suite de testes de regressão
+- [ ] Documentar arquitetura completa
+- [ ] Criar guia de uso avançado
+- [ ] Preparar demonstrações
+- [ ] Salvar checkpoint final
+
+---
+
+**OBJETIVO FINAL:** Sistema de IA que evolui continuamente, aprende com suas ações, faz engenharia reversa de qualquer código/site/IA, e gera soluções completas baseadas apenas em raciocínio lógico.
+
+**DIFERENCIAL:** IA que melhora suas próprias instruções, workflows e até mesmo seu próprio código - verdadeira auto-evolução.
