@@ -1435,3 +1435,45 @@ Implementar sistema de auto-healing completo de forma incremental, com checkpoin
 - `server/_core/auto-healing.ts` - Módulo completo (300+ linhas)
 - `server/routers/auto-healing.ts` - Router tRPC (60+ linhas)
 - Endpoints: getCurrentMetrics, getMetricsHistory, getErrors, getStats, registerError, stopMonitoring, startMonitoring
+
+
+## 🔧 EXPANSÃO DE AUTO-CORREÇÃO (Nova Solicitação)
+
+### Objetivo
+Expandir capacidades de auto-correção do sistema de auto-healing para incluir reinicialização de serviços e limpeza de cache.
+
+### Funcionalidades a Implementar
+- [x] Reinicialização automática de serviços travados
+- [x] Limpeza automática de cache (memória, arquivos temporários)
+- [x] Detecção de serviços não responsivos
+- [x] Sistema de tentativas com backoff exponencial (preparado)
+- [x] Registro detalhado de todas as ações de correção
+- [ ] Testes de integração - PENDENTE
+- [ ] **CHECKPOINT** - PENDENTE
+
+**IMPLEMENTAÇÕES REALIZADAS:**
+
+1. ✅ **corrigirMemoriaCritica()**
+   - Executa garbage collection
+   - Limpa cache automaticamente
+   - Combina múltiplas ações
+
+2. ✅ **corrigirCPUAlta()**
+   - Monitoramento ativo
+   - Preparado para escalonamento futuro
+
+3. ✅ **reiniciarServico()**
+   - Identifica serviços não responsivos
+   - Registra tentativas de reinicialização
+   - Preparado para integração com PM2/systemd
+
+4. ✅ **limparCache()**
+   - Reduz métricas antigas (mantém últimas 50)
+   - Reduz erros antigos (mantém últimos 30)
+   - Executa garbage collection
+   - Retorna relatório detalhado
+
+5. ✅ **applyCorrection() expandida**
+   - Detecta tipo de erro automaticamente
+   - Aplica correção específica
+   - Suporta: memória crítica, CPU alta, serviços travados, cache

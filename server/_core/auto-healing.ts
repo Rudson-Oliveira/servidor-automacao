@@ -250,20 +250,102 @@ Forneça a resposta em JSON com os campos:
 
     // Correções automáticas baseadas no tipo de erro
     if (error.message.includes('Memória crítica')) {
-      // Tentar garbage collection
-      if (global.gc) {
-        global.gc();
-        return 'Garbage collection executado';
-      } else {
-        return 'Limpeza de cache e garbage collection forçado (GC não disponível - executar Node com --expose-gc)';
-      }
+      return await this.corrigirMemoriaCritica();
     }
 
     if (error.message.includes('CPU alta')) {
-      return 'CPU alta detectada - monitoramento ativo (correção automática não disponível)';
+      return await this.corrigirCPUAlta();
+    }
+
+    if (error.message.includes('Serviço não responsivo') || error.message.includes('timeout')) {
+      return await this.reiniciarServico(error.message);
+    }
+
+    if (error.message.includes('Cache')) {
+      return await this.limparCache();
     }
 
     return `Correção recomendada: ${diagnosis.acaoRecomendada}`;
+  }
+
+  /**
+   * Corrige memória crítica
+   */
+  private async corrigirMemoriaCritica(): Promise<string> {
+    const acoes: string[] = [];
+
+    // 1. Tentar garbage collection
+    if (global.gc) {
+      global.gc();
+      acoes.push('Garbage collection executado');
+    } else {
+      acoes.push('GC não disponível (executar Node com --expose-gc)');
+    }
+
+    // 2. Limpar cache
+    const cacheResult = await this.limparCache();
+    acoes.push(cacheResult);
+
+    return acoes.join(' + ');
+  }
+
+  /**
+   * Corrige CPU alta
+   */
+  private async corrigirCPUAlta(): Promise<string> {
+    // Por enquanto apenas monitora
+    // Futuramente pode implementar:
+    // - Reduzir workers
+    // - Pausar tarefas não críticas
+    // - Escalar horizontalmente
+    return 'CPU alta detectada - monitoramento ativo';
+  }
+
+  /**
+   * Reinicia um serviço
+   */
+  private async reiniciarServico(errorMessage: string): Promise<string> {
+    console.log(`[Auto-Healing] Tentando reiniciar serviço...`);
+
+    // Identificar qual serviço precisa ser reiniciado
+    // Por enquanto, apenas registra a tentativa
+    // Em produção, poderia usar PM2, systemd, etc.
+    
+    return `Serviço identificado para reinicialização (${errorMessage.substring(0, 50)}...)`;
+  }
+
+  /**
+   * Limpa cache do sistema
+   */
+  private async limparCache(): Promise<string> {
+    const acoes: string[] = [];
+
+    try {
+      // Limpar variáveis temporárias antigas
+      const metricsAntes = this.metrics.length;
+      const errorsAntes = this.errors.length;
+
+      // Manter apenas os últimos 50 registros
+      if (this.metrics.length > 50) {
+        this.metrics = this.metrics.slice(-50);
+        acoes.push(`Métricas reduzidas: ${metricsAntes} → ${this.metrics.length}`);
+      }
+
+      if (this.errors.length > 30) {
+        this.errors = this.errors.slice(-30);
+        acoes.push(`Erros reduzidos: ${errorsAntes} → ${this.errors.length}`);
+      }
+
+      // Forçar garbage collection se disponível
+      if (global.gc) {
+        global.gc();
+        acoes.push('GC executado');
+      }
+
+      return acoes.length > 0 ? `Cache limpo: ${acoes.join(', ')}` : 'Cache já estava limpo';
+    } catch (err) {
+      return `Erro ao limpar cache: ${err}`;
+    }
   }
 
   /**
