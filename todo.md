@@ -1552,10 +1552,26 @@
 - Loop infinito no useEffect que dependia de `agentes` e `agentesSelecionado`
 - Quando `agentes` mudava, setava `agentesSelecionado`, causando re-render infinito
 
-**SOLUÇÃO:**
-- Removido `agentesSelecionado` das dependências do useEffect
-- Mantido apenas `agentes` como dependência
-- Adicionado comentário explicativo e eslint-disable
+**SOLUÇÕES APLICADAS:**
+
+1. **Correção do useEffect (Primeira Tentativa)**
+   - Removido `agentesSelecionado` das dependências do useEffect
+   - Mantido apenas `agentes` como dependência
+   - Adicionado comentário explicativo e eslint-disable
+
+2. **Otimização das Queries tRPC (Segunda Tentativa)**
+   - Adicionado `staleTime: 10000` para evitar refetch desnecessário
+   - Adicionado `refetchOnWindowFocus: false` para não refetch ao focar janela
+   - Desabilitado query `listarConectados` que não estava sendo usada (`enabled: false`)
+
+3. **Estabilização de Referências com useMemo (Terceira Tentativa)**
+   - Adicionado `useMemo` para `agenteAtual` evitar re-renders por referências diferentes
+   - Importado `useMemo` do React
+
+4. **Loading State Adequado (Quarta Tentativa)**
+   - Adicionado `isLoading` da query
+   - Criado loading state visual com spinner
+   - Evita flash de conteúdo durante carregamento inicial
 
 **ARQUIVO MODIFICADO:**
-- `client/src/pages/AgentesLocais.tsx` - Linha 131
+- `client/src/pages/AgentesLocais.tsx` - Múltiplas linhas (71-85, 205-215)

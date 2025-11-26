@@ -18,7 +18,7 @@
  * Data: 2025-01-26
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -69,12 +69,20 @@ export default function AgentesLocais() {
   const [screenshotAtual, setScreenshotAtual] = useState<string | null>(null);
 
   // Queries
-  const { data: agentes, refetch: refetchAgentes } = trpc.agenteLocal.listar.useQuery();
+  const { data: agentes, refetch: refetchAgentes, isLoading } = trpc.agenteLocal.listar.useQuery(undefined, {
+    staleTime: 10000, // Considerar dados frescos por 10 segundos
+    refetchOnWindowFocus: false, // Não refetch ao focar janela
+  });
+  
   const { data: agentesConectados } = trpc.agenteLocal.listarConectados.useQuery(undefined, {
     refetchInterval: 5000, // Atualizar a cada 5 segundos
+    enabled: false, // Desabilitado por enquanto, não está sendo usado
   });
 
-  const agenteAtual = agentes?.find(a => a.idAgente === agentesSelecionado);
+  // Usar useMemo para evitar re-renders desnecessários
+  const agenteAtual = useMemo(() => {
+    return agentes?.find(a => a.idAgente === agentesSelecionado);
+  }, [agentes, agentesSelecionado]);
 
   // Mutations
   const enviarComandoMutation = trpc.agenteLocal.enviarComando.useMutation({
@@ -193,6 +201,18 @@ export default function AgentesLocais() {
         return <Badge variant="outline">{status}</Badge>;
     }
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6 flex items-center justify-center">
+        <div className="text-center">
+          <RefreshCw className="w-12 h-12 animate-spin mx-auto text-purple-600 mb-4" />
+          <p className="text-gray-600">Carregando agentes...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6">
