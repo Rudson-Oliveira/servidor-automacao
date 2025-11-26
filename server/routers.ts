@@ -14,6 +14,7 @@ import { healthRouter } from "./routers/health";
 import { uriSchemesRouter } from "./routers/uri-schemes";
 import { whatsappRouter } from './routers/whatsapp';
 import { whatsappProtectionRouter } from './routers/whatsapp-protection';
+import { whatsappWebRouter } from './routers/whatsapp-web';
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -58,6 +59,7 @@ export const appRouter = router({
   // WhatsApp Anti-Bloqueio (Recrutamento)
   whatsapp: whatsappRouter,
   whatsappProtection: whatsappProtectionRouter,
+  whatsappWeb: whatsappWebRouter,
 
   // TODO: add feature routers here, e.g.
   // todo: router({

@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import WhatsAppDashboard from "@/pages/WhatsAppDashboard";
 import WhatsAppBlocked from "@/pages/WhatsAppBlocked";
+import WhatsAppSessions from "@/pages/WhatsAppSessions";
 import DashboardVision from "@/pages/DashboardVision";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -21,6 +22,7 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/whatsapp"} component={WhatsAppDashboard} />
       <Route path={"/whatsapp/blocked"} component={WhatsAppBlocked} />
+      <Route path={"/whatsapp/sessions"} component={WhatsAppSessions} />
       <Route path="/dashboard-vision" component={DashboardVision} />
       <Route path="/configuracoes/ias" component={ConfiguracoesIAs} />
       <Route path="/desktop-captures" component={DesktopCaptures} />

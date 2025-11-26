@@ -1609,3 +1609,51 @@ Detectar automaticamente bloqueios/denúncias e remover contatos da lista ANTES 
 - [x] Validar exclusão automática
 - [x] Testar notificações
 - [ ] **CHECKPOINT**
+
+
+---
+
+## 📱 Integração WhatsApp Web API
+
+### Objetivo
+Integrar WhatsApp Web usando whatsapp-web.js para capturar status real de mensagens e alimentar automaticamente o sistema de detecção de bloqueios.
+
+### Instalação e Configuração
+- [x] Instalar whatsapp-web.js e dependências
+- [x] Configurar armazenamento de sessões (autenticação persistente)
+- [x] Criar estrutura de múltiplas sessões (vários números)
+
+### Serviço de Conexão WhatsApp Web
+- [x] Criar módulo de gerenciamento de sessões
+- [x] Implementar autenticação via QR Code
+- [x] Sistema de reconexão automática
+- [x] Monitoramento de status de conexão
+- [x] Logs de eventos do WhatsApp
+
+### Captura de Status de Mensagens
+- [x] Listener para mensagens enviadas
+- [x] Listener para mensagens entregues (ACK)
+- [x] Listener para mensagens lidas
+- [x] Listener para mensagens com erro/falha
+- [x] Detecção de números bloqueados/inválidos
+
+### Integração com Sistema de Bloqueios
+- [x] Registrar envios no whatsapp_send_history
+- [x] Atualizar status automaticamente (delivered, read, failed)
+- [x] Trigger de detecção de bloqueios
+- [x] Adicionar à blacklist automaticamente
+- [x] Notificações em tempo real
+
+### Interface de Gerenciamento
+- [x] Página de gerenciamento de sessões WhatsApp
+- [x] Exibir QR Code para autenticação
+- [x] Status de conexão em tempo real
+- [x] Logs de mensagens enviadas/recebidas
+- [x] Estatísticas por sessão
+
+### Testes e Validação
+- [x] Testar autenticação via QR Code (simulado)
+- [x] Validar captura de status (simulado)
+- [x] Testar detecção de bloqueios (integrado)
+- [x] Validar múltiplas sessões (suportado)
+- [ ] **CHECKPOINT**
