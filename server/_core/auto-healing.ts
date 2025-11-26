@@ -1,5 +1,7 @@
 import os from 'os';
 import { invokeLLM } from './llm';
+import { healthChecker } from './health-checks';
+import { retryManager, retryWithBackoff } from './retry-handler';
 
 /**
  * Sistema de Auto-Healing
@@ -47,6 +49,8 @@ class AutoHealingSystem {
    * Inicia o monitoramento contínuo
    */
   startMonitoring(intervalMs: number = 30000): void {
+    // Iniciar health checks integrados
+    healthChecker.startPeriodicChecks(intervalMs);
     if (this.isMonitoring) {
       console.log('[Auto-Healing] Monitoramento já está ativo');
       return;
@@ -302,16 +306,67 @@ Forneça a resposta em JSON com os campos:
   }
 
   /**
-   * Reinicia um serviço
+   * Reinicia um serviço usando PM2 com retry inteligente
    */
   private async reiniciarServico(errorMessage: string): Promise<string> {
-    console.log(`[Auto-Healing] Tentando reiniciar serviço...`);
+    console.log(`[Auto-Healing] Tentando reiniciar serviço com retry...`);
 
-    // Identificar qual serviço precisa ser reiniciado
-    // Por enquanto, apenas registra a tentativa
-    // Em produção, poderia usar PM2, systemd, etc.
-    
-    return `Serviço identificado para reinicialização (${errorMessage.substring(0, 50)}...)`;
+    // Usar retry com backoff exponencial
+    const result = await retryManager.executeWithRetry(
+      'pm2-restart',
+      async () => {
+        return await this.executarReinicializacao();
+      },
+      {
+        maxAttempts: 3, // 3 tentativas
+        initialDelayMs: 2000, // Começar com 2s
+        backoffMultiplier: 2, // 2s, 4s, 8s
+        onRetry: (attempt, error) => {
+          console.warn(`[Auto-Healing] Tentativa ${attempt} de reinicialização falhou:`, error.message);
+        },
+      }
+    );
+
+    if (result.success) {
+      return `Serviço reiniciado com sucesso após ${result.attempts} tentativa(s) em ${result.totalTimeMs}ms`;
+    } else {
+      return `Falha ao reiniciar após ${result.attempts} tentativas: ${result.error?.message}`;
+    }
+  }
+
+  /**
+   * Executa reinicialização real (chamado pelo retry handler)
+   */
+  private async executarReinicializacao(): Promise<string> {
+    try {
+      // Verificar se PM2 está disponível
+      const { execSync } = require('child_process');
+      
+      try {
+        // Verificar se PM2 está instalado
+        execSync('which pm2', { stdio: 'ignore' });
+        
+        // Verificar se servidor está rodando com PM2
+        const pm2List = execSync('pm2 jlist', { encoding: 'utf-8' });
+        const processes = JSON.parse(pm2List);
+        const servidorProcess = processes.find((p: any) => p.name === 'servidor-automacao');
+        
+        if (servidorProcess) {
+          console.log('[Auto-Healing] Reiniciando via PM2...');
+          execSync('pm2 restart servidor-automacao --update-env', { stdio: 'inherit' });
+          return 'Serviço reiniciado com sucesso via PM2';
+        } else {
+          console.warn('[Auto-Healing] Servidor não está rodando com PM2');
+          return 'Servidor não gerenciado por PM2 - reinicialização manual necessária';
+        }
+      } catch (pm2Error) {
+        throw new Error(`PM2 não disponível: ${pm2Error}`);
+      }
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : String(err);
+      console.error('[Auto-Healing] Erro ao reiniciar serviço:', errorMsg);
+      return `Falha ao reiniciar: ${errorMsg}`;
+    }
   }
 
   /**
