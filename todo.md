@@ -1757,3 +1757,59 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Usar href diretamente no NavigationMenuLink
 - [x] Testar navegação após correção (funcionando)
 - [ ] **CHECKPOINT**
+
+
+---
+
+## 📱 Páginas WhatsApp Completas
+
+### /whatsapp/send (Envio em Massa)
+- [ ] Upload de CSV com parser automático
+- [ ] Seleção de sessão WhatsApp
+- [ ] Preview de mensagens com variáveis
+- [ ] Barra de progresso em tempo real
+- [ ] Alerta de modo anti-bloqueio
+- [ ] Estatísticas de envio
+
+### /whatsapp/templates (Templates)
+- [ ] Lista de templates por categoria
+- [ ] Editor com syntax highlighting
+- [ ] Preview lado a lado
+- [ ] Variáveis dinâmicas {{nome}}, {{vaga}}, etc
+- [ ] CRUD completo
+
+### /whatsapp/campaigns (Campanhas)
+- [ ] Lista de campanhas com filtros
+- [ ] Cards com progresso circular
+- [ ] Modal de criação com date/time picker
+- [ ] Configuração de limites e horários
+- [ ] Botões pausar/retomar/cancelar
+
+---
+
+## 📱 Menu Mobile Responsivo
+
+- [ ] Criar componente MobileMenu com Sheet
+- [ ] Drawer lateral com categorias
+- [ ] Ícones e navegação touch-friendly
+- [ ] Fechar automaticamente ao navegar
+- [ ] Integrar no Header
+
+---
+
+## 📚 Documentação /docs
+
+- [ ] Página inicial de documentação
+- [ ] Seções por funcionalidade
+- [ ] Exemplos práticos
+- [ ] FAQs
+- [ ] Guia de conexão WhatsApp
+- [ ] Troubleshooting
+
+---
+
+## ✅ Checkpoint Final
+
+- [ ] Testar todas as páginas
+- [ ] Validar responsividade
+- [ ] **CHECKPOINT**

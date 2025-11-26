@@ -9,6 +9,9 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import WhatsAppSend from "./pages/WhatsAppSend";
+import WhatsAppTemplates from "./pages/WhatsAppTemplates";
+import WhatsAppCampaigns from "./pages/WhatsAppCampaigns";
 import ConfiguracoesIAs from "./pages/ConfiguracoesIAs";
 import DesktopCaptures from "./pages/DesktopCaptures";
 import Cadastro from "./pages/Cadastro";
@@ -20,6 +23,9 @@ function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/whatsapp/send"} component={WhatsAppSend} />
+      <Route path={"/whatsapp/templates"} component={WhatsAppTemplates} />
+      <Route path={"/whatsapp/campaigns"} component={WhatsAppCampaigns} />
       <Route path={"/whatsapp"} component={WhatsAppDashboard} />
       <Route path={"/whatsapp/blocked"} component={WhatsAppBlocked} />
       <Route path={"/whatsapp/sessions"} component={WhatsAppSessions} />
