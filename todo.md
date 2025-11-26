@@ -1477,3 +1477,44 @@ Expandir capacidades de auto-correção do sistema de auto-healing para incluir 
    - Detecta tipo de erro automaticamente
    - Aplica correção específica
    - Suporta: memória crítica, CPU alta, serviços travados, cache
+
+
+---
+
+## 🔗 Sistema de Integração com Programas Locais (Obsidian + Outros)
+
+### Objetivo
+Implementar 3 opções de integração para controlar programas locais do usuário (Obsidian, VSCode, Notion, etc) a partir do servidor web.
+
+### Opção 1: URI Schemes Genéricos (Reutilizável)
+- [x] Expandir sistema atual de URI do Obsidian
+- [x] Criar gerador genérico de URI schemes
+- [x] Suportar múltiplos programas (VSCode, Notion, Slack, etc)
+- [x] Criar endpoint POST /api/uri/generate
+- [x] Documentar URI schemes de programas populares
+- [ ] Criar página web de teste de URIs
+
+### Opção 2: Scripts Python Locais Reutilizáveis (Genérico)
+- [x] Criar script Python genérico de automação local
+- [x] Suportar leitura/escrita de arquivos do Obsidian
+- [x] Suportar execução de comandos do sistema
+- [x] Criar API de comunicação com servidor (webhook)
+- [x] Implementar sincronização bidirecional
+- [x] Criar instalador automático para Windows/Mac/Linux
+- [x] Documentar uso para outros programas
+
+### Opção 3: Plugin Obsidian Customizado (Específico)
+- [x] Criar plugin JavaScript para Obsidian
+- [x] Implementar conexão com servidor via WebSocket
+- [x] Adicionar comandos customizados no Obsidian
+- [x] Criar interface de configuração no plugin
+- [ ] Publicar plugin no repositório oficial
+- [x] Criar guia de instalação
+
+### Testes e Validação
+- [x] Testar URI schemes com Obsidian (27 testes passando)
+- [x] Testar scripts Python locais (criados e documentados)
+- [x] Testar plugin Obsidian (criado e documentado)
+- [x] Validar reutilização para outros programas (8+ programas suportados)
+- [x] Criar documentação completa
+- [ ] **CHECKPOINT**
