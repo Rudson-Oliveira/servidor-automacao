@@ -11,8 +11,6 @@ import DesktopCaptures from "./pages/DesktopCaptures";
 import Cadastro from "./pages/Cadastro";
 import Login from "./pages/Login";
 import ObsidianCatalog from "./pages/ObsidianCatalog";
-import AgentesLocais from "./pages/AgentesLocais";
-import AutoHealing from "./pages/AutoHealing";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -25,8 +23,6 @@ function Router() {
       <Route path={"/cadastro"} component={Cadastro} />
       <Route path={"/login"} component={Login} />
       <Route path={"/obsidian/catalogar"} component={ObsidianCatalog} />
-      <Route path={"/agentes-locais"} component={AgentesLocais} />
-      <Route path={"/auto-healing"} component={AutoHealing} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
