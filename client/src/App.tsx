@@ -13,7 +13,6 @@ import Login from "./pages/Login";
 import ObsidianCatalog from "./pages/ObsidianCatalog";
 import AgentesLocais from "./pages/AgentesLocais";
 import AutoHealing from "./pages/AutoHealing";
-import CircuitBreakers from "./pages/CircuitBreakers";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -27,8 +26,7 @@ function Router() {
       <Route path={"/login"} component={Login} />
       <Route path={"/obsidian/catalogar"} component={ObsidianCatalog} />
       <Route path={"/agentes-locais"} component={AgentesLocais} />
-       <Route path="/auto-healing" component={AutoHealing} />
-      <Route path="/circuit-breakers" component={CircuitBreakers} />
+      <Route path={"/auto-healing"} component={AutoHealing} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

@@ -11,7 +11,6 @@ import { apisPersonalizadasRouter } from "./routers/apis-personalizadas";
 import { desktopRouter } from "./routers/desktop";
 import { agenteLocalRouter } from "./routers/agente-local";
 import { autoHealingRouter } from "./routers/auto-healing";
-import { circuitBreakerRouter } from "./routers/circuit-breaker";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -49,7 +48,6 @@ export const appRouter = router({
 
   // Auto-Healing (Auto-Diagnóstico e Auto-Correção)
   autoHealing: autoHealingRouter,
-  circuitBreaker: circuitBreakerRouter,
 
   // TODO: add feature routers here, e.g.
   // todo: router({

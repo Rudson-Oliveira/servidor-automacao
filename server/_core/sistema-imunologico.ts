@@ -19,7 +19,6 @@ import { getDb } from "../db";
 import { anticorpos, feedbackCorrecoes } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { invokeLLM } from "./llm";
-import { circuitBreakerManager, CircuitState } from "./circuit-breaker";
 
 // ============================================================================
 // TIPOS
@@ -249,28 +248,13 @@ export class SistemaImunologico {
   }
 
   /**
-   * Aplica correção preventiva com circuit breaker
+   * Aplica correção preventiva
    */
   async aplicarCorrecaoPreventiva(anticorpo: Anticorpo, erroId: string): Promise<{
     sucesso: boolean;
     tempoExecucao: number;
     observacoes: string;
   }> {
-    // Verificar se serviço está isolado por circuit breaker
-    const serviceName = `correcao_${anticorpo.preventiveFix.type}`;
-    const breaker = circuitBreakerManager.getBreaker(serviceName, {
-      failureThreshold: 3,
-      timeout: 30000, // 30 segundos
-    });
-
-    if (breaker.getState().state === CircuitState.OPEN) {
-      return {
-        sucesso: false,
-        tempoExecucao: 0,
-        observacoes: `Circuit breaker OPEN para ${serviceName}. Serviço temporariamente isolado.`,
-      };
-    }
-
     const inicio = Date.now();
     let sucesso = false;
     let observacoes = "";
