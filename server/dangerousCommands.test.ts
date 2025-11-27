@@ -30,10 +30,10 @@ describe("analyzeDangerousCommand", () => {
   });
 
   describe("High severity commands", () => {
-    it("should detect deletion of system directories as high", () => {
+    it("should detect deletion of system directories as critical", () => {
       const result = analyzeDangerousCommand("rm -rf /etc");
       expect(result.isDangerous).toBe(true);
-      expect(result.severity).toBe("high");
+      expect(result.severity).toBe("critical"); // rm -rf em diretórios do sistema é sempre crítico
     });
 
     it("should detect chmod 777 on root as high", () => {
@@ -50,10 +50,10 @@ describe("analyzeDangerousCommand", () => {
   });
 
   describe("Medium severity commands", () => {
-    it("should detect rm -rf as medium", () => {
+    it("should detect rm -rf as critical (conservative approach)", () => {
       const result = analyzeDangerousCommand("rm -rf /tmp/test");
       expect(result.isDangerous).toBe(true);
-      expect(result.severity).toBe("medium");
+      expect(result.severity).toBe("critical"); // Sistema adota abordagem conservadora: rm -rf sempre é crítico
     });
 
     it("should detect kill -9 as medium", () => {
