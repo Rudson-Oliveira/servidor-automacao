@@ -2019,3 +2019,29 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Página /obsidian/graph
 - [ ] Destaque de clusters (comunidades) (TODO: Fase 3)
 - [ ] Tooltip com preview da nota (TODO: Fase 3)
+
+
+## 🎯 3 Melhorias Obsidian - Integração Completa
+
+### 1. Integrar Monaco Editor no ObsidianVaultNotes
+- [x] Importar MonacoMarkdownEditor no ObsidianVaultNotes.tsx
+- [x] Substituir textarea por MonacoMarkdownEditor
+- [x] Configurar onSave para salvar nota
+- [x] Manter funcionalidade de preview modal
+- [x] Testar edição inline com syntax highlighting
+
+### 2. UI de Sincronização no ObsidianVaults
+- [x] Adicionar botão "Sincronizar Agora" em cada card de vault
+- [x] Adicionar toggle "Auto-Sync" (ativar/desativar)
+- [x] Mostrar status de sincronização (última sync, conflitos)
+- [x] Adicionar indicador visual (badge) de sync ativo
+- [x] Implementar loading state durante sync
+- [x] Toast notifications de sucesso/erro
+
+### 3. Parser de Wikilinks para Graph View
+- [x] Criar função parseWikilinks(content: string)
+- [x] Extrair todos os [[wikilinks]] do conteúdo
+- [x] Atualizar endpoint getGraphData para usar wikilinks reais
+- [x] Criar backlinks bidirecionais no grafo
+- [x] Atualizar ObsidianGraphView para usar dados reais
+- [x] Testar navegação entre notas conectadas

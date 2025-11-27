@@ -18,27 +18,15 @@ export default function ObsidianGraph() {
   // Carregar vaults
   const { data: vaultsData, isLoading: loadingVaults } = trpc.obsidianAdvanced.listVaults.useQuery();
 
-  // Carregar notas do vault selecionado
-  const { data: notasData, isLoading: loadingNotas } = trpc.obsidianAdvanced.listNotas.useQuery(
+  // Carregar dados do grafo com wikilinks reais
+  const { data: graphData, isLoading: loadingNotas } = trpc.obsidianAdvanced.getGraphData.useQuery(
     { vaultId: selectedVaultId! },
     { enabled: selectedVaultId !== null }
   );
 
-  // Carregar backlinks
-  const { data: backlinksData } = trpc.obsidianAdvanced.getBacklinks.useQuery(
-    { notaId: 0 }, // TODO: Carregar backlinks de todas as notas
-    { enabled: false }
-  );
-
   // Preparar dados para o grafo
-  const nodes = notasData?.notas.map((nota) => ({
-    id: nota.id,
-    titulo: nota.titulo,
-    tags: nota.tags || [],
-  })) || [];
-
-  // TODO: Construir links reais a partir de backlinks
-  const links: Array<{ source: number; target: number }> = [];
+  const nodes = graphData?.nodes || [];
+  const links = graphData?.links || [];
 
   const handleNodeClick = (nodeId: number) => {
     if (selectedVaultId) {

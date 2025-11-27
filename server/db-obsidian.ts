@@ -51,7 +51,20 @@ export async function getVaultsByUser(userId: number) {
   const db = await getDb();
   if (!db) return [];
 
-  return db.select().from(obsidianVaults).where(eq(obsidianVaults.userId, userId));
+  const vaults = await db.select().from(obsidianVaults).where(eq(obsidianVaults.userId, userId));
+  
+  // Adicionar status de auto-sync para cada vault
+  const vaultsComSync = await Promise.all(
+    vaults.map(async (vault) => {
+      const syncConfig = await getSyncConfig(vault.id);
+      return {
+        ...vault,
+        autoSyncAtivo: syncConfig?.syncAutomatico === 1,
+      };
+    })
+  );
+  
+  return vaultsComSync;
 }
 
 export async function getVaultById(vaultId: number) {

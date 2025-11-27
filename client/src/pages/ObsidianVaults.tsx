@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Plus, FolderOpen, Search, FileText, Tag, Calendar, Trash2, Edit } from "lucide-react";
+import { Plus, FolderOpen, Search, FileText, Tag, Calendar, Trash2, Edit, RefreshCw, Power, PowerOff } from "lucide-react";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
 
@@ -25,6 +25,7 @@ export default function ObsidianVaults() {
   const [, setLocation] = useLocation();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [syncingVaultId, setSyncingVaultId] = useState<number | null>(null);
 
   // Form state
   const [nome, setNome] = useState("");
@@ -34,6 +35,7 @@ export default function ObsidianVaults() {
 
   // Queries
   const { data: vaultsData, isLoading, refetch } = trpc.obsidianAdvanced.listVaults.useQuery();
+  const utils = trpc.useUtils();
 
   // Mutations
   const createVaultMutation = trpc.obsidianAdvanced.createVault.useMutation({
@@ -45,6 +47,38 @@ export default function ObsidianVaults() {
     },
     onError: (error) => {
       toast.error(`Erro ao criar vault: ${error.message}`);
+    },
+  });
+
+  const syncVaultMutation = trpc.obsidianAdvanced.syncVault.useMutation({
+    onSuccess: (data) => {
+      toast.success(`Sincronização concluída! ${data.novos} novas, ${data.modificados} modificadas`);
+      setSyncingVaultId(null);
+      utils.obsidianAdvanced.listVaults.invalidate();
+    },
+    onError: (error) => {
+      toast.error(`Erro ao sincronizar: ${error.message}`);
+      setSyncingVaultId(null);
+    },
+  });
+
+  const startAutoSyncMutation = trpc.obsidianAdvanced.startAutoSync.useMutation({
+    onSuccess: () => {
+      toast.success("Auto-sync ativado!");
+      utils.obsidianAdvanced.listVaults.invalidate();
+    },
+    onError: (error) => {
+      toast.error(`Erro ao ativar auto-sync: ${error.message}`);
+    },
+  });
+
+  const stopAutoSyncMutation = trpc.obsidianAdvanced.stopAutoSync.useMutation({
+    onSuccess: () => {
+      toast.success("Auto-sync desativado!");
+      utils.obsidianAdvanced.listVaults.invalidate();
+    },
+    onError: (error) => {
+      toast.error(`Erro ao desativar auto-sync: ${error.message}`);
     },
   });
 
@@ -68,6 +102,21 @@ export default function ObsidianVaults() {
       icone,
     });
   }, [nome, descricao, cor, icone, createVaultMutation]);
+
+  const handleSyncVault = useCallback((e: React.MouseEvent, vaultId: number) => {
+    e.stopPropagation();
+    setSyncingVaultId(vaultId);
+    syncVaultMutation.mutate({ vaultId });
+  }, [syncVaultMutation]);
+
+  const handleToggleAutoSync = useCallback((e: React.MouseEvent, vaultId: number, currentStatus: boolean) => {
+    e.stopPropagation();
+    if (currentStatus) {
+      stopAutoSyncMutation.mutate({ vaultId });
+    } else {
+      startAutoSyncMutation.mutate({ vaultId });
+    }
+  }, [startAutoSyncMutation, stopAutoSyncMutation]);
 
   // Filtrar vaults
   const filteredVaults = useMemo(() => {
@@ -164,7 +213,7 @@ export default function ObsidianVaults() {
                   </p>
                 )}
 
-                <div className="grid grid-cols-3 gap-4 pt-4 border-t">
+                <div className="grid grid-cols-3 gap-4 pt-4 border-t mb-4">
                   <div className="text-center">
                     <FileText className="w-4 h-4 mx-auto mb-1 text-muted-foreground" />
                     <p className="text-sm font-semibold">{vault.totalNotas || 0}</p>
@@ -184,6 +233,32 @@ export default function ObsidianVaults() {
                     </p>
                     <p className="text-xs text-muted-foreground">Sync</p>
                   </div>
+                </div>
+
+                {/* Sync Controls */}
+                <div className="flex gap-2 pt-4 border-t" onClick={(e) => e.stopPropagation()}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={(e) => handleSyncVault(e, vault.id)}
+                    disabled={syncingVaultId === vault.id}
+                  >
+                    <RefreshCw className={`w-4 h-4 mr-2 ${syncingVaultId === vault.id ? 'animate-spin' : ''}`} />
+                    {syncingVaultId === vault.id ? "Sincronizando..." : "Sincronizar"}
+                  </Button>
+                  <Button
+                    variant={vault.autoSyncAtivo ? "default" : "outline"}
+                    size="sm"
+                    onClick={(e) => handleToggleAutoSync(e, vault.id, vault.autoSyncAtivo)}
+                    title={vault.autoSyncAtivo ? "Desativar auto-sync" : "Ativar auto-sync"}
+                  >
+                    {vault.autoSyncAtivo ? (
+                      <Power className="w-4 h-4" />
+                    ) : (
+                      <PowerOff className="w-4 h-4" />
+                    )}
+                  </Button>
                 </div>
               </Card>
             ))}

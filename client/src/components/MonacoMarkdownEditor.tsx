@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Editor, { OnMount } from "@monaco-editor/react";
-import { editor } from "monaco-editor";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Button } from "./ui/button";
@@ -32,7 +31,7 @@ export default function MonacoMarkdownEditor({
 }: MonacoMarkdownEditorProps) {
   const [showPreview, setShowPreview] = useState(true);
   const [localValue, setLocalValue] = useState(value);
-  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+  const editorRef = useRef<any>(null);
   const autoSaveTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Sincronizar value externo com localValue

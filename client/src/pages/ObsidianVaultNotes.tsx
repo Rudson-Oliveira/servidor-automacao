@@ -28,6 +28,7 @@ import {
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import MonacoMarkdownEditor from "@/components/MonacoMarkdownEditor";
 
 /**
  * 🔗 Página de Notas do Vault Obsidian
@@ -351,13 +352,14 @@ export default function ObsidianVaultNotes() {
                           placeholder="Título da nota"
                           className="text-xl font-semibold"
                         />
-                        <Textarea
-                          value={editContent}
-                          onChange={(e) => setEditContent(e.target.value)}
-                          placeholder="Conteúdo da nota (Markdown)"
-                          rows={10}
-                          className="font-mono"
-                        />
+                        <div className="border rounded-md overflow-hidden">
+                          <MonacoMarkdownEditor
+                            value={editContent}
+                            onChange={setEditContent}
+                            onSave={handleSaveEdit}
+                            height="400px"
+                          />
+                        </div>
                         <div className="flex gap-2">
                           <Button onClick={handleSaveEdit} disabled={updateNotaMutation.isPending}>
                             <Save className="w-4 h-4 mr-2" />

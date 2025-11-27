@@ -568,4 +568,87 @@ export const obsidianAdvancedRouter = router({
         success: true,
       };
     }),
+
+  // ==================== GRAPH VIEW ====================
+
+  getGraphData: protectedProcedure
+    .input(z.object({ vaultId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const vaults = await dbObsidian.getVaultsByUser(ctx.user.id);
+      const vault = vaults.find(v => v.id === input.vaultId);
+      if (!vault) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Vault não encontrado" });
+      }
+
+      const notas = await dbObsidian.getNotasByVault(input.vaultId);
+
+      // Buscar tags para cada nota
+      const notasComTags = await Promise.all(
+        notas.map(async (nota) => {
+          const tags = await dbObsidian.getTagsByNota(nota.id);
+          return {
+            ...nota,
+            tags: tags.map(t => t.tag),
+          };
+        })
+      );
+
+      // Parser de wikilinks: extrair [[nota]] do conteúdo
+      const parseWikilinks = (content: string): string[] => {
+        const wikilinkRegex = /\[\[([^\]]+)\]\]/g;
+        const matches: string[] = [];
+        let match;
+        while ((match = wikilinkRegex.exec(content)) !== null) {
+          matches.push(match[1].trim());
+        }
+        return matches;
+      };
+
+      // Criar mapa de título -> ID para resolução de links
+      const tituloParaId = new Map<string, number>();
+      notasComTags.forEach(nota => {
+        tituloParaId.set(nota.titulo.toLowerCase(), nota.id);
+        // Suportar links com alias [[titulo|alias]]
+        const aliasMatch = nota.titulo.match(/([^|]+)/);
+        if (aliasMatch) {
+          tituloParaId.set(aliasMatch[1].toLowerCase().trim(), nota.id);
+        }
+      });
+
+      // Construir links a partir de wikilinks
+      const linksMap = new Map<string, { source: number; target: number }>();
+      
+      notasComTags.forEach(nota => {
+        const wikilinks = parseWikilinks(nota.conteudo);
+        wikilinks.forEach(linkTitulo => {
+          const targetId = tituloParaId.get(linkTitulo.toLowerCase());
+          if (targetId && targetId !== nota.id) {
+            // Criar link bidirecional (chave única para evitar duplicatas)
+            const linkKey = [nota.id, targetId].sort().join('-');
+            linksMap.set(linkKey, {
+              source: nota.id,
+              target: targetId,
+            });
+          }
+        });
+      });
+
+      // Preparar nodes para o grafo
+      const nodes = notasComTags.map(nota => ({
+        id: nota.id,
+        titulo: nota.titulo,
+        tags: nota.tags,
+        tamanho: nota.tamanho || 0,
+      }));
+
+      // Converter links para array
+      const links = Array.from(linksMap.values());
+
+      return {
+        nodes,
+        links,
+        totalNotas: nodes.length,
+        totalLinks: links.length,
+      };
+    }),
 });
