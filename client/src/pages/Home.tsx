@@ -9,6 +9,7 @@ import {
   Globe,
   Shield,
   Activity,
+  Cpu,
   Send,
   FileCode,
   Calendar,
@@ -36,6 +37,22 @@ const features = [
       { title: 'Templates', href: '/whatsapp/templates', icon: <FileCode className="h-4 w-4" /> },
       { title: 'Campanhas', href: '/whatsapp/campaigns', icon: <Calendar className="h-4 w-4" /> },
     ],
+  },
+  {
+    category: 'Agentes Locais',
+    icon: <Cpu className="h-8 w-8" />,
+    description:
+      'Controle remoto de aplicações locais via WebSocket. Execute comandos, crie notas no Obsidian e abra arquivos no VSCode remotamente.',
+    color: 'text-cyan-600',
+    bgColor: 'bg-cyan-50',
+    features: [
+      'Controle remoto via WebSocket',
+      'Comandos shell e sistema',
+      'Integração Obsidian local',
+      'Abertura de arquivos VSCode',
+      'Histórico de execuções',
+    ],
+    links: [{ title: 'Gerenciar Agentes', href: '/agentes-locais', icon: <Cpu className="h-4 w-4" /> }],
   },
   {
     category: 'Integração Obsidian',

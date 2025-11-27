@@ -26,6 +26,7 @@ import obsidianUriRouter from "../routes/obsidian-uri";
 import deepsiteRouter from "../routes/deepsite";
 import { manusExplicarRouter } from "../routes/manus-explicar";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
+import { wsAgentServer } from "./websocket-agente";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -99,6 +100,9 @@ async function startServer() {
   if (port !== preferredPort) {
     console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
   }
+
+  // Inicializar WebSocket para agentes
+  wsAgentServer.init(server);
 
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
