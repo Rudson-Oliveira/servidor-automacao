@@ -169,8 +169,25 @@ export const obsidianAdvancedRouter = router({
         tags: z.array(z.string()).optional(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const { notaId, tags, ...updates } = input;
+
+      // Validar permissões: usuário deve ser dono do vault
+      const nota = await dbObsidian.getNotaById(notaId);
+      if (!nota) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Nota não encontrada",
+        });
+      }
+
+      const vault = await dbObsidian.getVaultById(nota.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para editar esta nota",
+        });
+      }
 
       await dbObsidian.updateNota(notaId, {
         ...updates,
@@ -208,12 +225,21 @@ export const obsidianAdvancedRouter = router({
 
   deleteNota: protectedProcedure
     .input(z.object({ notaId: z.number() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const nota = await dbObsidian.getNotaById(input.notaId);
       if (!nota) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Nota não encontrada",
+        });
+      }
+
+      // Validar permissões: usuário deve ser dono do vault
+      const vault = await dbObsidian.getVaultById(nota.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para deletar esta nota",
         });
       }
 

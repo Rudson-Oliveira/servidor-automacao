@@ -2072,3 +2072,23 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Resolver títulos de notas para IDs
 - [x] Adicionar contexto do backlink (linha onde aparece)
 - [x] Otimizar queries de "quem menciona esta nota"
+
+
+## 🔴 Funcionalidades Críticas de Segurança e Funcionalidade
+
+### 1. Download/Exportação Bidirecional (Banco → Filesystem)
+- [x] Implementar função writeNotaToFilesystem(nota, vaultPath)
+- [x] Criar diretórios recursivamente se não existirem
+- [x] Escrever conteúdo da nota em arquivo .md
+- [x] Preservar frontmatter se existir
+- [x] Atualizar syncVault para detectar notas apenas no banco
+- [x] Criar arquivos .md para notas novas do banco
+- [x] Atualizar arquivos existentes se versão do banco for mais recente
+- [x] Testar sincronização bidirecional completa
+
+### 2. Validação de Permissões (Segurança)
+- [x] Adicionar validação em updateNota (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em deleteNota (verificar vault.userId === ctx.user.id)
+- [ ] Adicionar validação em getNota (opcional, para privacidade)
+- [x] Retornar TRPCError com code FORBIDDEN se não autorizado
+- [x] Testar tentativa de edição/deleção por usuário não autorizado

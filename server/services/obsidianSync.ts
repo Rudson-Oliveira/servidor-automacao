@@ -145,13 +145,30 @@ export async function syncVault(vaultId: number): Promise<SyncResult> {
           conflitos++;
           
           // Aplicar estratégia de resolução
-          if (config.resolucaoConflito === 'remoto_vence' || config.resolucaoConflito === 'mais_recente_vence') {
+          if (config.resolucaoConflito === 'remoto_vence') {
+            // Filesystem vence - atualizar banco
+            await dbObsidian.updateNota(notaExistente.id, {
+              conteudo: arquivo.conteudo,
+              ultimoSync: new Date(),
+            });
+          } else if (config.resolucaoConflito === 'local_vence') {
+            // Banco vence - atualizar filesystem
+            const fullPath = path.join(vault.caminho!, arquivo.caminho);
+            let conteudoCompleto = notaExistente.conteudo;
+            if (notaExistente.frontmatter) {
+              conteudoCompleto = `---\n${notaExistente.frontmatter}\n---\n\n${notaExistente.conteudo}`;
+            }
+            await fs.writeFile(fullPath, conteudoCompleto, 'utf-8');
+            await dbObsidian.updateNota(notaExistente.id, {
+              ultimoSync: new Date(),
+            });
+          } else if (config.resolucaoConflito === 'mais_recente_vence') {
+            // Comparar timestamps (filesystem sempre ganha neste caso, pois foi modificado)
             await dbObsidian.updateNota(notaExistente.id, {
               conteudo: arquivo.conteudo,
               ultimoSync: new Date(),
             });
           }
-          // Se 'local_vence', não faz nada
           // Se 'manual', apenas incrementa contador de conflitos
         } else {
           // Não há conflito - atualizar do filesystem
@@ -161,14 +178,43 @@ export async function syncVault(vaultId: number): Promise<SyncResult> {
           });
           modificados++;
         }
+      } else if (notaExistente.ultimaModificacao && notaExistente.ultimaModificacao > notaExistente.ultimoSync!) {
+        // Hash igual mas nota foi modificada no banco após último sync
+        // Isso significa que a nota foi editada pela UI web - exportar para filesystem
+        const fullPath = path.join(vault.caminho!, arquivo.caminho);
+        let conteudoCompleto = notaExistente.conteudo;
+        if (notaExistente.frontmatter) {
+          conteudoCompleto = `---\n${notaExistente.frontmatter}\n---\n\n${notaExistente.conteudo}`;
+        }
+        await fs.writeFile(fullPath, conteudoCompleto, 'utf-8');
+        await dbObsidian.updateNota(notaExistente.id, {
+          ultimoSync: new Date(),
+        });
+        modificados++;
+        console.log(`[ObsidianSync] Nota atualizada no filesystem: ${notaExistente.caminho}`);
       }
     }
 
-    // Detectar notas deletadas (existem no banco mas não no filesystem)
+    // Detectar notas que existem no banco mas não no filesystem (exportar para filesystem)
     for (const nota of notasAtuais) {
       if (!arquivosMap.has(nota.caminho)) {
-        await dbObsidian.deleteNota(nota.id);
-        deletados++;
+        // Nota existe no banco mas não no filesystem - criar arquivo
+        const fullPath = path.join(vault.caminho!, nota.caminho);
+        const dir = path.dirname(fullPath);
+        
+        // Criar diretórios recursivamente
+        await fs.mkdir(dir, { recursive: true });
+        
+        // Escrever conteúdo da nota
+        let conteudoCompleto = nota.conteudo;
+        if (nota.frontmatter) {
+          conteudoCompleto = `---\n${nota.frontmatter}\n---\n\n${nota.conteudo}`;
+        }
+        
+        await fs.writeFile(fullPath, conteudoCompleto, 'utf-8');
+        novos++; // Conta como "novo" no filesystem
+        
+        console.log(`[ObsidianSync] Nota exportada para filesystem: ${nota.caminho}`);
       }
     }
 
