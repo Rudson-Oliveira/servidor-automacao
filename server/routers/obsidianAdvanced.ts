@@ -89,7 +89,16 @@ export const obsidianAdvancedRouter = router({
         tags: z.array(z.string()).optional(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Validar permissões: usuário deve ser dono do vault
+      const vault = await dbObsidian.getVaultById(input.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para criar notas neste vault",
+        });
+      }
+
       const { tags, ...notaData } = input;
 
       const result = await dbObsidian.createNota({
@@ -463,7 +472,7 @@ export const obsidianAdvancedRouter = router({
       return { success: true, importadas: notasImportadas.length, erros, notas: notasImportadas };
     }),
 
-  importVault: protectedProcedure
+  importNotas: protectedProcedure
     .input(
       z.object({
         vaultId: z.number(),
@@ -478,7 +487,16 @@ export const obsidianAdvancedRouter = router({
         ),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Validar permissões: usuário deve ser dono do vault
+      const vault = await dbObsidian.getVaultById(input.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para importar notas neste vault",
+        });
+      }
+
       let importadas = 0;
       let erros = 0;
 
@@ -635,7 +653,16 @@ export const obsidianAdvancedRouter = router({
         descricao: z.string().optional(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Validar permissões: usuário deve ser dono do vault
+      const vault = await dbObsidian.getVaultById(input.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para criar backups deste vault",
+        });
+      }
+
       // TODO: Implementar criação real de backup (zip + upload S3)
       const notas = await dbObsidian.getNotasByVault(input.vaultId);
 
@@ -705,7 +732,16 @@ export const obsidianAdvancedRouter = router({
         backupRetencao: z.number().optional(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Validar permissões: usuário deve ser dono do vault
+      const vault = await dbObsidian.getVaultById(input.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para modificar as configurações de sync deste vault",
+        });
+      }
+
       const { vaultId, ...config } = input;
       await dbObsidian.createOrUpdateSyncConfig(vaultId, config);
 

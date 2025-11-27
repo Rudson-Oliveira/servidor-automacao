@@ -2106,3 +2106,11 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Adicionar validação em getSyncConfig (verificar vault.userId === ctx.user.id)
 - [x] Criar testes unitários para validação de leitura não autorizada (11/11 testes passando)
 - [x] Testar tentativa de leitura de notas de outro usuário (todos retornam FORBIDDEN)
+
+### 4. Validação de Permissões em Endpoints de Escrita (CRÍTICO)
+- [x] Adicionar validação em createNota (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em importNotas (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em createBackup (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em updateSyncConfig (verificar vault.userId === ctx.user.id)
+- [x] Criar testes unitários para validação de escrita não autorizada (4/4 testes passando)
+- [x] Testar tentativa de criação/modificação por usuário não autorizado (todos retornam FORBIDDEN)
