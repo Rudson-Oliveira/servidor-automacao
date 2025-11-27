@@ -150,6 +150,15 @@ export default function Home() {
                       size="sm" 
                       className="gap-2"
                       onClick={() => window.location.href = link.href}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          window.location.href = link.href;
+                        }
+                      }}
+                      aria-label={`Navegar para ${link.title}`}
+                      role="link"
+                      tabIndex={0}
                     >
                       {link.icon}
                       {link.title}

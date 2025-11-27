@@ -1,44 +1,56 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
-import WhatsAppDashboard from "@/pages/WhatsAppDashboard";
-import WhatsAppBlocked from "@/pages/WhatsAppBlocked";
-import WhatsAppSessions from "@/pages/WhatsAppSessions";
-import DashboardVision from "@/pages/DashboardVision";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-import WhatsAppSend from "./pages/WhatsAppSend";
-import WhatsAppTemplates from "./pages/WhatsAppTemplates";
-import WhatsAppCampaigns from "./pages/WhatsAppCampaigns";
-import ConfiguracoesIAs from "./pages/ConfiguracoesIAs";
-import DesktopCaptures from "./pages/DesktopCaptures";
-import Cadastro from "./pages/Cadastro";
-import Login from "./pages/Login";
-import ObsidianCatalog from "./pages/ObsidianCatalog";
+
+// Lazy load pages for better performance
+const NotFound = lazy(() => import("@/pages/NotFound"));
+const WhatsAppDashboard = lazy(() => import("@/pages/WhatsAppDashboard"));
+const WhatsAppBlocked = lazy(() => import("@/pages/WhatsAppBlocked"));
+const WhatsAppSessions = lazy(() => import("@/pages/WhatsAppSessions"));
+const DashboardVision = lazy(() => import("@/pages/DashboardVision"));
+const WhatsAppSend = lazy(() => import("./pages/WhatsAppSend"));
+const WhatsAppTemplates = lazy(() => import("./pages/WhatsAppTemplates"));
+const WhatsAppCampaigns = lazy(() => import("./pages/WhatsAppCampaigns"));
+const ConfiguracoesIAs = lazy(() => import("./pages/ConfiguracoesIAs"));
+const DesktopCaptures = lazy(() => import("./pages/DesktopCaptures"));
+const Cadastro = lazy(() => import("./pages/Cadastro"));
+const Login = lazy(() => import("./pages/Login"));
+const ObsidianCatalog = lazy(() => import("./pages/ObsidianCatalog"));
+
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+  </div>
+);
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/whatsapp/send"} component={WhatsAppSend} />
-      <Route path={"/whatsapp/templates"} component={WhatsAppTemplates} />
-      <Route path={"/whatsapp/campaigns"} component={WhatsAppCampaigns} />
-      <Route path={"/whatsapp"} component={WhatsAppDashboard} />
-      <Route path={"/whatsapp/blocked"} component={WhatsAppBlocked} />
-      <Route path={"/whatsapp/sessions"} component={WhatsAppSessions} />
-      <Route path="/dashboard-vision" component={DashboardVision} />
-      <Route path="/configuracoes/ias" component={ConfiguracoesIAs} />
-      <Route path="/desktop-captures" component={DesktopCaptures} />
-      <Route path={"/cadastro"} component={Cadastro} />
-      <Route path={"/login"} component={Login} />
-      <Route path={"/obsidian/catalogar"} component={ObsidianCatalog} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
+    <Suspense fallback={<LoadingFallback />}>
+      <Switch>
+        <Route path={"/"} component={Home} />
+        <Route path={"/whatsapp/send"} component={WhatsAppSend} />
+        <Route path={"/whatsapp/templates"} component={WhatsAppTemplates} />
+        <Route path={"/whatsapp/campaigns"} component={WhatsAppCampaigns} />
+        <Route path={"/whatsapp"} component={WhatsAppDashboard} />
+        <Route path={"/whatsapp/blocked"} component={WhatsAppBlocked} />
+        <Route path={"/whatsapp/sessions"} component={WhatsAppSessions} />
+        <Route path="/dashboard-vision" component={DashboardVision} />
+        <Route path="/configuracoes/ias" component={ConfiguracoesIAs} />
+        <Route path="/desktop-captures" component={DesktopCaptures} />
+        <Route path={"/cadastro"} component={Cadastro} />
+        <Route path={"/login"} component={Login} />
+        <Route path={"/obsidian/catalogar"} component={ObsidianCatalog} />
+        <Route path={"/404"} component={NotFound} />
+        {/* Final fallback route */}
+        <Route component={NotFound} />
+      </Switch>
+    </Suspense>
   );
 }
 
