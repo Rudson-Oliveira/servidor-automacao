@@ -47,6 +47,21 @@ describe("🎯 3 Melhorias Obsidian - Testes de Integração", () => {
     });
     vaultId = vaultResult.vaultId;
 
+    // Adicionar caminho ao vault para permitir sincronização
+    const fs = await import('fs/promises');
+    const testVaultPath = "/tmp/test-vault-melhorias";
+    
+    // Criar diretório de teste se não existir
+    try {
+      await fs.mkdir(testVaultPath, { recursive: true });
+    } catch (error) {
+      // Ignorar se já existe
+    }
+    
+    await dbObsidian.updateVault(vaultId, {
+      caminho: testVaultPath,
+    });
+
     // Criar notas com wikilinks para testar Graph View
     const nota1 = await caller.obsidianAdvanced.createNota({
       vaultId,

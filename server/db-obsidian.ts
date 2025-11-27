@@ -75,6 +75,13 @@ export async function getVaultById(vaultId: number) {
   return vault;
 }
 
+export async function updateVault(vaultId: number, updates: Partial<Omit<ObsidianVault, "id" | "userId" | "createdAt">>) {
+  const db = await getDb();
+  if (!db) return;
+
+  await db.update(obsidianVaults).set(updates).where(eq(obsidianVaults.id, vaultId));
+}
+
 export async function updateVaultStats(vaultId: number, stats: { totalNotas?: number; totalTags?: number; totalBacklinks?: number }) {
   const db = await getDb();
   if (!db) return;
