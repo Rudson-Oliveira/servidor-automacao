@@ -56,7 +56,7 @@ export const obsidianAdvancedRouter = router({
 
   getVault: protectedProcedure
     .input(z.object({ vaultId: z.number() }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       const vault = await dbObsidian.getVaultById(input.vaultId);
       if (!vault) {
         throw new TRPCError({
@@ -64,6 +64,15 @@ export const obsidianAdvancedRouter = router({
           message: "Vault não encontrado",
         });
       }
+
+      // Validar permissões: usuário deve ser dono do vault
+      if (vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para acessar este vault",
+        });
+      }
+
       return vault;
     }),
 
@@ -116,7 +125,16 @@ export const obsidianAdvancedRouter = router({
 
   listNotas: protectedProcedure
     .input(z.object({ vaultId: z.number() }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
+      // Validar permissões: usuário deve ser dono do vault
+      const vault = await dbObsidian.getVaultById(input.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para acessar as notas deste vault",
+        });
+      }
+
       const notas = await dbObsidian.getNotasByVault(input.vaultId);
       
       // Buscar tags para cada nota
@@ -138,12 +156,21 @@ export const obsidianAdvancedRouter = router({
 
   getNota: protectedProcedure
     .input(z.object({ notaId: z.number() }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       const nota = await dbObsidian.getNotaById(input.notaId);
       if (!nota) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Nota não encontrada",
+        });
+      }
+
+      // Validar permissões: usuário deve ser dono do vault
+      const vault = await dbObsidian.getVaultById(nota.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para acessar esta nota",
         });
       }
 
@@ -265,7 +292,16 @@ export const obsidianAdvancedRouter = router({
         query: z.string().min(1),
       })
     )
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
+      // Validar permissões: usuário deve ser dono do vault
+      const vault = await dbObsidian.getVaultById(input.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para buscar notas neste vault",
+        });
+      }
+
       const resultados = await dbObsidian.searchNotas(input.vaultId, input.query);
 
       return {
@@ -278,7 +314,16 @@ export const obsidianAdvancedRouter = router({
 
   listTags: protectedProcedure
     .input(z.object({ vaultId: z.number() }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
+      // Validar permissões: usuário deve ser dono do vault
+      const vault = await dbObsidian.getVaultById(input.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para acessar as tags deste vault",
+        });
+      }
+
       const tags = await dbObsidian.getTagsByVault(input.vaultId);
       return {
         tags,
@@ -290,7 +335,24 @@ export const obsidianAdvancedRouter = router({
 
   getNotaHistorico: protectedProcedure
     .input(z.object({ notaId: z.number() }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
+      // Validar permissões: usuário deve ser dono do vault da nota
+      const nota = await dbObsidian.getNotaById(input.notaId);
+      if (!nota) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Nota não encontrada",
+        });
+      }
+
+      const vault = await dbObsidian.getVaultById(nota.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para acessar o histórico desta nota",
+        });
+      }
+
       const historico = await dbObsidian.getNotaHistorico(input.notaId);
       return {
         historico,
@@ -302,7 +364,24 @@ export const obsidianAdvancedRouter = router({
 
   getBacklinks: protectedProcedure
     .input(z.object({ notaId: z.number() }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
+      // Validar permissões: usuário deve ser dono do vault da nota
+      const nota = await dbObsidian.getNotaById(input.notaId);
+      if (!nota) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Nota não encontrada",
+        });
+      }
+
+      const vault = await dbObsidian.getVaultById(nota.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para acessar os backlinks desta nota",
+        });
+      }
+
       const backlinks = await dbObsidian.getBacklinksByNota(input.notaId);
       return backlinks;
     }),
@@ -449,12 +528,20 @@ export const obsidianAdvancedRouter = router({
 
   exportVault: protectedProcedure
     .input(z.object({ vaultId: z.number() }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       const vault = await dbObsidian.getVaultById(input.vaultId);
       if (!vault) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Vault não encontrado",
+        });
+      }
+
+      // Validar permissões: usuário deve ser dono do vault
+      if (vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para exportar este vault",
         });
       }
 
@@ -571,7 +658,16 @@ export const obsidianAdvancedRouter = router({
 
   listBackups: protectedProcedure
     .input(z.object({ vaultId: z.number() }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
+      // Validar permissões: usuário deve ser dono do vault
+      const vault = await dbObsidian.getVaultById(input.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para acessar os backups deste vault",
+        });
+      }
+
       const backups = await dbObsidian.getBackupsByVault(input.vaultId);
       return {
         backups,
@@ -583,7 +679,16 @@ export const obsidianAdvancedRouter = router({
 
   getSyncConfig: protectedProcedure
     .input(z.object({ vaultId: z.number() }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
+      // Validar permissões: usuário deve ser dono do vault
+      const vault = await dbObsidian.getVaultById(input.vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Você não tem permissão para acessar as configurações de sync deste vault",
+        });
+      }
+
       const config = await dbObsidian.getSyncConfig(input.vaultId);
       return config;
     }),

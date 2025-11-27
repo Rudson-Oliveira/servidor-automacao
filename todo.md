@@ -2089,6 +2089,20 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 ### 2. Validação de Permissões (Segurança)
 - [x] Adicionar validação em updateNota (verificar vault.userId === ctx.user.id)
 - [x] Adicionar validação em deleteNota (verificar vault.userId === ctx.user.id)
-- [ ] Adicionar validação em getNota (opcional, para privacidade)
+- [ ] Adicionar validação em getNota (CRÍTICO para privacidade)
 - [x] Retornar TRPCError com code FORBIDDEN se não autorizado
 - [x] Testar tentativa de edição/deleção por usuário não autorizado
+
+### 3. Validação de Permissões em Endpoints de Leitura (CRÍTICO)
+- [x] Adicionar validação em getNota (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em listNotas (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em searchNotas (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em getVault (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em listTags (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em getNotaHistorico (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em getBacklinks (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em exportVault (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em listBackups (verificar vault.userId === ctx.user.id)
+- [x] Adicionar validação em getSyncConfig (verificar vault.userId === ctx.user.id)
+- [x] Criar testes unitários para validação de leitura não autorizada (11/11 testes passando)
+- [x] Testar tentativa de leitura de notas de outro usuário (todos retornam FORBIDDEN)
