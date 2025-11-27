@@ -4,5 +4,8 @@
 # WebSocket client
 websocket-client==1.7.0
 
+# Screenshot capture
+Pillow==10.2.0
+
 # Utilitários
 python-dotenv==1.0.0

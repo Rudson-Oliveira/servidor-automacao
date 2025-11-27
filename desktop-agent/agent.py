@@ -8,14 +8,26 @@ import json
 import logging
 import platform
 import socket
+import subprocess
 import sys
 import threading
 import time
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, Dict, Any
+import base64
+import os
 
 import websocket
+
+# Tentar importar Pillow para screenshots
+try:
+    from PIL import ImageGrab
+    PILLOW_AVAILABLE = True
+except ImportError:
+    PILLOW_AVAILABLE = False
+    print("⚠️ Pillow não instalado. Screenshots não estarão disponíveis.")
+    print("💡 Execute: pip install Pillow")
 
 
 class DesktopAgent:
@@ -107,6 +119,7 @@ class DesktopAgent:
     def connect(self):
         """Conecta ao servidor WebSocket"""
         server_url = self.config['server']['url']
+        max_reconnect = self.config['server'].get('max_reconnect_attempts', 10)
         
         self.logger.info(f"🔌 Conectando ao servidor: {server_url}")
         
@@ -119,84 +132,67 @@ class DesktopAgent:
             on_close=self._on_close
         )
         
-        # Executar em thread separada
-        ws_thread = threading.Thread(target=self._run_websocket, daemon=True)
+        # Conectar em thread separada
+        ws_thread = threading.Thread(target=self.ws.run_forever, daemon=True)
         ws_thread.start()
-    
-    def _run_websocket(self):
-        """Executa o WebSocket em loop"""
-        while self.should_run:
-            try:
-                self.ws.run_forever()
-                
-                # Se desconectou, tentar reconectar
-                if self.should_run:
-                    self._handle_reconnect()
-                    
-            except Exception as e:
-                self.logger.error(f"❌ Erro no WebSocket: {e}")
-                if self.should_run:
-                    self._handle_reconnect()
-    
-    def _handle_reconnect(self):
-        """Gerencia reconexão automática"""
-        max_attempts = self.config['server'].get('max_reconnect_attempts', 10)
-        interval = self.config['server'].get('reconnect_interval', 5)
         
-        self.reconnect_attempts += 1
+        # Aguardar conexão
+        timeout = 10
+        start_time = time.time()
+        while not self.connected and (time.time() - start_time) < timeout:
+            time.sleep(0.1)
         
-        if self.reconnect_attempts > max_attempts:
-            self.logger.error(f"❌ Máximo de tentativas de reconexão atingido ({max_attempts})")
-            self.stop()
-            return
-        
-        self.logger.warning(
-            f"🔄 Tentando reconectar em {interval}s "
-            f"(tentativa {self.reconnect_attempts}/{max_attempts})"
-        )
-        time.sleep(interval)
+        if not self.connected:
+            self.logger.error("❌ Timeout ao conectar")
+            if self.reconnect_attempts < max_reconnect:
+                self.reconnect_attempts += 1
+                delay = min(2 ** self.reconnect_attempts, 60)
+                self.logger.info(f"🔄 Tentando reconectar em {delay}s (tentativa {self.reconnect_attempts}/{max_reconnect})")
+                time.sleep(delay)
+                self.connect()
+            else:
+                self.logger.error("❌ Número máximo de tentativas de reconexão atingido")
+                self.stop()
     
     def _on_open(self, ws):
         """Callback quando conexão é estabelecida"""
+        self.logger.info("Websocket connected")
         self.connected = True
         self.reconnect_attempts = 0
         self.logger.info("✅ Conexão estabelecida com sucesso!")
         
-        # Enviar autenticação
+        # Autenticar
         self._authenticate()
     
-    def _on_message(self, ws, message: str):
+    def _on_message(self, ws, message):
         """Callback quando mensagem é recebida"""
         try:
             data = json.loads(message)
             msg_type = data.get('type')
             
-            self.logger.debug(f"📥 Mensagem recebida: {msg_type}")
+            self.logger.debug(f"📨 Mensagem recebida: {msg_type}")
             
-            # Processar mensagem
             if msg_type == 'welcome':
-                self.logger.info(f"👋 {data.get('message')}")
+                self.logger.info(f"👋 {data.get('message', 'Bem-vindo!')}")
             
             elif msg_type == 'auth_success':
                 self._on_auth_success(data)
             
-            elif msg_type == 'heartbeat_ack':
-                self.logger.debug("💓 Heartbeat ACK recebido")
+            elif msg_type == 'auth_error':
+                self.logger.error(f"❌ Erro de autenticação: {data.get('message')}")
+                self.stop()
             
             elif msg_type == 'command':
                 self._on_command(data)
             
-            elif msg_type == 'error':
-                self.logger.error(f"❌ Erro do servidor: {data.get('error')}")
-                if not self.authenticated:
-                    self.logger.error("❌ Falha na autenticação. Verifique seu token.")
-                    self.stop()
+            elif msg_type == 'pong':
+                self.logger.debug("💓 Pong recebido")
             
             else:
                 self.logger.warning(f"⚠️ Tipo de mensagem desconhecido: {msg_type}")
                 
-        except json.JSONDecodeError:
-            self.logger.error(f"❌ Mensagem inválida recebida: {message}")
+        except json.JSONDecodeError as e:
+            self.logger.error(f"❌ Erro ao decodificar mensagem: {e}")
         except Exception as e:
             self.logger.error(f"❌ Erro ao processar mensagem: {e}")
     
@@ -300,26 +296,206 @@ class DesktopAgent:
         command_data = data.get('commandData', {})
         
         self.logger.info(f"📋 Comando recebido: {command_type} (ID: {command_id})")
-        
-        # Por enquanto, apenas logar o comando
-        # Nas próximas fases, vamos implementar a execução
-        self.logger.info(f"   Tipo: {command_type}")
         self.logger.info(f"   Dados: {command_data}")
         
-        # Enviar resultado de sucesso (por enquanto)
-        result_message = {
-            'type': 'command_result',
-            'commandId': command_id,
-            'success': True,
-            'result': {
-                'message': f'Comando {command_type} recebido (execução não implementada ainda)',
-                'timestamp': datetime.now().isoformat()
-            },
-            'executionTimeMs': 0
-        }
+        start_time = time.time()
         
-        self._send(result_message)
-        self.logger.info(f"✅ Resultado enviado para comando {command_id}")
+        try:
+            # Executar comando baseado no tipo
+            if command_type == 'shell':
+                result = self._execute_shell_command(command_data)
+            elif command_type == 'screenshot':
+                result = self._capture_screenshot(command_data)
+            else:
+                result = {
+                    'success': False,
+                    'error': f'Tipo de comando não suportado: {command_type}'
+                }
+            
+            execution_time_ms = int((time.time() - start_time) * 1000)
+            
+            # Enviar resultado
+            result_message = {
+                'type': 'command_result',
+                'commandId': command_id,
+                'success': result.get('success', False),
+                'result': result.get('data', {}),
+                'error': result.get('error'),
+                'executionTimeMs': execution_time_ms
+            }
+            
+            self._send(result_message)
+            
+            if result.get('success'):
+                self.logger.info(f"✅ Comando {command_id} executado com sucesso ({execution_time_ms}ms)")
+            else:
+                self.logger.error(f"❌ Comando {command_id} falhou: {result.get('error')}")
+                
+        except Exception as e:
+            execution_time_ms = int((time.time() - start_time) * 1000)
+            self.logger.error(f"❌ Erro ao executar comando {command_id}: {e}")
+            
+            # Enviar erro
+            error_message = {
+                'type': 'command_result',
+                'commandId': command_id,
+                'success': False,
+                'error': str(e),
+                'executionTimeMs': execution_time_ms
+            }
+            
+            self._send(error_message)
+    
+    def _execute_shell_command(self, command_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Executa comando shell
+        
+        Args:
+            command_data: {
+                'command': str,  # Comando a executar
+                'timeout': int,  # Timeout em segundos (padrão: 30)
+                'cwd': str       # Diretório de trabalho (opcional)
+            }
+        
+        Returns:
+            {
+                'success': bool,
+                'data': {
+                    'stdout': str,
+                    'stderr': str,
+                    'returncode': int,
+                    'command': str
+                },
+                'error': str (se falhou)
+            }
+        """
+        command = command_data.get('command')
+        timeout = command_data.get('timeout', 30)
+        cwd = command_data.get('cwd')
+        
+        if not command:
+            return {
+                'success': False,
+                'error': 'Comando não especificado'
+            }
+        
+        self.logger.info(f"🔧 Executando comando shell: {command}")
+        
+        try:
+            # Executar comando
+            result = subprocess.run(
+                command,
+                shell=True,
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+                cwd=cwd
+            )
+            
+            stdout = result.stdout.strip()
+            stderr = result.stderr.strip()
+            returncode = result.returncode
+            
+            self.logger.info(f"   Return code: {returncode}")
+            if stdout:
+                self.logger.debug(f"   Stdout: {stdout[:200]}...")
+            if stderr:
+                self.logger.debug(f"   Stderr: {stderr[:200]}...")
+            
+            return {
+                'success': returncode == 0,
+                'data': {
+                    'stdout': stdout,
+                    'stderr': stderr,
+                    'returncode': returncode,
+                    'command': command
+                },
+                'error': stderr if returncode != 0 else None
+            }
+            
+        except subprocess.TimeoutExpired:
+            return {
+                'success': False,
+                'error': f'Comando excedeu timeout de {timeout}s'
+            }
+        except Exception as e:
+            return {
+                'success': False,
+                'error': f'Erro ao executar comando: {str(e)}'
+            }
+    
+    def _capture_screenshot(self, command_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Captura screenshot da tela
+        
+        Args:
+            command_data: {
+                'format': str,  # Formato da imagem (png, jpg) - padrão: png
+                'quality': int  # Qualidade JPEG (1-100) - padrão: 85
+            }
+        
+        Returns:
+            {
+                'success': bool,
+                'data': {
+                    'image_base64': str,  # Imagem em base64
+                    'width': int,
+                    'height': int,
+                    'format': str,
+                    'size_bytes': int
+                },
+                'error': str (se falhou)
+            }
+        """
+        if not PILLOW_AVAILABLE:
+            return {
+                'success': False,
+                'error': 'Pillow não está instalado. Execute: pip install Pillow'
+            }
+        
+        image_format = command_data.get('format', 'png').lower()
+        quality = command_data.get('quality', 85)
+        
+        self.logger.info(f"📸 Capturando screenshot (formato: {image_format})")
+        
+        try:
+            # Capturar screenshot
+            screenshot = ImageGrab.grab()
+            
+            # Converter para bytes
+            from io import BytesIO
+            buffer = BytesIO()
+            
+            if image_format == 'jpg' or image_format == 'jpeg':
+                screenshot.save(buffer, format='JPEG', quality=quality)
+            else:
+                screenshot.save(buffer, format='PNG')
+            
+            image_bytes = buffer.getvalue()
+            image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+            
+            width, height = screenshot.size
+            size_bytes = len(image_bytes)
+            
+            self.logger.info(f"   Tamanho: {width}x{height}")
+            self.logger.info(f"   Bytes: {size_bytes:,}")
+            
+            return {
+                'success': True,
+                'data': {
+                    'image_base64': image_base64,
+                    'width': width,
+                    'height': height,
+                    'format': image_format,
+                    'size_bytes': size_bytes
+                }
+            }
+            
+        except Exception as e:
+            return {
+                'success': False,
+                'error': f'Erro ao capturar screenshot: {str(e)}'
+            }
     
     def _send(self, message: Dict[str, Any]):
         """Envia mensagem para o servidor"""
@@ -348,29 +524,33 @@ class DesktopAgent:
         self.connect()
         
         try:
-            # Manter vivo
+            # Manter agent rodando
             while self.should_run:
                 time.sleep(1)
                 
+                # Verificar se ainda está conectado
+                if not self.connected and self.should_run:
+                    self.logger.warning("⚠️ Conexão perdida. Tentando reconectar...")
+                    self.connect()
+                    
         except KeyboardInterrupt:
-            self.logger.info("\n⚠️ Interrupção detectada (Ctrl+C)")
+            self.logger.info("\n🛑 Interrompido pelo usuário")
             self.stop()
     
     def stop(self):
-        """Para o agent gracefully"""
-        self.logger.info("🛑 Parando Desktop Agent...")
+        """Para o agent"""
+        self.logger.info("🛑 Encerrando Desktop Agent...")
         self.should_run = False
         
         if self.ws:
             self.ws.close()
         
-        self.logger.info("👋 Desktop Agent finalizado")
-        sys.exit(0)
+        self.logger.info("👋 Desktop Agent encerrado")
 
 
-def main():
-    """Função principal"""
-    print("""
+def print_banner():
+    """Imprime banner do Desktop Agent"""
+    banner = """
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
 ║           🖥️  DESKTOP AGENT - CONTROLE REMOTO            ║
@@ -378,12 +558,16 @@ def main():
 ║  Conecta ao servidor e permite controle remoto do PC     ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
-    """)
+    """
+    print(banner)
+
+
+def main():
+    """Função principal"""
+    print_banner()
     
-    # Criar agent
+    # Criar e executar agent
     agent = DesktopAgent()
-    
-    # Executar
     agent.run()
 
 

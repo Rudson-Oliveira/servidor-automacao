@@ -8,6 +8,7 @@ import {
   updateCommandStatus,
   addLog,
 } from "../db-desktop-control";
+import { storagePut } from "../storage";
 
 interface AuthenticatedWebSocket extends WebSocket {
   agentId?: number;
@@ -241,11 +242,58 @@ export class DesktopAgentServer {
 
     const { commandId, success, result, error, executionTimeMs } = message;
 
+    let processedResult = result;
+
+    // Se o resultado contém screenshot, fazer upload para S3
+    if (success && result?.image_base64) {
+      try {
+        console.log(`[DesktopAgent] Processando screenshot do comando ${commandId}...`);
+        
+        // Converter base64 para Buffer
+        const imageBuffer = Buffer.from(result.image_base64, 'base64');
+        
+        // Determinar extensão baseado no formato
+        const format = result.format || 'png';
+        const extension = format === 'jpg' || format === 'jpeg' ? 'jpg' : 'png';
+        
+        // Gerar nome único para o arquivo
+        const timestamp = Date.now();
+        const randomSuffix = Math.random().toString(36).substring(2, 8);
+        const fileName = `screenshots/${ws.agentId}/${timestamp}-${randomSuffix}.${extension}`;
+        
+        // Upload para S3
+        const { url } = await storagePut(
+          fileName,
+          imageBuffer,
+          `image/${extension}`
+        );
+        
+        console.log(`[DesktopAgent] Screenshot salvo em S3: ${url}`);
+        
+        // Substituir base64 pela URL do S3
+        processedResult = {
+          ...result,
+          image_base64: undefined, // Remover base64 para economizar espaço no DB
+          screenshot_url: url,
+          screenshot_path: fileName,
+        };
+        
+      } catch (uploadError) {
+        console.error(`[DesktopAgent] Erro ao fazer upload do screenshot:`, uploadError);
+        // Continuar mesmo se o upload falhar
+        processedResult = {
+          ...result,
+          image_base64: undefined,
+          upload_error: 'Falha ao fazer upload do screenshot',
+        };
+      }
+    }
+
     // Atualizar status do comando
     await updateCommandStatus(
       commandId,
       success ? "completed" : "failed",
-      result,
+      processedResult,
       error,
       executionTimeMs
     );
@@ -257,7 +305,7 @@ export class DesktopAgentServer {
       success ? "info" : "error",
       `Comando ${commandId} ${success ? "completado" : "falhou"}`,
       commandId,
-      { result, error, executionTimeMs }
+      { result: processedResult, error, executionTimeMs }
     );
 
     console.log(
