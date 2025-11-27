@@ -5,6 +5,7 @@ import { TRPCError } from "@trpc/server";
 import AdmZip from "adm-zip";
 import matter from "gray-matter";
 import crypto from "crypto";
+import obsidianSync from "../services/obsidianSync";
 
 /**
  * 🔗 ROUTER TRPC PARA INTEGRAÇÃO OBSIDIAN AVANÇADA
@@ -442,6 +443,59 @@ export const obsidianAdvancedRouter = router({
         notas: notasComTags,
         totalNotas: notas.length,
       };
+    }),
+
+  // ==================== SINCRONIZAÇÃO ====================
+
+  syncVault: protectedProcedure
+    .input(z.object({ vaultId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const vaults = await dbObsidian.getVaultsByUser(ctx.user.id);
+      const vault = vaults.find(v => v.id === input.vaultId);
+      if (!vault) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Vault não encontrado" });
+      }
+
+      const result = await obsidianSync.syncVault(input.vaultId);
+      return result;
+    }),
+
+  startAutoSync: protectedProcedure
+    .input(z.object({ vaultId: z.number(), intervalMinutes: z.number().min(1).max(60).optional() }))
+    .mutation(async ({ ctx, input }) => {
+      const vaults = await dbObsidian.getVaultsByUser(ctx.user.id);
+      const vault = vaults.find(v => v.id === input.vaultId);
+      if (!vault) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Vault não encontrado" });
+      }
+
+      obsidianSync.startAutoSync(input.vaultId, input.intervalMinutes || 5);
+      return { success: true, message: "Auto-sync iniciado" };
+    }),
+
+  stopAutoSync: protectedProcedure
+    .input(z.object({ vaultId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const vaults = await dbObsidian.getVaultsByUser(ctx.user.id);
+      const vault = vaults.find(v => v.id === input.vaultId);
+      if (!vault) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Vault não encontrado" });
+      }
+
+      obsidianSync.stopAutoSync(input.vaultId);
+      return { success: true, message: "Auto-sync parado" };
+    }),
+
+  getSyncStatus: protectedProcedure
+    .input(z.object({ vaultId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const vaults = await dbObsidian.getVaultsByUser(ctx.user.id);
+      const vault = vaults.find(v => v.id === input.vaultId);
+      if (!vault) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Vault não encontrado" });
+      }
+
+      return obsidianSync.getSyncStatus(input.vaultId);
     }),
 
   // ==================== BACKUPS ====================

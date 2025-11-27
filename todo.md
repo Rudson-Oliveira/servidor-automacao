@@ -1980,3 +1980,42 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Navegação entre notas via backlinks
 - [x] Botão de edição rápida
 - [x] Fechar com ESC (onOpenChange)
+
+
+## 🚀 3 Funcionalidades Avançadas Obsidian - Fase 2 (✅ CONCLUÍDO)
+
+### 1. Sincronização Automática
+- [x] Criar job agendado (node-cron)
+- [x] Criar serviço de sincronização (obsidianSync.ts)
+- [x] Detectar conflitos (hash comparison)
+- [x] Implementar estratégias de resolução (manual/local-wins/remote-wins)
+- [x] Endpoints tRPC (syncVault, startAutoSync, stopAutoSync, getSyncStatus)
+- [x] Adicionar logs de sincronização
+- [ ] Implementar file watcher para monitorar mudanças (TODO: Fase 3)
+- [ ] Criar interface de resolução de conflitos (TODO: Fase 3)
+- [ ] Notificações de sync bem-sucedido/falha (TODO: Fase 3)
+
+### 2. Editor Monaco
+- [x] Instalar @monaco-editor/react
+- [x] Criar componente MonacoMarkdownEditor
+- [x] Configurar syntax highlighting para Markdown
+- [x] Adicionar preview split-pane (lado a lado)
+- [x] Suporte a atalhos Obsidian (Ctrl+B, Ctrl+I, Ctrl+K, Ctrl+S)
+- [x] Tema dark sincronizado
+- [x] Auto-save ao editar (debounced)
+- [x] Toggle preview (mostrar/esconder)
+- [ ] Implementar autocomplete de wikilinks (TODO: Fase 3)
+
+### 3. Graph View Interativo
+- [x] Instalar D3.js e tipos
+- [x] Criar componente ObsidianGraphView
+- [x] Implementar force-directed graph
+- [x] Adicionar filtros por tags
+- [x] Implementar zoom e pan
+- [x] Click para navegar entre notas
+- [x] Exportar grafo como SVG
+- [x] Busca de notas no grafo
+- [x] Drag para mover nodes
+- [x] Página /obsidian/graph
+- [ ] Destaque de clusters (comunidades) (TODO: Fase 3)
+- [ ] Tooltip com preview da nota (TODO: Fase 3)
