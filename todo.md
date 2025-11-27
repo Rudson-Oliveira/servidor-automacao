@@ -2324,3 +2324,46 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Testar fluxo completo end-to-end
 
 **Resultado:** Sistema funciona perfeitamente sem necessidade de reconexão! ✨
+
+
+## 🖥️ Fase 6: Dashboard Web de Desktop Control (CONCLUÍDO)
+
+### Router tRPC
+- [x] Criar server/routers/desktop-control.ts
+- [x] Endpoint listAgents (listar agents conectados)
+- [x] Endpoint sendCommand (enviar comando shell/screenshot)
+- [x] Endpoint listCommands (listar comandos com filtros)
+- [x] Endpoint listScreenshots (listar screenshots)
+- [x] Endpoint listLogs (listar logs com filtros)
+- [x] Endpoint getStats (estatísticas gerais)
+- [x] Registrar router em server/routers.ts
+
+### Dashboard Principal (/desktop)
+- [x] Criar client/src/pages/DesktopControl.tsx
+- [x] Card de estatísticas (agents online, comandos executados, screenshots)
+- [x] Lista de agents conectados (status, última ping, plataforma)
+- [x] Formulário de envio de comandos (shell com input, screenshot com formato)
+- [x] Galeria de screenshots com lightbox
+- [x] Adicionar rota no App.tsx
+
+### Logs em Tempo Real
+- [x] Criar componente LogsViewer.tsx
+- [x] Polling a cada 5s para atualizar logs
+- [x] Filtros: agent, tipo de comando, status
+- [x] Exibir timestamp, agent, comando, status, resultado
+- [x] Auto-scroll para logs mais recentes
+- [x] Botão para pausar/retomar auto-refresh
+
+### Validação de Segurança
+- [x] Criar tabela command_whitelist no banco
+- [x] Criar tabela command_blacklist no banco
+- [x] Criar tabela command_audit no banco
+- [x] Implementar validação de comandos perigosos
+- [x] Adicionar modal de confirmação para comandos críticos
+- [x] Registrar todas as ações em auditoria
+- [x] Criar página /desktop/security para gerenciar listas
+
+### Testes
+- [x] Testes do router tRPC (10+ testes)
+- [x] Testes de validação de segurança (5+ testes)
+- [x] Validar fluxo completo end-to-end
