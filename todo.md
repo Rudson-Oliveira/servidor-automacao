@@ -1950,3 +1950,33 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [ ] Graph view interativo (D3.js)
 - [ ] Colaboração em tempo real
 - [ ] Sistema de plugins extensível
+
+
+## 🚀 3 Funcionalidades Avançadas Obsidian (✅ CONCLUÍDO)
+
+### 1. Página de Notas do Vault
+- [x] Criar rota `/obsidian/vault/:id`
+- [x] Implementar lista de notas com busca e filtros
+- [x] Adicionar editor inline (textarea)
+- [x] Mostrar backlinks na sidebar
+- [x] Implementar navegação por tags
+- [x] Auto-save ao editar notas
+- [x] Breadcrumb de navegação
+
+### 2. Upload de Vault .zip
+- [x] Criar endpoint para upload de arquivo
+- [x] Implementar extração de .zip no backend
+- [x] Parser de frontmatter YAML (gray-matter)
+- [x] Preservar estrutura de pastas
+- [x] Detectar e extrair tags do conteúdo
+- [x] Progress bar de importação (loading state)
+- [x] Validação de formato (.zip)
+
+### 3. Preview de Notas
+- [x] Criar modal de preview
+- [x] Renderizar Markdown (react-markdown + remarkGfm)
+- [x] Mostrar backlinks clicáveis
+- [x] Exibir histórico de versões
+- [x] Navegação entre notas via backlinks
+- [x] Botão de edição rápida
+- [x] Fechar com ESC (onOpenChange)

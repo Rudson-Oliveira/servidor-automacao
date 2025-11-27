@@ -2,6 +2,9 @@ import { z } from "zod";
 import { protectedProcedure, router } from "../_core/trpc";
 import * as dbObsidian from "../db-obsidian";
 import { TRPCError } from "@trpc/server";
+import AdmZip from "adm-zip";
+import matter from "gray-matter";
+import crypto from "crypto";
 
 /**
  * 🔗 ROUTER TRPC PARA INTEGRAÇÃO OBSIDIAN AVANÇADA
@@ -264,6 +267,81 @@ export const obsidianAdvancedRouter = router({
     }),
 
   // ==================== IMPORTAÇÃO ====================
+
+  uploadVaultZip: protectedProcedure
+    .input(z.object({
+      vaultId: z.number(),
+      zipBase64: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const { vaultId, zipBase64 } = input;
+
+      const vaults = await dbObsidian.getVaultsByUser(ctx.user.id);
+      const vault = vaults.find(v => v.id === vaultId);
+      if (!vault || vault.userId !== ctx.user.id) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Vault não encontrado" });
+      }
+
+      const zipBuffer = Buffer.from(zipBase64, "base64");
+      const zip = new AdmZip(zipBuffer);
+      const entries = zip.getEntries();
+
+      const notasImportadas: any[] = [];
+      let erros = 0;
+
+      for (const entry of entries) {
+        if (entry.isDirectory || !entry.entryName.endsWith(".md")) continue;
+
+        try {
+          const conteudo = entry.getData().toString("utf8");
+          const caminho = entry.entryName;
+          const parsed = matter(conteudo);
+          const frontmatter = parsed.data;
+          const conteudoSemFrontmatter = parsed.content;
+          const titulo = frontmatter.title || caminho.split("/").pop()?.replace(".md", "") || "Sem título";
+
+          let tags: string[] = [];
+          if (frontmatter.tags) {
+            tags = Array.isArray(frontmatter.tags) ? frontmatter.tags : [frontmatter.tags];
+          }
+          const tagMatches = conteudoSemFrontmatter.match(/#([a-zA-Z0-9_-]+)/g);
+          if (tagMatches) {
+            const contentTags = tagMatches.map(t => t.substring(1));
+            tags = Array.from(new Set([...tags, ...contentTags]));
+          }
+
+          const hash = crypto.createHash("sha256").update(conteudo).digest("hex");
+          const notaResult = await dbObsidian.createNota({
+            vaultId,
+            titulo,
+            caminho,
+            conteudo,
+            hash,
+            ultimaModificacao: new Date(),
+            frontmatter: Object.keys(frontmatter).length > 0 ? JSON.stringify(frontmatter) : null,
+            tamanho: conteudo.length,
+            palavras: conteudo.split(/\s+/).length,
+          });
+
+          const notaId = notaResult.insertId;
+
+          if (tags.length > 0) {
+            for (const tag of tags) {
+              const tagResult = await dbObsidian.createOrGetTag(vaultId, tag);
+              const tagId = tagResult.id;
+              await dbObsidian.linkNotaTag(notaId, tagId);
+            }
+          }
+
+          notasImportadas.push({ id: notaId, titulo, caminho });
+        } catch (error) {
+          console.error(`Erro ao importar ${entry.entryName}:`, error);
+          erros++;
+        }
+      }
+
+      return { success: true, importadas: notasImportadas.length, erros, notas: notasImportadas };
+    }),
 
   importVault: protectedProcedure
     .input(
