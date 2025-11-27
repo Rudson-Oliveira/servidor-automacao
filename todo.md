@@ -1831,3 +1831,27 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Implementar lazy loading nas páginas
 - [x] Implementar code splitting
 - [x] Reduzir bundle size inicial
+
+
+## 🎯 3 Melhorias de UX/Testes (Solicitação do Usuário)
+
+### Testes E2E com Playwright
+- [ ] Instalar e configurar Playwright
+- [ ] Criar teste de navegação do Header (todos os links)
+- [ ] Validar que console está limpo (sem erros)
+- [ ] Testar navegação em mobile e desktop
+- [ ] Criar script de execução de testes
+
+### Menu Mobile Completo
+- [ ] Criar componente MobileMenu com Sheet/Drawer
+- [ ] Adicionar todas as categorias (WhatsApp, Obsidian, Desktop, DeepSite, Sistema)
+- [ ] Implementar navegação expansível por categoria
+- [ ] Adicionar ícones e descrições
+- [ ] Testar responsividade e animações
+
+### Breadcrumbs de Navegação
+- [ ] Criar componente Breadcrumb reutilizável
+- [ ] Adicionar breadcrumbs em todas as páginas internas
+- [ ] Implementar lógica de geração automática baseada na rota
+- [ ] Testar navegação via breadcrumbs
+- [ ] Validar acessibilidade (aria-labels)

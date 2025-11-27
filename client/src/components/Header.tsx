@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'wouter';
+import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
@@ -24,6 +24,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { APP_TITLE, APP_LOGO } from '@/const';
+import MobileMenu from '@/components/MobileMenu';
 
 interface MenuItem {
   title: string;
@@ -291,12 +292,8 @@ export default function Header({ showBackButton = false, onBack }: HeaderProps) 
           </NavigationMenuList>
         </NavigationMenu>
 
-        {/* Menu Mobile (Simplificado) */}
-        <div className="flex md:hidden">
-          <Button variant="ghost" size="sm" onClick={() => window.location.href = '/'} asChild>
-            <a href="/">Menu</a>
-          </Button>
-        </div>
+        {/* Menu Mobile */}
+        <MobileMenu />
       </div>
     </header>
   );

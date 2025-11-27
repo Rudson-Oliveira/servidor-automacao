@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
+import Breadcrumb from '@/components/Breadcrumb';
 import { trpc } from '@/lib/trpc';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,7 @@ export default function WhatsAppDashboard() {
     <div className="min-h-screen bg-background">
       <Header showBackButton />
       <div className="container py-8">
+        <Breadcrumb />
         <WhatsAppDashboardContent />
       </div>
     </div>
