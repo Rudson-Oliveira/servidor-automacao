@@ -20,6 +20,7 @@ const DesktopCaptures = lazy(() => import("./pages/DesktopCaptures"));
 const Cadastro = lazy(() => import("./pages/Cadastro"));
 const Login = lazy(() => import("./pages/Login"));
 const ObsidianCatalog = lazy(() => import("./pages/ObsidianCatalog"));
+const VyLikeCapture = lazy(() => import("./pages/VyLikeCapture"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -43,6 +44,7 @@ function Router() {
         <Route path="/dashboard-vision" component={DashboardVision} />
         <Route path="/configuracoes/ias" component={ConfiguracoesIAs} />
         <Route path="/desktop-captures" component={DesktopCaptures} />
+        <Route path="/desktop/vy-capture" component={VyLikeCapture} />
         <Route path={"/cadastro"} component={Cadastro} />
         <Route path={"/login"} component={Login} />
         <Route path={"/obsidian/catalogar"} component={ObsidianCatalog} />

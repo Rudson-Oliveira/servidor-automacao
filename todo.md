@@ -1855,3 +1855,37 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [ ] Implementar lógica de geração automática baseada na rota
 - [ ] Testar navegação via breadcrumbs
 - [ ] Validar acessibilidade (aria-labels)
+
+
+## 🐛 Correção Crítica: Flickering ao Implementar Vercept-like
+
+### Problema Reportado
+- [x] Interface pisca/flickering ao implementar funcionalidade similar ao Vercept
+- [x] Necessário fazer rollback (3ª vez que acontece)
+- [x] Funcionalidade: Captura e análise de tela (similar a vercept.com)
+
+### Investigação
+- [x] Analisar código existente de captura de tela (DesktopCaptures.tsx)
+- [x] Identificar causas comuns de flickering (re-renders infinitos)
+- [x] Verificar uso de useEffect sem dependências corretas
+- [x] Verificar criação de objetos/arrays em render
+
+### Proteções Anti-Flickering
+- [x] Implementar useMemo para objetos/arrays pesados
+- [x] Implementar useCallback para funções passadas como props
+- [x] Usar React.memo em componentes que re-renderizam muito
+- [x] Adicionar debounce em operações frequentes
+- [x] Implementar throttle para scroll/resize handlers
+
+### Ferramentas de Debugging
+- [x] Criar hook useWhyDidYouUpdate para detectar re-renders
+- [x] Adicionar React DevTools Profiler
+- [x] Criar logger de re-renders em desenvolvimento
+- [x] Adicionar métricas de performance
+
+### Implementação Robusta Vercept-like
+- [x] Criar componente ScreenCapture com proteções
+- [x] Implementar análise de tela sem flickering
+- [x] Adicionar loading states apropriados
+- [x] Testar em diferentes cenários
+- [x] Documentar padrões anti-flickering
