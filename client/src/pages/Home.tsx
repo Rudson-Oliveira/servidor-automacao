@@ -38,6 +38,22 @@ const features = [
     ],
   },
   {
+    category: 'Agentes Locais (Vercept)',
+    icon: <Monitor className="h-8 w-8" />,
+    description:
+      'Controle remoto de aplicações locais. Execute comandos, gerencie arquivos e automatize tarefas no seu computador de qualquer lugar.',
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50',
+    features: [
+      'Execução remota de comandos',
+      'Integração com Obsidian e VSCode',
+      'Reconexão automática',
+      'Múltiplos agentes simultâneos',
+      'Histórico completo de execuções',
+    ],
+    links: [{ title: 'Gerenciar Agentes', href: '/agentes-locais', icon: <Monitor className="h-4 w-4" /> }],
+  },
+  {
     category: 'Integração Obsidian',
     icon: <FileText className="h-8 w-8" />,
     description:
