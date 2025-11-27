@@ -31,6 +31,7 @@ const DesktopSecurity = lazy(() => import("./pages/DesktopSecurity"));
 const DesktopHistory = lazy(() => import("./pages/DesktopHistory"));
 const DesktopScheduler = lazy(() => import("./pages/DesktopScheduler"));
 const DesktopControlPro = lazy(() => import("./pages/DesktopControlPro"));
+const CacheStats = lazy(() => import("./pages/CacheStats"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -59,6 +60,7 @@ function Router() {
         <Route path="/desktop/scheduler" component={DesktopScheduler} />
         <Route path="/desktop/vy-capture" component={VyLikeCapture} />
         <Route path="/performance" component={PerformanceDashboard} />
+        <Route path="/cache" component={CacheStats} />
         <Route path={"/cadastro"} component={Cadastro} />
         <Route path={"/login"} component={Login} />
         <Route path={"/obsidian/catalogar"} component={ObsidianCatalog} />

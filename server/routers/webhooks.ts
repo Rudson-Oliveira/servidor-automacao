@@ -40,7 +40,7 @@ export const webhooksRouter = router({
         url: z.string().url(),
         events: z.array(z.string()).min(1),
         secret: z.string().optional(),
-        headers: z.record(z.string()).optional(),
+        headers: z.record(z.string(), z.string()).optional(),
         maxRetries: z.number().int().min(0).max(10).default(3),
         retryDelay: z.number().int().min(1000).max(60000).default(5000),
       })
@@ -58,7 +58,7 @@ export const webhooksRouter = router({
         url: input.url,
         events: input.events,
         secret,
-        headers: input.headers,
+        headers: input.headers as Record<string, string> | undefined,
         maxRetries: input.maxRetries,
         retryDelay: input.retryDelay,
         isActive: 1,
@@ -81,7 +81,7 @@ export const webhooksRouter = router({
         name: z.string().min(1).max(255).optional(),
         url: z.string().url().optional(),
         events: z.array(z.string()).min(1).optional(),
-        headers: z.record(z.string()).optional(),
+        headers: z.record(z.string(), z.string()).optional(),
         maxRetries: z.number().int().min(0).max(10).optional(),
         retryDelay: z.number().int().min(1000).max(60000).optional(),
         isActive: z.number().int().min(0).max(1).optional(),
@@ -108,9 +108,15 @@ export const webhooksRouter = router({
 
       const { id, ...updateData } = input;
 
+      // Converter headers para o tipo correto
+      const setData = {
+        ...updateData,
+        headers: updateData.headers as Record<string, string> | undefined,
+      };
+
       await db
         .update(webhooks_config)
-        .set(updateData)
+        .set(setData)
         .where(eq(webhooks_config.id, input.id));
 
       return { success: true };

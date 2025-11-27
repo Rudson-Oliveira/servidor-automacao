@@ -153,7 +153,7 @@ export class WebhookService {
       logEntry.status = 'failed';
       logEntry.errorMessage = error.message;
       logEntry.completedAt = new Date();
-      logEntry.durationMs = Date.now() - logEntry.sentAt.getTime();
+      logEntry.durationMs = logEntry.sentAt ? Date.now() - logEntry.sentAt.getTime() : 0;
 
       await db.insert(webhooks_logs).values(logEntry);
 
