@@ -2413,3 +2413,77 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Criar testes unitários para scheduler (12 testes)
 - [x] Validar integração completa end-to-end
 - [x] Todos os 362 testes passando (100%)
+
+
+## 🚀 Melhorias de Autonomia Total e Resiliência (27/11/2025)
+
+### 1️⃣ Sistema de Webhooks para Integração Externa
+- [ ] Criar tabela webhooks_config no banco
+- [ ] Implementar dispatcher de webhooks (POST para URLs externas)
+- [ ] Suportar webhooks para eventos: command_executed, command_failed, agent_offline, screenshot_captured
+- [ ] Implementar retry com backoff exponencial para webhooks
+- [ ] Criar página /desktop/webhooks para gerenciar webhooks
+- [ ] Adicionar autenticação (HMAC SHA-256) para webhooks
+- [ ] Implementar logs de webhooks enviados
+- [ ] Criar testes unitários para webhooks (10+ testes)
+
+### 2️⃣ Workflows Adaptativos com Fallbacks
+- [ ] Criar tabela workflows no banco
+- [ ] Implementar engine de workflows (sequência de comandos)
+- [ ] Suportar condicionais (if/else) baseado em resultado anterior
+- [ ] Implementar fallbacks automáticos quando comando falha
+- [ ] Criar workflows pré-definidos (backup, monitoramento, análise)
+- [ ] Suportar execução paralela de comandos
+- [ ] Criar página /desktop/workflows para gerenciar workflows
+- [ ] Implementar timeout e retry por step do workflow
+- [ ] Criar testes unitários para workflows (15+ testes)
+
+### 3️⃣ Sistema de Auto-Aprendizado com IA
+- [ ] Criar tabela learning_patterns no banco
+- [ ] Implementar análise de padrões de sucesso/falha com LLM
+- [ ] Detectar comandos que sempre falham e sugerir alternativas
+- [ ] Aprender horários ideais para executar comandos
+- [ ] Identificar agentes mais confiáveis por tipo de comando
+- [ ] Criar recomendações automáticas baseadas em histórico
+- [ ] Implementar feedback loop (usuário confirma/rejeita sugestões)
+- [ ] Criar testes unitários para auto-aprendizado (10+ testes)
+
+### 4️⃣ Sistema de Auto-Conserto
+- [ ] Criar tabela auto_healing_actions no banco
+- [ ] Detectar agentes offline e tentar reconexão automática
+- [ ] Detectar comandos travados e executar kill automático
+- [ ] Implementar limpeza automática de processos zumbis
+- [ ] Criar sistema de health checks para agentes
+- [ ] Implementar restart automático de agentes com problemas
+- [ ] Adicionar notificações de auto-conserto executado
+- [ ] Criar testes unitários para auto-conserto (10+ testes)
+
+### 5️⃣ Sistema de Auto-Melhoria
+- [ ] Criar tabela performance_metrics no banco
+- [ ] Medir tempo de execução de comandos e identificar gargalos
+- [ ] Sugerir otimizações baseadas em análise de performance
+- [ ] Implementar cache inteligente de resultados frequentes
+- [ ] Criar sistema de A/B testing para comandos alternativos
+- [ ] Implementar métricas de qualidade (taxa de sucesso, latência)
+- [ ] Gerar relatórios automáticos de melhoria
+- [ ] Criar testes unitários para auto-melhoria (10+ testes)
+
+### 6️⃣ Integrações Python Avançadas
+- [ ] Criar script Python para análise de desktop com OpenCV
+- [ ] Implementar OCR automático em screenshots com Tesseract
+- [ ] Criar detector de anomalias visuais (telas de erro, travamentos)
+- [ ] Implementar análise de logs com NLP
+- [ ] Criar extrator de dados estruturados de aplicações
+- [ ] Implementar automação de UI com pyautogui como fallback
+
+### Testes Completos do Sistema Atual
+- [ ] Executar todos os 362 testes unitários existentes
+- [ ] Validar todos os endpoints REST (65+ endpoints)
+- [ ] Testar integração Desktop Agent Python
+- [ ] Validar sistema de notificações em tempo real
+- [ ] Testar timeline de histórico com filtros
+- [ ] Validar scheduler com 4 tipos de agendamento
+- [ ] Testar sistema de segurança (whitelist/blacklist)
+- [ ] Validar integração Obsidian completa
+- [ ] Testar WhatsApp anti-bloqueio
+- [ ] Validar auto-healing existente

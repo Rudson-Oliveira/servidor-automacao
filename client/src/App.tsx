@@ -30,6 +30,7 @@ const DesktopControl = lazy(() => import("./pages/DesktopControl"));
 const DesktopSecurity = lazy(() => import("./pages/DesktopSecurity"));
 const DesktopHistory = lazy(() => import("./pages/DesktopHistory"));
 const DesktopScheduler = lazy(() => import("./pages/DesktopScheduler"));
+const DesktopControlPro = lazy(() => import("./pages/DesktopControlPro"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -52,9 +53,8 @@ function Router() {
         <Route path={"/whatsapp/sessions"} component={WhatsAppSessions} />
         <Route path="/dashboard-vision" component={DashboardVision} />
         <Route path="/configuracoes/ias" component={ConfiguracoesIAs} />
-        <Route path="/desktop-captures" component={DesktopCaptures} />
-        <Route path="/desktop" component={DesktopControl} />
-        <Route path="/desktop/security" component={DesktopSecurity} />
+        <Route path="/desktop-captures" component={DesktopCaptures} />        <Route path={"/desktop"} component={DesktopControl} />
+        <Route path={"/desktop/pro"} component={DesktopControlPro} />        <Route path="/desktop/security" component={DesktopSecurity} />
         <Route path="/desktop/history" component={DesktopHistory} />
         <Route path="/desktop/scheduler" component={DesktopScheduler} />
         <Route path="/desktop/vy-capture" component={VyLikeCapture} />

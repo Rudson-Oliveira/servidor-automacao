@@ -232,6 +232,13 @@
       "when": 1764262819931,
       "tag": "0032_chemical_the_leader",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "5",
+      "when": 1764270510779,
+      "tag": "0033_broken_firelord",
+      "breakpoints": true
     }
   ]
 }

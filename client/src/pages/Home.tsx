@@ -65,7 +65,10 @@ const features = [
       'Análise de janelas',
       'OCR e extração de texto',
     ],
-    links: [{ title: 'Capturar Tela', href: '/desktop/capture', icon: <Monitor className="h-4 w-4" /> }],
+    links: [
+      { title: 'Capturar Tela', href: '/desktop/capture', icon: <Monitor className="h-4 w-4" /> },
+      { title: 'Desktop Control Pro', href: '/desktop/pro', icon: <Monitor className="h-4 w-4" /> },
+    ],
   },
   {
     category: 'DeepSite Analysis',
