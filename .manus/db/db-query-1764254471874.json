@@ -1,0 +1,25 @@
+{
+  "query": "SHOW TABLES LIKE 'desktop_%'",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute SHOW TABLES LIKE 'desktop_%'",
+  "rows": [
+    {
+      "Tables_in_ALEjofy2PjgFnShwZRqCD7 (desktop_%)": "desktop_agents"
+    },
+    {
+      "Tables_in_ALEjofy2PjgFnShwZRqCD7 (desktop_%)": "desktop_captures"
+    },
+    {
+      "Tables_in_ALEjofy2PjgFnShwZRqCD7 (desktop_%)": "desktop_commands"
+    },
+    {
+      "Tables_in_ALEjofy2PjgFnShwZRqCD7 (desktop_%)": "desktop_janelas"
+    },
+    {
+      "Tables_in_ALEjofy2PjgFnShwZRqCD7 (desktop_%)": "desktop_programas"
+    }
+  ],
+  "messages": [],
+  "stdout": "Tables_in_ALEjofy2PjgFnShwZRqCD7 (desktop_%)\ndesktop_agents\ndesktop_captures\ndesktop_commands\ndesktop_janelas\ndesktop_programas\n",
+  "stderr": "",
+  "execution_time_ms": 50
+}

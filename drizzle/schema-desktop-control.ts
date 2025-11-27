@@ -26,7 +26,7 @@ export const desktopAgents = mysqlTable("desktop_agents", {
   deviceName: varchar("device_name", { length: 255 }), // Nome do computador
   platform: varchar("platform", { length: 50 }), // win32, darwin, linux
   version: varchar("version", { length: 50 }), // Versão do Desktop Agent
-  status: mysqlEnum("status", ["connected", "disconnected"]).default("disconnected").notNull(),
+  status: mysqlEnum("status", ["online", "offline", "busy", "error"]).default("offline").notNull(),
   lastPing: timestamp("last_ping"), // Último heartbeat recebido
   ipAddress: varchar("ip_address", { length: 45 }), // IPv4 ou IPv6
   createdAt: timestamp("createdAt").defaultNow().notNull(),

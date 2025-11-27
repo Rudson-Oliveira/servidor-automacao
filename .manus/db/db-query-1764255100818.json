@@ -1,0 +1,18 @@
+{
+  "query": "SHOW COLUMNS FROM desktop_agents WHERE Field = 'status'",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute SHOW COLUMNS FROM desktop_agents WHERE Field = 'status'",
+  "rows": [
+    {
+      "Field": "status",
+      "Type": "enum('connected','disconnected')",
+      "Null": "NO",
+      "Key": "",
+      "Default": "disconnected",
+      "Extra": ""
+    }
+  ],
+  "messages": [],
+  "stdout": "Field\tType\tNull\tKey\tDefault\tExtra\nstatus\tenum('connected','disconnected')\tNO\t\tdisconnected\t\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}

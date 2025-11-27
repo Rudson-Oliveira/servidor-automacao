@@ -211,6 +211,13 @@
       "when": 1764254258438,
       "tag": "0029_cynical_prowler",
       "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "5",
+      "when": 1764255372375,
+      "tag": "0030_slimy_invaders",
+      "breakpoints": true
     }
   ]
 }
