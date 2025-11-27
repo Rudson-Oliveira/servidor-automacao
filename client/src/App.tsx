@@ -27,6 +27,7 @@ const ObsidianGraph = lazy(() => import("./pages/ObsidianGraph"));
 const VyLikeCapture = lazy(() => import("./pages/VyLikeCapture"));
 const PerformanceDashboard = lazy(() => import("./pages/PerformanceDashboard"));
 const DesktopControl = lazy(() => import("./pages/DesktopControl"));
+const DesktopSecurity = lazy(() => import("./pages/DesktopSecurity"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -51,6 +52,7 @@ function Router() {
         <Route path="/configuracoes/ias" component={ConfiguracoesIAs} />
         <Route path="/desktop-captures" component={DesktopCaptures} />
         <Route path="/desktop" component={DesktopControl} />
+        <Route path="/desktop/security" component={DesktopSecurity} />
         <Route path="/desktop/vy-capture" component={VyLikeCapture} />
         <Route path="/performance" component={PerformanceDashboard} />
         <Route path={"/cadastro"} component={Cadastro} />

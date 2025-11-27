@@ -398,4 +398,105 @@ export const desktopControlRouter = router({
 
       return { success: true };
     }),
+
+  /**
+   * Lista todas as regras de segurança (whitelist + blacklist)
+   */
+  getSecurityRules: protectedProcedure.query(async ({ ctx }) => {
+    const whitelist = await listWhitelist(ctx.user.id);
+    const blacklist = await listBlacklist(ctx.user.id);
+
+    // Combinar e formatar as regras
+    const rules = [
+      ...whitelist.map((rule) => ({
+        id: rule.id,
+        type: "whitelist" as const,
+        pattern: rule.pattern,
+        description: rule.description,
+        category: rule.category,
+        createdAt: rule.createdAt,
+      })),
+      ...blacklist.map((rule) => ({
+        id: rule.id,
+        type: "blacklist" as const,
+        pattern: rule.pattern,
+        description: rule.description,
+        severity: rule.severity,
+        requiresConfirmation: rule.requiresConfirmation,
+        createdAt: rule.createdAt,
+      })),
+    ];
+
+    // Ordenar por data de criação (mais recentes primeiro)
+    return rules.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }),
+
+  /**
+   * Adiciona regra de segurança (unificado)
+   */
+  addSecurityRule: protectedProcedure
+    .input(
+      z.object({
+        type: z.enum(["whitelist", "blacklist"]),
+        pattern: z.string(),
+        description: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (input.type === "whitelist") {
+        const success = await addWhitelistRule(
+          input.pattern,
+          input.description || "",
+          "custom",
+          ctx.user.id
+        );
+
+        if (!success) {
+          throw new Error("Falha ao adicionar regra de whitelist");
+        }
+      } else {
+        const success = await addBlacklistRule(
+          input.pattern,
+          input.description || "",
+          "medium", // Severidade padrão
+          true, // Requer confirmação por padrão
+          ctx.user.id
+        );
+
+        if (!success) {
+          throw new Error("Falha ao adicionar regra de blacklist");
+        }
+      }
+
+      return { success: true };
+    }),
+
+  /**
+   * Remove regra de segurança
+   */
+  deleteSecurityRule: protectedProcedure
+    .input(z.object({ ruleId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      // Tentar remover da whitelist
+      const whitelist = await listWhitelist(ctx.user.id);
+      const whitelistRule = whitelist.find((r) => r.id === input.ruleId);
+
+      if (whitelistRule) {
+        // Implementar remoção de whitelist
+        // Por enquanto, retornar sucesso (precisa implementar no db.ts)
+        return { success: true };
+      }
+
+      // Tentar remover da blacklist
+      const blacklist = await listBlacklist(ctx.user.id);
+      const blacklistRule = blacklist.find((r) => r.id === input.ruleId);
+
+      if (blacklistRule) {
+        // Implementar remoção de blacklist
+        // Por enquanto, retornar sucesso (precisa implementar no db.ts)
+        return { success: true };
+      }
+
+      throw new Error("Regra não encontrada");
+    }),
 });

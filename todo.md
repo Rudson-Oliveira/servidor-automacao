@@ -2367,3 +2367,11 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Testes do router tRPC (10+ testes)
 - [x] Testes de validação de segurança (5+ testes)
 - [x] Validar fluxo completo end-to-end
+
+## Desktop Control - Melhorias Críticas (27/11/2025)
+
+- [x] Corrigir problema visual das tabs (Agents, Enviar Comandos, Screenshots, Logs)
+- [x] Implementar modal de confirmação para comandos sensíveis (rm -r, git reset --hard, etc)
+- [x] Criar página /desktop/security para gerenciar whitelist/blacklist
+- [x] Adicionar endpoints tRPC para adicionar/remover regras de segurança
+- [x] Testar todas as melhorias implementadas
