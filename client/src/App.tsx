@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import ErrorBoundaryAdvanced from "./components/ErrorBoundaryAdvanced";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 
@@ -21,6 +22,7 @@ const Cadastro = lazy(() => import("./pages/Cadastro"));
 const Login = lazy(() => import("./pages/Login"));
 const ObsidianCatalog = lazy(() => import("./pages/ObsidianCatalog"));
 const VyLikeCapture = lazy(() => import("./pages/VyLikeCapture"));
+const PerformanceDashboard = lazy(() => import("./pages/PerformanceDashboard"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -45,6 +47,7 @@ function Router() {
         <Route path="/configuracoes/ias" component={ConfiguracoesIAs} />
         <Route path="/desktop-captures" component={DesktopCaptures} />
         <Route path="/desktop/vy-capture" component={VyLikeCapture} />
+        <Route path="/performance" component={PerformanceDashboard} />
         <Route path={"/cadastro"} component={Cadastro} />
         <Route path={"/login"} component={Login} />
         <Route path={"/obsidian/catalogar"} component={ObsidianCatalog} />

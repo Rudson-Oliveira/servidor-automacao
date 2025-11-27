@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { trpc } from '@/lib/trpc';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -41,11 +41,13 @@ export default function WhatsAppSessions() {
   const [selectedQrCode, setSelectedQrCode] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  // Utils para invalidação inteligente
+  const utils = trpc.useUtils();
+
   // Queries
-  const { data: sessionsData, refetch: refetchSessions } =
-    trpc.whatsappWeb.listSessions.useQuery(undefined, {
-      refetchInterval: 5000, // Auto-refresh a cada 5 segundos
-    });
+  const { data: sessionsData } = trpc.whatsappWeb.listSessions.useQuery(undefined, {
+    refetchInterval: 5000, // Auto-refresh a cada 5 segundos
+  });
 
   // Mutations
   const createSession = trpc.whatsappWeb.createSession.useMutation({
@@ -54,7 +56,7 @@ export default function WhatsAppSessions() {
       setIsDialogOpen(false);
       setNewSessionId('');
       setNewSessionPhone('');
-      refetchSessions();
+      utils.whatsappWeb.listSessions.invalidate();
     },
     onError: error => {
       toast.error(`Erro: ${error.message}`);
@@ -64,7 +66,7 @@ export default function WhatsAppSessions() {
   const destroySession = trpc.whatsappWeb.destroySession.useMutation({
     onSuccess: data => {
       toast.success(`Sessão ${data.sessionId} destruída`);
-      refetchSessions();
+      utils.whatsappWeb.listSessions.invalidate();
     },
     onError: error => {
       toast.error(`Erro: ${error.message}`);
@@ -74,14 +76,14 @@ export default function WhatsAppSessions() {
   const logoutSession = trpc.whatsappWeb.logoutSession.useMutation({
     onSuccess: data => {
       toast.success(`Logout da sessão ${data.sessionId} realizado`);
-      refetchSessions();
+      utils.whatsappWeb.listSessions.invalidate();
     },
     onError: error => {
       toast.error(`Erro: ${error.message}`);
     },
   });
 
-  const handleCreateSession = () => {
+  const handleCreateSession = useCallback(() => {
     if (!newSessionId || !newSessionPhone) {
       toast.error('Preencha todos os campos');
       return;
@@ -91,34 +93,35 @@ export default function WhatsAppSessions() {
       sessionId: newSessionId,
       phone: newSessionPhone,
     });
-  };
+  }, [newSessionId, newSessionPhone, createSession]);
 
-  const statusColors: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
+  // Memoizar configurações de status
+  const statusColors = useMemo<Record<string, 'default' | 'secondary' | 'destructive' | 'outline'>>(() => ({
     ready: 'default',
     authenticated: 'default',
     qr_ready: 'secondary',
     connecting: 'outline',
     disconnected: 'destructive',
     error: 'destructive',
-  };
+  }), []);
 
-  const statusIcons: Record<string, React.ReactNode> = {
+  const statusIcons = useMemo<Record<string, React.ReactNode>>(() => ({
     ready: <CheckCircle2 className="w-4 h-4" />,
     authenticated: <CheckCircle2 className="w-4 h-4" />,
     qr_ready: <QrCode className="w-4 h-4" />,
     connecting: <Clock className="w-4 h-4" />,
     disconnected: <XCircle className="w-4 h-4" />,
     error: <AlertCircle className="w-4 h-4" />,
-  };
+  }), []);
 
-  const statusLabels: Record<string, string> = {
+  const statusLabels = useMemo<Record<string, string>>(() => ({
     ready: 'Pronto',
     authenticated: 'Autenticado',
     qr_ready: 'Aguardando QR',
     connecting: 'Conectando',
     disconnected: 'Desconectado',
     error: 'Erro',
-  };
+  }), []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 p-6">
@@ -289,9 +292,9 @@ export default function WhatsAppSessions() {
                               onClick={async () => {
                                 // Buscar QR code via useQuery não é possível aqui
                                 // Vamos usar o refetch da sessão
-                                const result = await refetchSessions();
-                                const currentSession = result.data?.sessions.find(
-                                  s => s.id === session.id
+                                await utils.whatsappWeb.listSessions.invalidate();
+                                const currentSession = sessionsData?.sessions.find(
+                                  (s: any) => s.id === session.id
                                 );
                                 // Para demo, vamos gerar um QR code simulado
                                 const qrCode = `\n    ████ ▄▄▄▄▄ █▀█ █▄▀▀▀▄█ ▄▄▄▄▄ ████\n    ████ █   █ █▀▀▀█ ▄ ▀▄█ █   █ ████\n    ████ █▄▄▄█ █▀ █▀▀█▀▀▄█ █▄▄▄█ ████\n    ████▄▄▄▄▄▄▄█▄▀ ▀▄█ █▄█▄▄▄▄▄▄▄████\n    \nSessão: ${session.id}\nEscaneie este QR Code com WhatsApp\n    `;
