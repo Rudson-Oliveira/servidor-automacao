@@ -144,13 +144,17 @@ export default function Home() {
                 {/* Action Links */}
                 <div className="flex flex-wrap gap-2">
                   {feature.links.map((link, idx) => (
-                    <Link key={idx} href={link.href}>
-                      <Button variant="outline" size="sm" className="gap-2">
-                        {link.icon}
-                        {link.title}
-                        <ArrowRight className="h-3 w-3" />
-                      </Button>
-                    </Link>
+                    <Button 
+                      key={idx} 
+                      variant="outline" 
+                      size="sm" 
+                      className="gap-2"
+                      onClick={() => window.location.href = link.href}
+                    >
+                      {link.icon}
+                      {link.title}
+                      <ArrowRight className="h-3 w-3" />
+                    </Button>
                   ))}
                 </div>
               </CardContent>
