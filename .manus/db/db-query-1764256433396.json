@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS `arquivos_mapeados` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `departamento_id` int NOT NULL,\n  `nome` varchar(500) NOT NULL,\n  `caminho_completo` text NOT NULL,\n  `caminho_relativo` text,\n  `extensao` varchar(20),\n  `tipo_arquivo` varchar(100),\n  `tamanho` int DEFAULT 0,\n  `data_criacao` timestamp,\n  `data_modificacao` timestamp,\n  `data_acesso` timestamp,\n  `hash` varchar(64),\n  `conteudo_indexado` text,\n  `metadados` text,\n  `tags` varchar(500),\n  `importante` int DEFAULT 0,\n  `observacoes` text,\n  `createdAt` timestamp NOT NULL DEFAULT (now()),\n  `updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `arquivos_mapeados_id` PRIMARY KEY(`id`)\n)",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute CREATE TABLE IF NOT EXISTS `arquivos_mapeados` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `departamento_id` int NOT NULL,\n  `nome` varchar(500) NOT NULL,\n  `caminho_completo` text NOT NULL,\n  `caminho_relativo` text,\n  `extensao` varchar(20),\n  `tipo_arquivo` varchar(100),\n  `tamanho` int DEFAULT 0,\n  `data_criacao` timestamp,\n  `data_modificacao` timestamp,\n  `data_acesso` timestamp,\n  `hash` varchar(64),\n  `conteudo_indexado` text,\n  `metadados` text,\n  `tags` varchar(500),\n  `importante` int DEFAULT 0,\n  `observacoes` text,\n  `createdAt` timestamp NOT NULL DEFAULT (now()),\n  `updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `arquivos_mapeados_id` PRIMARY KEY(`id`)\n)",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 169
+}

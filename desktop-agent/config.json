@@ -1,0 +1,22 @@
+{
+  "server": {
+    "url": "ws://localhost:3001",
+    "reconnect_interval": 5,
+    "max_reconnect_attempts": 10
+  },
+  "agent": {
+    "token": "95f7b015ffad9906c1efce5d22319688adcda6313ca51719145ba6cae7d3e20a",
+    "device_name": "Desktop Agent Teste - Sandbox",
+    "platform": "Linux Ubuntu 22.04",
+    "version": "1.0.0"
+  },
+  "heartbeat": {
+    "interval": 30,
+    "timeout": 10
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "agent.log",
+    "max_size_mb": 10
+  }
+}
