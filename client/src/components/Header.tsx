@@ -164,12 +164,10 @@ export default function Header({ showBackButton = false, onBack }: HeaderProps) 
               Voltar
             </Button>
           )}
-          <Link href="/">
-            <a className="flex items-center gap-2 font-semibold hover:opacity-80 transition-opacity">
-              <img src={APP_LOGO} alt="Logo" className="h-8 w-8" />
-              <span className="hidden sm:inline-block">{APP_TITLE}</span>
-            </a>
-          </Link>
+          <a href="/" className="flex items-center gap-2 font-semibold hover:opacity-80 transition-opacity">
+            <img src={APP_LOGO} alt="Logo" className="h-8 w-8" />
+            <span className="hidden sm:inline-block">{APP_TITLE}</span>
+          </a>
         </div>
 
         {/* Menu de Navegação */}
@@ -237,33 +235,27 @@ export default function Header({ showBackButton = false, onBack }: HeaderProps) 
 
             {/* Desktop */}
             <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link href="/desktop/capture">
-                  <a
-                    className={`group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 gap-2 ${
-                      location === '/desktop/capture' ? 'bg-accent' : ''
-                    }`}
-                  >
-                    {menuCategories.desktop.icon}
-                    {menuCategories.desktop.title}
-                  </a>
-                </Link>
+              <NavigationMenuLink
+                href="/desktop/capture"
+                className={`group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 gap-2 ${
+                  location === '/desktop/capture' ? 'bg-accent' : ''
+                }`}
+              >
+                {menuCategories.desktop.icon}
+                {menuCategories.desktop.title}
               </NavigationMenuLink>
             </NavigationMenuItem>
 
             {/* DeepSite */}
             <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link href="/deepsite">
-                  <a
-                    className={`group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 gap-2 ${
-                      location === '/deepsite' ? 'bg-accent' : ''
-                    }`}
-                  >
-                    {menuCategories.deepsite.icon}
-                    {menuCategories.deepsite.title}
-                  </a>
-                </Link>
+              <NavigationMenuLink
+                href="/deepsite"
+                className={`group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 gap-2 ${
+                  location === '/deepsite' ? 'bg-accent' : ''
+                }`}
+              >
+                {menuCategories.deepsite.icon}
+                {menuCategories.deepsite.title}
               </NavigationMenuLink>
             </NavigationMenuItem>
 
@@ -301,11 +293,9 @@ export default function Header({ showBackButton = false, onBack }: HeaderProps) 
 
         {/* Menu Mobile (Simplificado) */}
         <div className="flex md:hidden">
-          <Link href="/">
-            <Button variant="ghost" size="sm">
-              Menu
-            </Button>
-          </Link>
+          <Button variant="ghost" size="sm" onClick={() => window.location.href = '/'} asChild>
+            <a href="/">Menu</a>
+          </Button>
         </div>
       </div>
     </header>
