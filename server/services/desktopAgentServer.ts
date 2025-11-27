@@ -9,6 +9,7 @@ import {
   addLog,
 } from "../db-desktop-control";
 import { storagePut } from "../storage";
+import { orchestrator } from "../_core/agent-orchestrator";
 
 interface AuthenticatedWebSocket extends WebSocket {
   agentId?: number;
@@ -60,6 +61,7 @@ export class DesktopAgentServer {
   private wss: WebSocketServer;
   private clients: Map<number, AuthenticatedWebSocket> = new Map();
   private heartbeatInterval: number = 30000; // 30 segundos
+  private orchestratorEnabled: boolean = true; // Habilitar orquestração automática
 
   constructor(port: number = 3001) {
     this.wss = new WebSocketServer({ port });
@@ -203,6 +205,21 @@ export class DesktopAgentServer {
     });
 
     console.log(`[DesktopAgent] Agent ${agent.id} (${agent.deviceName}) autenticado`);
+
+    // Registrar no orchestrator se habilitado
+    if (this.orchestratorEnabled) {
+      try {
+        orchestrator.registerAgent({
+          id: `desktop-${agent.id}`,
+          name: agent.deviceName || `Desktop Agent ${agent.id}`,
+          capabilities: ["shell", "screenshot", "file-search", "command"],
+          maxLoad: 5, // Máximo de 5 tarefas simultâneas
+        });
+        console.log(`[Orchestrator] Agent ${agent.id} registrado no orchestrator`);
+      } catch (error) {
+        console.error(`[Orchestrator] Erro ao registrar agent ${agent.id}:`, error);
+      }
+    }
 
     // Iniciar heartbeat
     this.startHeartbeat(ws);
@@ -470,6 +487,16 @@ export class DesktopAgentServer {
 
       // Remover cliente
       this.clients.delete(ws.agentId);
+
+      // Remover do orchestrator se habilitado
+      if (this.orchestratorEnabled) {
+        try {
+          orchestrator.markAgentOffline(`desktop-${ws.agentId}`);
+          console.log(`[Orchestrator] Agent ${ws.agentId} marcado como offline no orchestrator`);
+        } catch (error) {
+          console.error(`[Orchestrator] Erro ao marcar agent ${ws.agentId} offline:`, error);
+        }
+      }
 
       // Atualizar status para offline
       await updateAgentStatus(ws.agentId, "offline");

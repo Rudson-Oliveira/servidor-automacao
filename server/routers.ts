@@ -22,6 +22,7 @@ import { desktopControlRouter } from './routers/desktop-control';
 import { notificationsRouter } from './routers/notifications';
 import { schedulerRouter } from './routers/scheduler';
 import { cacheRouter } from './routers/cache';
+import { orchestratorRouter } from './routers/orchestrator';
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -47,6 +48,9 @@ export const appRouter = router({
 
   // Integração com IAs externas
   integration: integrationRouter,
+
+  // Orquestrador de Agentes
+  orchestrator: orchestratorRouter,
 
   // Integração com Perplexity AI
   perplexity: perplexityRouter,

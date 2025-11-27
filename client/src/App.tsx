@@ -32,6 +32,7 @@ const DesktopHistory = lazy(() => import("./pages/DesktopHistory"));
 const DesktopScheduler = lazy(() => import("./pages/DesktopScheduler"));
 const DesktopControlPro = lazy(() => import("./pages/DesktopControlPro"));
 const CacheStats = lazy(() => import("./pages/CacheStats"));
+const OrchestratorDashboard = lazy(() => import("./pages/OrchestratorDashboard"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -46,6 +47,7 @@ function Router() {
     <Suspense fallback={<LoadingFallback />}>
       <Switch>
         <Route path={"/"} component={Home} />
+        <Route path={"/orchestrator"} component={OrchestratorDashboard} />
         <Route path={"/whatsapp/send"} component={WhatsAppSend} />
         <Route path={"/whatsapp/templates"} component={WhatsAppTemplates} />
         <Route path={"/whatsapp/campaigns"} component={WhatsAppCampaigns} />

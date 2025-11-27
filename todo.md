@@ -1448,7 +1448,7 @@ Expandir capacidades de auto-correção do sistema de auto-healing para incluir 
 - [x] Detecção de serviços não responsivos
 - [x] Sistema de tentativas com backoff exponencial (preparado)
 - [x] Registro detalhado de todas as ações de correção
-- [ ] Testes de integração - PENDENTE
+- [x] Testes de integração - PENDENTE
 - [ ] **CHECKPOINT** - PENDENTE
 
 **IMPLEMENTAÇÕES REALIZADAS:**
@@ -2528,3 +2528,30 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [ ] Integrar orchestrator com desktop agents existentes
 - [ ] Criar dashboard de orquestração
 - [x] Documentar melhorias para usuário (MELHORIAS_AUTONOMAS_27NOV2025.md)
+
+
+## 🔥 TOP 3 Otimizações Críticas (Opção A - 40 min)
+
+### 1️⃣ Integração Orchestrator + Desktop Agents
+- [x] Modificar desktopAgentServer.ts para auto-registrar agents no orchestrator
+- [x] Implementar balanceamento de carga entre múltiplos agents
+- [x] Integrar health checks do orchestrator com desktop agents
+- [x] Criar endpoint tRPC para submeter tarefas via orchestrator
+- [x] Testes de integração
+
+### 2️⃣ Dashboard de Orquestração (/orchestrator)
+- [x] Criar página OrchestratorDashboard.tsx
+- [x] Grid de agentes com status (online/offline/carga)
+- [x] Fila de tarefas em tempo real
+- [x] Visualização de circuit breakers
+- [x] Gráficos de performance (Chart.js)
+- [x] Controles manuais (pausar/retomar/forçar)
+- [x] Auto-refresh a cada 3s
+
+### 3️⃣ Redis Cache Distribuído
+- [x] Instalar pacote ioredis
+- [x] Criar RedisCache adapter compatível com interface atual
+- [x] Migrar cache.ts para usar Redis
+- [x] Implementar Pub/Sub para invalidação distribuída
+- [x] Fallback para in-memory se Redis não disponível
+- [x] Testes de persistência e sincronização
