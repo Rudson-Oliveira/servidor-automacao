@@ -134,6 +134,14 @@ export class DesktopAgentServer {
         await this.handleLog(ws, message as LogMessage);
         break;
 
+      case "poll_commands":
+        await this.handlePollCommands(ws);
+        break;
+
+      case "command_status":
+        await this.handleCommandStatus(ws, message as any);
+        break;
+
       default:
         this.sendError(ws, `Unknown message type: ${message.type}`);
     }
@@ -199,6 +207,8 @@ export class DesktopAgentServer {
     // Iniciar heartbeat
     this.startHeartbeat(ws);
 
+    console.log(`[DesktopAgent] Verificando comandos pendentes...`);
+    
     // Enviar comandos pendentes
     await this.sendPendingCommands(ws);
   }
@@ -241,6 +251,13 @@ export class DesktopAgentServer {
     }
 
     const { commandId, success, result, error, executionTimeMs } = message;
+
+    console.log(`[DesktopAgent] 📦 Resultado recebido do comando ${commandId}`);
+    console.log(`[DesktopAgent]    Sucesso: ${success}`);
+    console.log(`[DesktopAgent]    Tempo: ${executionTimeMs}ms`);
+    if (error) {
+      console.log(`[DesktopAgent]    Erro: ${error}`);
+    }
 
     let processedResult = result;
 
@@ -328,12 +345,58 @@ export class DesktopAgentServer {
   }
 
   /**
+   * Processa atualização de status de comando (executing)
+   */
+  private async handleCommandStatus(
+    ws: AuthenticatedWebSocket,
+    message: { commandId: number; status: string }
+  ): Promise<void> {
+    if (!ws.agentId) {
+      this.sendError(ws, "Não autenticado");
+      return;
+    }
+
+    const { commandId, status } = message;
+
+    console.log(`[DesktopAgent] Comando ${commandId} mudou para status: ${status}`);
+
+    // Atualizar status no banco
+    if (status === "executing") {
+      await updateCommandStatus(commandId, "executing");
+    }
+  }
+
+  /**
+   * Processa solicitação de polling de comandos pendentes
+   */
+  private async handlePollCommands(ws: AuthenticatedWebSocket): Promise<void> {
+    if (!ws.agentId) {
+      this.sendError(ws, "Não autenticado");
+      return;
+    }
+
+    console.log(`[DesktopAgent] Agent ${ws.agentId} solicitou polling de comandos`);
+    
+    console.log(`[DesktopAgent] Verificando comandos pendentes...`);
+    
+    // Enviar comandos pendentes
+    await this.sendPendingCommands(ws);
+  }
+
+  /**
    * Envia comandos pendentes para o agent
    */
   private async sendPendingCommands(ws: AuthenticatedWebSocket): Promise<void> {
     if (!ws.agentId) return;
 
     const commands = await getPendingCommands(ws.agentId);
+
+    if (commands.length === 0) {
+      console.log(`[DesktopAgent] Nenhum comando pendente para agent ${ws.agentId}`);
+      return;
+    }
+
+    console.log(`[DesktopAgent] Enviando ${commands.length} comando(s) pendente(s) para agent ${ws.agentId}`);
 
     for (const command of commands) {
       // Marcar como enviado
@@ -349,7 +412,17 @@ export class DesktopAgentServer {
 
       this.send(ws, commandMessage);
 
-      console.log(`[DesktopAgent] Comando ${command.id} (${command.commandType}) enviado para agent ${ws.agentId}`);
+      console.log(`[DesktopAgent] ✅ Comando ${command.id} (${command.commandType}) enviado para agent ${ws.agentId}`);
+      
+      // Log dos dados do comando
+      if (command.commandData) {
+        const data = JSON.parse(command.commandData);
+        if (command.commandType === 'shell') {
+          console.log(`[DesktopAgent]    Shell: ${data.command}`);
+        } else if (command.commandType === 'screenshot') {
+          console.log(`[DesktopAgent]    Screenshot: ${data.format || 'png'}`);
+        }
+      }
     }
   }
 

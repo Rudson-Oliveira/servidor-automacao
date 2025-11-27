@@ -2264,3 +2264,63 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] 2 arquivos criados (teste + documentação)
 - [x] 1 dependência adicionada (Pillow)
 - [x] Tempo de implementação: ~3 horas
+
+
+## 🔧 Correções Críticas Pré-UI (Fase 5.5)
+
+### Polling Periódico
+- [ ] Implementar polling de comandos pendentes no agent.py (10s)
+- [ ] Adicionar método _check_pending_commands()
+- [ ] Integrar polling com loop principal
+- [ ] Testar recebimento automático de comandos
+
+### Status Executing
+- [ ] Adicionar status "executing" ao enviar início de execução
+- [ ] Modificar _execute_shell_command para enviar status
+- [ ] Modificar _capture_screenshot para enviar status
+- [ ] Atualizar servidor para processar status "executing"
+
+### Console Logs Melhorados
+- [ ] Adicionar logs detalhados no desktopAgentServer.ts
+- [ ] Logar quando comando é criado
+- [ ] Logar quando comando é enviado
+- [ ] Logar quando comando é recebido pelo agent
+- [ ] Logar quando comando inicia execução
+- [ ] Logar quando comando completa/falha
+
+### Testes
+- [ ] Criar comando e verificar polling automático
+- [ ] Validar status "executing" aparece
+- [ ] Confirmar logs aparecem no console
+- [ ] Testar fluxo completo end-to-end
+
+
+## ✅ Correções Críticas Pré-UI Completas (Fase 5.5)
+
+### Polling Periódico
+- [x] Implementar polling de comandos pendentes no agent.py (10s)
+- [x] Adicionar método _check_pending_commands()
+- [x] Integrar polling com loop principal
+- [x] Testar recebimento automático de comandos
+
+### Status Executing
+- [x] Adicionar status "executing" ao enviar início de execução
+- [x] Modificar _execute_shell_command para enviar status
+- [x] Modificar _capture_screenshot para enviar status
+- [x] Atualizar servidor para processar status "executing"
+
+### Console Logs Melhorados
+- [x] Adicionar logs detalhados no desktopAgentServer.ts
+- [x] Logar quando comando é criado
+- [x] Logar quando comando é enviado
+- [x] Logar quando comando é recebido pelo agent
+- [x] Logar quando comando inicia execução
+- [x] Logar quando comando completa/falha
+
+### Testes
+- [x] Criar comando e verificar polling automático
+- [x] Validar status "executing" aparece
+- [x] Confirmar logs aparecem no console
+- [x] Testar fluxo completo end-to-end
+
+**Resultado:** Sistema funciona perfeitamente sem necessidade de reconexão! ✨

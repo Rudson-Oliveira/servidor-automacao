@@ -44,6 +44,7 @@ class DesktopAgent:
         self.authenticated = False
         self.reconnect_attempts = 0
         self.heartbeat_thread: Optional[threading.Thread] = None
+        self.polling_thread: Optional[threading.Thread] = None
         self.should_run = True
         
         # Configurar logging
@@ -250,6 +251,9 @@ class DesktopAgent:
         
         # Iniciar heartbeat
         self._start_heartbeat()
+        
+        # Iniciar polling de comandos pendentes
+        self._start_polling()
     
     def _start_heartbeat(self):
         """Inicia thread de heartbeat"""
@@ -289,6 +293,44 @@ class DesktopAgent:
                 self.logger.error(f"❌ Erro no heartbeat: {e}")
                 break
     
+    def _start_polling(self):
+        """Inicia thread de polling de comandos pendentes"""
+        if self.polling_thread and self.polling_thread.is_alive():
+            return
+        
+        # Intervalo de polling: 10 segundos
+        polling_interval = 10
+        self.logger.info(f"🔄 Iniciando polling de comandos (intervalo: {polling_interval}s)")
+        
+        self.polling_thread = threading.Thread(
+            target=self._polling_loop,
+            args=(polling_interval,),
+            daemon=True
+        )
+        self.polling_thread.start()
+    
+    def _polling_loop(self, interval: int):
+        """Loop de polling de comandos pendentes"""
+        while self.should_run and self.authenticated:
+            try:
+                time.sleep(interval)
+                
+                if not self.connected or not self.authenticated:
+                    break
+                
+                # Solicitar comandos pendentes
+                poll_message = {
+                    'type': 'poll_commands',
+                    'timestamp': int(time.time() * 1000)
+                }
+                
+                self._send(poll_message)
+                self.logger.debug("🔄 Polling de comandos enviado")
+                
+            except Exception as e:
+                self.logger.error(f"❌ Erro no polling: {e}")
+                break
+    
     def _on_command(self, data: Dict[str, Any]):
         """Processa comando recebido do servidor"""
         command_id = data.get('commandId')
@@ -297,6 +339,15 @@ class DesktopAgent:
         
         self.logger.info(f"📋 Comando recebido: {command_type} (ID: {command_id})")
         self.logger.info(f"   Dados: {command_data}")
+        
+        # Enviar status "executing" antes de começar
+        executing_message = {
+            'type': 'command_status',
+            'commandId': command_id,
+            'status': 'executing'
+        }
+        self._send(executing_message)
+        self.logger.info(f"⏳ Iniciando execução do comando {command_id}...")
         
         start_time = time.time()
         
