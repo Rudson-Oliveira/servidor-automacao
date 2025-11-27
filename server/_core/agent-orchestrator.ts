@@ -10,6 +10,7 @@
  */
 
 import { EventEmitter } from "events";
+import { OrchestratorWebhooks } from "./orchestrator-webhooks";
 
 export interface Agent {
   id: string;
@@ -235,6 +236,11 @@ class AgentOrchestrator extends EventEmitter {
         this.circuitBreaker.delete(agent.id);
         
         this.emit("task:completed", { task, agent });
+        
+        // Disparar webhook de tarefa concluída
+        OrchestratorWebhooks.onTaskCompleted(task.id, task.payload, 1).catch(err => {
+          console.error('[Orchestrator] Erro ao disparar webhook de conclusão:', err);
+        });
       } else {
         throw new Error("Falha simulada na execução");
       }
@@ -289,6 +295,11 @@ class AgentOrchestrator extends EventEmitter {
       task.status = "failed";
       task.error = error.message;
       this.emit("task:failed", { task, error });
+      
+      // Disparar webhook de tarefa falhada
+      OrchestratorWebhooks.onTaskFailed(task.id, error.message, 1).catch(err => {
+        console.error('[Orchestrator] Erro ao disparar webhook de falha:', err);
+      });
     }
   }
   
