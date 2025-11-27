@@ -695,3 +695,5 @@ export type InsertDesktopJanela = typeof desktopJanelas.$inferInsert;
 
 // Importar schemas de campanhas e templates
 export * from './schema-campaigns';
+export * from './schema-notifications';
+export * from './schema-scheduler';

@@ -28,6 +28,8 @@ const VyLikeCapture = lazy(() => import("./pages/VyLikeCapture"));
 const PerformanceDashboard = lazy(() => import("./pages/PerformanceDashboard"));
 const DesktopControl = lazy(() => import("./pages/DesktopControl"));
 const DesktopSecurity = lazy(() => import("./pages/DesktopSecurity"));
+const DesktopHistory = lazy(() => import("./pages/DesktopHistory"));
+const DesktopScheduler = lazy(() => import("./pages/DesktopScheduler"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -53,6 +55,8 @@ function Router() {
         <Route path="/desktop-captures" component={DesktopCaptures} />
         <Route path="/desktop" component={DesktopControl} />
         <Route path="/desktop/security" component={DesktopSecurity} />
+        <Route path="/desktop/history" component={DesktopHistory} />
+        <Route path="/desktop/scheduler" component={DesktopScheduler} />
         <Route path="/desktop/vy-capture" component={VyLikeCapture} />
         <Route path="/performance" component={PerformanceDashboard} />
         <Route path={"/cadastro"} component={Cadastro} />

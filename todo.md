@@ -2375,3 +2375,41 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Criar página /desktop/security para gerenciar whitelist/blacklist
 - [x] Adicionar endpoints tRPC para adicionar/remover regras de segurança
 - [x] Testar todas as melhorias implementadas
+
+
+## Desktop Control - Melhorias Avançadas (27/11/2025)
+
+### 1️⃣ Sistema de Notificações em Tempo Real
+- [x] Criar tabela desktop_notifications no banco
+- [x] Implementar sistema de notificações push (WebSocket)
+- [x] Notificar quando comandos críticos são bloqueados
+- [x] Notificar quando agents ficam offline
+- [x] Notificar quando comandos falham após múltiplas tentativas
+- [x] Notificar quando screenshots são capturados
+- [x] Criar componente NotificationCenter no frontend
+- [x] Adicionar badge de notificações não lidas
+
+### 2️⃣ Timeline Visual de Histórico
+- [x] Criar página /desktop/history
+- [x] Implementar timeline visual com todas as ações
+- [x] Adicionar filtros avançados (agent, status, severidade, período)
+- [x] Implementar busca por comando específico
+- [x] Adicionar exportação de relatórios (CSV/JSON)
+- [x] Criar estatísticas agregadas (comandos por dia, taxa de sucesso)
+- [x] Implementar paginação para grandes volumes
+
+### 3️⃣ Agendamento de Comandos (Scheduler)
+- [x] Criar tabela desktop_scheduled_commands no banco
+- [x] Implementar sistema de agendamento com node-cron
+- [x] Suportar agendamento por horário específico
+- [x] Suportar agendamento por intervalo regular
+- [x] Suportar agendamento baseado em eventos
+- [x] Implementar retry automático em caso de falha
+- [x] Criar página /desktop/scheduler para gerenciar agendamentos
+- [x] Adicionar validação de conflitos de horários
+
+### Testes e Validação
+- [x] Criar testes unitários para notificações (11 testes)
+- [x] Criar testes unitários para scheduler (12 testes)
+- [x] Validar integração completa end-to-end
+- [x] Todos os 362 testes passando (100%)

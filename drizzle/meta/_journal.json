@@ -218,6 +218,20 @@
       "when": 1764255372375,
       "tag": "0030_slimy_invaders",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "5",
+      "when": 1764262537828,
+      "tag": "0031_nice_misty_knight",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "5",
+      "when": 1764262819931,
+      "tag": "0032_chemical_the_leader",
+      "breakpoints": true
     }
   ]
 }
