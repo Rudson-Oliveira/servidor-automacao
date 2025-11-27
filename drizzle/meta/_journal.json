@@ -183,6 +183,13 @@
       "when": 1764236621581,
       "tag": "0025_known_brood",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "5",
+      "when": 1764242034828,
+      "tag": "0026_exotic_lorna_dane",
+      "breakpoints": true
     }
   ]
 }

@@ -31,6 +31,9 @@ export type InsertUser = typeof users.$inferInsert;
 // WhatsApp Blacklist e Proteção
 export * from './schema-whatsapp-blacklist';
 
+// Integração Avançada com Obsidian
+export * from './schema-obsidian';
+
 // TODO: Add your tables here
 /**
  * Tabela de logs de auditoria para detecção de alucinações

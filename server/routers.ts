@@ -5,6 +5,7 @@ import { servidorRouter } from "./routers/servidor";
 import { deepsiteRouter } from "./routers/deepsite";
 import { publicProcedure, router } from "./_core/trpc";
 import { obsidianRouter } from "./routers/obsidian";
+import { obsidianAdvancedRouter } from "./routers/obsidianAdvanced";
 import { integrationRouter } from "./routers/integration";
 import { perplexityRouter } from "./routers/perplexity";
 import { apisPersonalizadasRouter } from "./routers/apis-personalizadas";
@@ -34,8 +35,11 @@ export const appRouter = router({
     }),
   }),
 
-  // Integração com Obsidian
+  // Integração com Obsidian (geração de scripts)
   obsidian: obsidianRouter,
+
+  // Integração Avançada com Obsidian (vaults, notas, sync)
+  obsidianAdvanced: obsidianAdvancedRouter,
 
   // Integração com IAs externas
   integration: integrationRouter,

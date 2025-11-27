@@ -21,6 +21,7 @@ const DesktopCaptures = lazy(() => import("./pages/DesktopCaptures"));
 const Cadastro = lazy(() => import("./pages/Cadastro"));
 const Login = lazy(() => import("./pages/Login"));
 const ObsidianCatalog = lazy(() => import("./pages/ObsidianCatalog"));
+const ObsidianVaults = lazy(() => import("./pages/ObsidianVaults"));
 const VyLikeCapture = lazy(() => import("./pages/VyLikeCapture"));
 const PerformanceDashboard = lazy(() => import("./pages/PerformanceDashboard"));
 
@@ -51,6 +52,8 @@ function Router() {
         <Route path={"/cadastro"} component={Cadastro} />
         <Route path={"/login"} component={Login} />
         <Route path={"/obsidian/catalogar"} component={ObsidianCatalog} />
+        <Route path={"/obsidian/vaults"} component={ObsidianVaults} />
+        <Route path={"/obsidian"} component={ObsidianVaults} />
         <Route path={"/404"} component={NotFound} />
         {/* Final fallback route */}
         <Route component={NotFound} />
