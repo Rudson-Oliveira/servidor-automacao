@@ -34,6 +34,9 @@ export * from './schema-whatsapp-blacklist';
 // Integração Avançada com Obsidian
 export * from './schema-obsidian';
 
+// Controle Desktop Remoto
+export * from './schema-desktop-control';
+
 // TODO: Add your tables here
 /**
  * Tabela de logs de auditoria para detecção de alucinações

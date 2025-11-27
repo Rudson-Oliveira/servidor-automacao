@@ -2137,3 +2137,64 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [ ] Adicionar sistema de compartilhamento de vaults entre usuários
 - [ ] Implementar export para PDF/DOCX de notas individuais
 - [ ] Adicionar suporte a plugins Obsidian (community plugins)
+
+
+## 🖥️ Automação Desktop Remota - Desktop Agent Completo
+
+### Fase 1: Schema do Banco de Dados e Backend Básico
+- [x] Criar schema `drizzle/schema-desktop-control.ts` (4 tabelas)
+- [x] Executar migrations para criar tabelas
+- [x] Validar que tabelas foram criadas corretamente (5 tabelas: agents, commands, screenshots, logs)
+- [ ] Criar helpers CRUD em `server/db-desktop-control.ts`
+- [ ] Criar testes básicos para helpers
+
+### Fase 2: Servidor WebSocket
+- [ ] Instalar dependência `ws` (WebSocket)
+- [ ] Criar `server/services/desktopAgentServer.ts`
+- [ ] Implementar autenticação por token
+- [ ] Criar sistema de heartbeat (ping/pong)
+- [ ] Testar conexão WebSocket com cliente de teste
+- [ ] Criar endpoints tRPC básicos (isConnected, sendCommand)
+
+### Fase 3: Desktop Agent - Fundação
+- [ ] Criar projeto Electron em `/desktop-agent`
+- [ ] Configurar WebSocket client
+- [ ] Implementar autenticação
+- [ ] Criar tray icon (ícone na bandeja)
+- [ ] Testar conexão com servidor
+- [ ] Validar que heartbeat funciona
+
+### Fase 4: Desktop Agent - Mouse/Teclado
+- [ ] Instalar `robotjs` e `screenshot-desktop`
+- [ ] Implementar comando `moveMouse`
+- [ ] Implementar comando `click`
+- [ ] Implementar comando `type`
+- [ ] Implementar comando `keyPress`
+- [ ] Implementar comando `screenshot`
+- [ ] Testar cada comando individualmente
+
+### Fase 5: Desktop Agent - Aplicativos
+- [ ] Implementar `openApp` (Windows/Mac/Linux)
+- [ ] Implementar `closeApp`
+- [ ] Implementar `focusWindow`
+- [ ] Implementar `getActiveWindow`
+- [ ] Testar abrir/fechar apps comuns
+
+### Fase 6: Desktop Agent - Obsidian
+- [ ] Implementar `openObsidian` (URI scheme)
+- [ ] Implementar `createObsidianNote`
+- [ ] Implementar `openObsidianSettings`
+- [ ] Testar comandos com Obsidian real
+
+### Fase 7: Interface Web
+- [ ] Criar página `/desktop/controle`
+- [ ] Implementar visualização de screenshot
+- [ ] Criar botões de controle (mouse, teclado)
+- [ ] Criar atalhos para apps comuns
+- [ ] Testar interface completa
+
+### Fase 8: Testes e Checkpoint
+- [ ] Executar bateria completa de testes
+- [ ] Testar fluxo end-to-end (web → servidor → desktop)
+- [ ] Criar documentação de uso
+- [ ] Salvar checkpoint final

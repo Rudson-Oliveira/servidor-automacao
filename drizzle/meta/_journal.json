@@ -197,6 +197,20 @@
       "when": 1764245759804,
       "tag": "0027_safe_hiroim",
       "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "5",
+      "when": 1764254139191,
+      "tag": "0028_workable_talkback",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "5",
+      "when": 1764254258438,
+      "tag": "0029_cynical_prowler",
+      "breakpoints": true
     }
   ]
 }
