@@ -345,6 +345,56 @@ export async function getBacklinksByNota(notaId: number) {
   return { incoming, outgoing };
 }
 
+export async function clearBacklinksFromNota(notaOrigemId: number) {
+  const db = await getDb();
+  if (!db) return;
+
+  await db.delete(obsidianBacklinks).where(eq(obsidianBacklinks.notaOrigemId, notaOrigemId));
+}
+
+export async function parseAndCreateBacklinks(notaOrigemId: number, vaultId: number, conteudo: string) {
+  const db = await getDb();
+  if (!db) return;
+
+  // Extrair wikilinks do conteúdo
+  const wikilinkRegex = /\[\[([^\]]+)\]\]/g;
+  const matches: Array<{ titulo: string; contexto: string }> = [];
+  let match;
+
+  const linhas = conteudo.split('\n');
+  linhas.forEach((linha, index) => {
+    const regex = new RegExp(wikilinkRegex);
+    let m;
+    while ((m = regex.exec(linha)) !== null) {
+      matches.push({
+        titulo: m[1].trim(),
+        contexto: `Linha ${index + 1}: ${linha.trim().substring(0, 100)}`,
+      });
+    }
+  });
+
+  // Buscar todas as notas do vault para resolver títulos
+  const notasDoVault = await getNotasByVault(vaultId);
+  const tituloParaId = new Map<string, number>();
+  notasDoVault.forEach(nota => {
+    tituloParaId.set(nota.titulo.toLowerCase(), nota.id);
+  });
+
+  // Criar backlinks para cada wikilink encontrado
+  for (const { titulo, contexto } of matches) {
+    const notaDestinoId = tituloParaId.get(titulo.toLowerCase());
+    if (notaDestinoId && notaDestinoId !== notaOrigemId) {
+      await createBacklink({
+        vaultId,
+        notaOrigemId,
+        notaDestinoId,
+        tipoLink: 'wikilink',
+        contexto,
+      });
+    }
+  }
+}
+
 // ==================== FLUXOS ====================
 
 export async function createFluxo(fluxo: InsertObsidianFluxo) {

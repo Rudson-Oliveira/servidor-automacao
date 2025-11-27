@@ -2045,3 +2045,30 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Criar backlinks bidirecionais no grafo
 - [x] Atualizar ObsidianGraphView para usar dados reais
 - [x] Testar navegação entre notas conectadas
+
+
+## 🔴 Funcionalidades Críticas Obsidian
+
+### 1. Endpoint updateNota com Versionamento
+- [x] Criar endpoint updateNota no obsidianAdvanced router
+- [x] Atualizar conteúdo, frontmatter e hash da nota
+- [x] Incrementar versão automaticamente
+- [x] Registrar mudança no histórico (obsidian_notas_historico)
+- [x] Extrair e atualizar backlinks quando wikilinks mudam
+- [x] Validar permissões (usuário deve ser dono do vault)
+
+### 2. Sincronização Real com Sistema de Arquivos
+- [x] Criar serviço de leitura de arquivos .md do filesystem
+- [x] Implementar comparação de hashes para detectar mudanças
+- [x] Implementar upload de notas locais para banco
+- [x] Implementar download de notas do banco para filesystem
+- [x] Adicionar resolução de conflitos (local_vence, remoto_vence, mais_recente_vence)
+- [x] Integrar com endpoint syncVault existente
+
+### 3. Atualização Automática de Backlinks
+- [x] Criar helper parseAndExtractWikilinks(content: string)
+- [x] Ao criar nota: extrair wikilinks e popular obsidian_backlinks
+- [x] Ao atualizar nota: limpar backlinks antigos e inserir novos
+- [x] Resolver títulos de notas para IDs
+- [x] Adicionar contexto do backlink (linha onde aparece)
+- [x] Otimizar queries de "quem menciona esta nota"

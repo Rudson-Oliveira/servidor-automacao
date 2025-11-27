@@ -139,12 +139,14 @@ export type InsertObsidianNotaTag = typeof obsidianNotasTags.$inferInsert;
  */
 export const obsidianBacklinks = mysqlTable("obsidian_backlinks", {
   id: int("id").autoincrement().primaryKey(),
+  vaultId: int("vault_id").notNull(),
   notaOrigemId: int("nota_origem_id").notNull(),
   notaDestinoId: int("nota_destino_id").notNull(),
   tipoLink: mysqlEnum("tipo_link", ["wikilink", "markdown", "embed"]).default("wikilink"),
   contexto: text("contexto"), // Texto ao redor do link
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, (table) => ({
+  vaultIdIdx: index("vault_id_idx").on(table.vaultId),
   notaOrigemIdx: index("nota_origem_idx").on(table.notaOrigemId),
   notaDestinoIdx: index("nota_destino_idx").on(table.notaDestinoId),
   origemDestinoUnique: index("origem_destino_unique").on(table.notaOrigemId, table.notaDestinoId),

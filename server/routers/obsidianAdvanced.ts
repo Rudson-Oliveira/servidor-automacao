@@ -105,6 +105,9 @@ export const obsidianAdvancedRouter = router({
         totalNotas: notas.length,
       });
 
+      // Extrair e criar backlinks automaticamente
+      await dbObsidian.parseAndCreateBacklinks(notaId, input.vaultId, notaData.conteudo);
+
       return {
         success: true,
         notaId,
@@ -184,6 +187,17 @@ export const obsidianAdvancedRouter = router({
             const tag = await dbObsidian.createOrGetTag(nota.vaultId, tagName);
             await dbObsidian.linkNotaTag(notaId, tag.id);
           }
+        }
+      }
+
+      // Se o conteúdo foi atualizado, reprocessar backlinks
+      if (updates.conteudo) {
+        const nota = await dbObsidian.getNotaById(notaId);
+        if (nota) {
+          // Limpar backlinks antigos
+          await dbObsidian.clearBacklinksFromNota(notaId);
+          // Criar novos backlinks
+          await dbObsidian.parseAndCreateBacklinks(notaId, nota.vaultId, updates.conteudo);
         }
       }
 

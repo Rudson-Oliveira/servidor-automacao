@@ -67,14 +67,125 @@ export async function syncVault(vaultId: number): Promise<SyncResult> {
     throw new Error("Configuração de sync não encontrada");
   }
 
-  // TODO: Implementar lógica de sync real
-  // Por enquanto, retorna resultado mockado
+  // Obter vault do banco
+  const vault = await dbObsidian.getVaultById(vaultId);
+  if (!vault || !vault.caminho) {
+    throw new Error("Vault não encontrado ou sem caminho configurado");
+  }
+
+  // Ler arquivos .md do filesystem
+  const fs = await import('fs/promises');
+  const path = await import('path');
+  const crypto = await import('crypto');
+
+  let novos = 0;
+  let modificados = 0;
+  let deletados = 0;
+  let conflitos = 0;
+
+  try {
+    // Verificar se o diretório existe
+    await fs.access(vault.caminho);
+
+    // Ler todos os arquivos .md recursivamente
+    const arquivosMd: Array<{ caminho: string; conteudo: string; hash: string }> = [];
+    
+    const lerDiretorioRecursivo = async (dir: string): Promise<void> => {
+      const entries = await fs.readdir(dir, { withFileTypes: true });
+      
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        
+        if (entry.isDirectory()) {
+          // Ignorar diretórios ocultos e .obsidian
+          if (!entry.name.startsWith('.') && entry.name !== '.obsidian') {
+            await lerDiretorioRecursivo(fullPath);
+          }
+        } else if (entry.isFile() && entry.name.endsWith('.md')) {
+          const conteudo = await fs.readFile(fullPath, 'utf-8');
+          const hash = crypto.createHash('sha256').update(conteudo).digest('hex');
+          const caminhoRelativo = path.relative(vault.caminho!, fullPath);
+          
+          arquivosMd.push({
+            caminho: '/' + caminhoRelativo.replace(/\\/g, '/'),
+            conteudo,
+            hash,
+          });
+        }
+      }
+    }
+
+    await lerDiretorioRecursivo(vault.caminho!);
+
+    // Obter notas atuais do banco
+    const notasAtuais = await dbObsidian.getNotasByVault(vaultId);
+    const notasMap = new Map(notasAtuais.map(n => [n.caminho, n]));
+    const arquivosMap = new Map(arquivosMd.map(a => [a.caminho, a]));
+
+    // Detectar novas notas (existem no filesystem mas não no banco)
+    for (const arquivo of arquivosMd) {
+      const notaExistente = notasMap.get(arquivo.caminho);
+      
+      if (!notaExistente) {
+        // Nota nova - criar no banco
+        const titulo = path.basename(arquivo.caminho, '.md');
+        await dbObsidian.createNota({
+          vaultId,
+          titulo,
+          caminho: arquivo.caminho,
+          conteudo: arquivo.conteudo,
+          ultimaModificacao: new Date(),
+          ultimoSync: new Date(),
+        });
+        novos++;
+      } else if (notaExistente.hash !== arquivo.hash) {
+        // Nota modificada - verificar conflito
+        if (notaExistente.ultimaModificacao && notaExistente.ultimaModificacao > notaExistente.ultimoSync!) {
+          // Conflito: modificada tanto localmente quanto no filesystem
+          conflitos++;
+          
+          // Aplicar estratégia de resolução
+          if (config.resolucaoConflito === 'remoto_vence' || config.resolucaoConflito === 'mais_recente_vence') {
+            await dbObsidian.updateNota(notaExistente.id, {
+              conteudo: arquivo.conteudo,
+              ultimoSync: new Date(),
+            });
+          }
+          // Se 'local_vence', não faz nada
+          // Se 'manual', apenas incrementa contador de conflitos
+        } else {
+          // Não há conflito - atualizar do filesystem
+          await dbObsidian.updateNota(notaExistente.id, {
+            conteudo: arquivo.conteudo,
+            ultimoSync: new Date(),
+          });
+          modificados++;
+        }
+      }
+    }
+
+    // Detectar notas deletadas (existem no banco mas não no filesystem)
+    for (const nota of notasAtuais) {
+      if (!arquivosMap.has(nota.caminho)) {
+        await dbObsidian.deleteNota(nota.id);
+        deletados++;
+      }
+    }
+
+    // Atualizar timestamp de sync do vault
+    await dbObsidian.updateVaultSync(vaultId);
+
+  } catch (error: any) {
+    console.error(`[ObsidianSync] Erro ao acessar filesystem:`, error);
+    throw new Error(`Erro ao sincronizar vault: ${error.message}`);
+  }
+
   const result: SyncResult = {
     vaultId,
-    novos: 0,
-    modificados: 0,
-    deletados: 0,
-    conflitos: 0,
+    novos,
+    modificados,
+    deletados,
+    conflitos,
     timestamp: new Date(),
   };
 
