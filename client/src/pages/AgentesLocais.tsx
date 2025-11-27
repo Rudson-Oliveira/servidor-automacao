@@ -32,22 +32,16 @@ export default function AgentesLocais() {
   const { data: tokens, refetch: refetchTokens } = trpc.agente.listarTokens.useQuery(undefined, {
     enabled: !!user,
     refetchInterval: 10000,
-    staleTime: 5000,
-    refetchOnWindowFocus: false,
   });
 
   const { data: agentes, refetch: refetchAgentes } = trpc.agente.listarAgentes.useQuery(undefined, {
     enabled: !!user,
     refetchInterval: 5000,
-    staleTime: 3000,
-    refetchOnWindowFocus: false,
   });
 
   const { data: estatisticas } = trpc.agente.estatisticas.useQuery(undefined, {
     enabled: !!user,
     refetchInterval: 10000,
-    staleTime: 5000,
-    refetchOnWindowFocus: false,
   });
 
   const { data: historico } = trpc.agente.historico.useQuery(
@@ -55,8 +49,6 @@ export default function AgentesLocais() {
     {
       enabled: !!user,
       refetchInterval: 5000,
-      staleTime: 3000,
-      refetchOnWindowFocus: false,
     }
   );
 
