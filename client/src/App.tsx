@@ -43,6 +43,7 @@ const MLTraining = lazy(() => import("./pages/MLTraining"));
 const AlertsConfig = lazy(() => import("./pages/AlertsConfig"));
 const MLDashboard = lazy(() => import("./pages/MLDashboard"));
 const SelfAwareness = lazy(() => import("./pages/SelfAwareness"));
+const NotificationSettings = lazy(() => import("./pages/NotificationSettings"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -78,6 +79,7 @@ function Router() {
         <Route path="/desktop/security" component={DesktopSecurity} />
         <Route path="/desktop/history" component={DesktopHistory} />
         <Route path="/desktop/scheduler" component={DesktopScheduler} />
+        <Route path="/notifications" component={NotificationSettings} />
           <Route path="/desktop/vy-capture" component={VyLikeCapture} />
           <Route path="/telemetry" component={TelemetryDashboard} />
         <Route path="/performance" component={PerformanceDashboard} />

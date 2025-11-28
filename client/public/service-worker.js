@@ -250,4 +250,92 @@ self.addEventListener('message', (event) => {
   }
 });
 
+// ========================================
+// WEB PUSH NOTIFICATIONS
+// ========================================
+
+/**
+ * Listener para eventos de push
+ */
+self.addEventListener('push', (event) => {
+  console.log('[SW] Push recebido:', event);
+
+  let notificationData = {
+    title: 'Notificação',
+    body: 'Você tem uma nova notificação',
+    icon: '/icon-192x192.png',
+    badge: '/badge-72x72.png',
+    data: { url: '/' },
+  };
+
+  // Parse dos dados se disponíveis
+  if (event.data) {
+    try {
+      notificationData = event.data.json();
+    } catch (error) {
+      console.error('[SW] Erro ao parsear dados do push:', error);
+      notificationData.body = event.data.text();
+    }
+  }
+
+  const options = {
+    body: notificationData.body,
+    icon: notificationData.icon || '/icon-192x192.png',
+    badge: notificationData.badge || '/badge-72x72.png',
+    vibrate: [200, 100, 200],
+    data: notificationData.data || {},
+    actions: [
+      {
+        action: 'open',
+        title: 'Abrir',
+        icon: '/icon-open.png',
+      },
+      {
+        action: 'close',
+        title: 'Fechar',
+        icon: '/icon-close.png',
+      },
+    ],
+    tag: notificationData.data?.type || 'default',
+    requireInteraction: false,
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(notificationData.title, options)
+  );
+});
+
+/**
+ * Listener para cliques em notificações
+ */
+self.addEventListener('notificationclick', (event) => {
+  console.log('[SW] Notificação clicada:', event);
+
+  event.notification.close();
+
+  // Se ação for "close", apenas fecha
+  if (event.action === 'close') {
+    return;
+  }
+
+  // Determina URL para abrir
+  const urlToOpen = event.notification.data?.url || '/';
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true })
+      .then((clientList) => {
+        // Procura por janela já aberta
+        for (const client of clientList) {
+          if (client.url === urlToOpen && 'focus' in client) {
+            return client.focus();
+          }
+        }
+        // Se não encontrou, abre nova janela
+        if (clients.openWindow) {
+          return clients.openWindow(urlToOpen);
+        }
+      })
+  );
+});
+
 console.log('[SW] Service Worker carregado!', CACHE_VERSION);
