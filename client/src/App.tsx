@@ -28,6 +28,7 @@ const ObsidianVaults = lazy(() => import("./pages/ObsidianVaults"));
 const ObsidianVaultNotes = lazy(() => import("./pages/ObsidianVaultNotes"));
 const ObsidianGraph = lazy(() => import("./pages/ObsidianGraph"));
 const VyLikeCapture = lazy(() => import("./pages/VyLikeCapture"));
+const TelemetryDashboard = lazy(() => import("./pages/TelemetryDashboard"));
 const PerformanceDashboard = lazy(() => import("./pages/PerformanceDashboard"));
 const DesktopControl = lazy(() => import("./pages/DesktopControl"));
 const DesktopSecurity = lazy(() => import("./pages/DesktopSecurity"));
@@ -73,7 +74,8 @@ function Router() {
         <Route path="/desktop/security" component={DesktopSecurity} />
         <Route path="/desktop/history" component={DesktopHistory} />
         <Route path="/desktop/scheduler" component={DesktopScheduler} />
-        <Route path="/desktop/vy-capture" component={VyLikeCapture} />
+          <Route path="/desktop/vy-capture" component={VyLikeCapture} />
+          <Route path="/telemetry" component={TelemetryDashboard} />
         <Route path="/performance" component={PerformanceDashboard} />
         <Route path="/cache" component={CacheStats} />
         <Route path={"/cadastro"} component={Cadastro} />

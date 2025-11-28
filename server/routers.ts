@@ -16,7 +16,10 @@ import { autoHealingRouter } from "./routers/auto-healing";
 import { healthRouter } from "./routers/health";
 import { uriSchemesRouter } from "./routers/uri-schemes";
 import { whatsappRouter } from './routers/whatsapp';
-import { whatsappProtectionRouter } from './routers/whatsapp-protection';
+import { whatsappProtectionRouter } from "./routers/whatsapp-protection";
+import { telemetryRouter } from "./routers/telemetry";
+import { predictiveHealingRouter } from "./routers/predictive-healing";
+import { knowledgeSyncRouter } from "./routers/knowledge-sync";
 import { bulkSendRouter } from './routers/bulk-send';
 import { templatesRouter } from './routers/templates';
 import { whatsappWebRouter } from './routers/whatsapp-web';
@@ -98,6 +101,9 @@ export const appRouter = router({
   whatsapp: whatsappRouter,
   whatsappWeb: whatsappWebRouter,
   whatsappProtection: whatsappProtectionRouter,
+  telemetry: telemetryRouter,
+  predictiveHealing: predictiveHealingRouter,
+  knowledgeSync: knowledgeSyncRouter,
   bulkSend: bulkSendRouter,
   templates: templatesRouter,
 
