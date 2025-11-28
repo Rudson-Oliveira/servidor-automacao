@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS `auto_correction_attempts` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`detected_at` timestamp NOT NULL,\n\t`problem_type` varchar(100) NOT NULL,\n\t`problem_description` text NOT NULL,\n\t`severity` varchar(20) NOT NULL,\n\t`backup_id` int,\n\t`correction_strategy` varchar(100),\n\t`correction_applied` text,\n\t`success` int NOT NULL,\n\t`error_message` text,\n\t`rollback_triggered` int NOT NULL DEFAULT 0,\n\t`rollback_success` int,\n\t`started_at` timestamp NOT NULL,\n\t`completed_at` timestamp,\n\t`duration_ms` int,\n\t`created_at` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `auto_correction_attempts_id` PRIMARY KEY(`id`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute CREATE TABLE IF NOT EXISTS `auto_correction_attempts` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`detected_at` timestamp NOT NULL,\n\t`problem_type` varchar(100) NOT NULL,\n\t`problem_description` text NOT NULL,\n\t`severity` varchar(20) NOT NULL,\n\t`backup_id` int,\n\t`correction_strategy` varchar(100),\n\t`correction_applied` text,\n\t`success` int NOT NULL,\n\t`error_message` text,\n\t`rollback_triggered` int NOT NULL DEFAULT 0,\n\t`rollback_success` int,\n\t`started_at` timestamp NOT NULL,\n\t`completed_at` timestamp,\n\t`duration_ms` int,\n\t`created_at` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `auto_correction_attempts_id` PRIMARY KEY(`id`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 218
+}

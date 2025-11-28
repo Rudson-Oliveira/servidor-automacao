@@ -267,6 +267,13 @@
       "when": 1764341331818,
       "tag": "0037_silky_thunderbolt_ross",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "5",
+      "when": 1764348460994,
+      "tag": "0038_cuddly_thunderbolt",
+      "breakpoints": true
     }
   ]
 }

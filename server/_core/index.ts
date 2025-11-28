@@ -27,6 +27,9 @@ import deepsiteRouter from "../routes/deepsite";
 import { manusExplicarRouter } from "../routes/manus-explicar";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
 import { startDesktopAgentServer } from "../services/desktopAgentServer";
+import { initializeBackupScheduler } from "./backup-scheduler";
+import { initializeAutoTestScheduler } from "./auto-test-scheduler";
+import { startHealthMonitoring } from "./auto-correction";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -111,6 +114,19 @@ async function startServer() {
     } catch (error) {
       console.error(`[DesktopAgent] Failed to start WebSocket server:`, error);
     }
+
+    // Inicializar Sistema Pai e agendador de backups
+    initializeBackupScheduler().catch(error => {
+      console.error(`[SistemaPai] Failed to initialize backup scheduler:`, error);
+    });
+
+    // Inicializar agendador de auto-testes
+    initializeAutoTestScheduler().catch(error => {
+      console.error(`[AutoTest] Failed to initialize auto-test scheduler:`, error);
+    });
+
+    // Iniciar monitoramento de saúde e auto-correção
+    startHealthMonitoring();
   });
 }
 
