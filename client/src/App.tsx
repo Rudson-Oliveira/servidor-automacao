@@ -39,6 +39,9 @@ const CacheStats = lazy(() => import("./pages/CacheStats"));
 const OrchestratorDashboard = lazy(() => import("./pages/OrchestratorDashboard"));
 const InstalarDesktopAgent = lazy(() => import("./pages/InstalarDesktopAgent"));
 const AgentVersionsDashboard = lazy(() => import("./pages/AgentVersionsDashboard"));
+const MLTraining = lazy(() => import("./pages/MLTraining"));
+const AlertsConfig = lazy(() => import("./pages/AlertsConfig"));
+const MLDashboard = lazy(() => import("./pages/MLDashboard"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -77,6 +80,9 @@ function Router() {
           <Route path="/desktop/vy-capture" component={VyLikeCapture} />
           <Route path="/telemetry" component={TelemetryDashboard} />
         <Route path="/performance" component={PerformanceDashboard} />
+        <Route path="/ml-training" component={MLTraining} />
+        <Route path="/alerts-config" component={AlertsConfig} />
+        <Route path="/ml-dashboard" component={MLDashboard} />
         <Route path="/cache" component={CacheStats} />
         <Route path={"/cadastro"} component={Cadastro} />
         <Route path={"/login"} component={Login} />

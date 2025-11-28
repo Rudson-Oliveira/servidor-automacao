@@ -3,6 +3,7 @@ import { eq, and, gte, desc } from "drizzle-orm";
 import { getDb } from "../db";
 import { alertConfigs, alertHistory, alertTemplates, type InsertAlertHistory } from "../../drizzle/schema";
 import { notifyOwner } from "../_core/notification";
+import { ENV } from "../_core/env";
 
 /**
  * Serviço de Alertas Proativos Multi-Canal
@@ -53,12 +54,12 @@ function getEmailTransporter() {
   if (!emailTransporter) {
     // Configuração SMTP (pode ser Gmail, SendGrid, etc)
     emailTransporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || "smtp.gmail.com",
-      port: parseInt(process.env.SMTP_PORT || "587"),
-      secure: false,
+      host: ENV.smtpHost,
+      port: ENV.smtpPort,
+      secure: ENV.smtpPort === 465, // true para 465, false para outros
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: ENV.smtpUser,
+        pass: ENV.smtpPass,
       },
     });
   }
@@ -174,13 +175,13 @@ async function sendEmail(
   html?: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    if (!ENV.smtpUser || !ENV.smtpPass) {
       return { success: false, error: "SMTP não configurado" };
     }
 
     const transporter = getEmailTransporter();
     await transporter.sendMail({
-      from: process.env.SMTP_USER,
+      from: ENV.smtpFrom,
       to,
       subject,
       text,

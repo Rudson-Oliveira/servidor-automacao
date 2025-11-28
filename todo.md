@@ -2914,3 +2914,39 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Documentar integração Prometheus/Grafana
 - [x] Documentar integração Sentry
 - [x] Criar guia de troubleshooting
+
+
+## 🚀 Implementação Prioritária - Melhorias Críticas (28/Nov/2025)
+
+### Fase 1: Treinar Modelos ML
+- [x] Coletar dados históricos de telemetria (CPU, memória)
+- [x] Treinar modelo LSTM para cpu_usage
+- [x] Treinar modelo LSTM para memory_usage
+- [x] Validar acurácia dos modelos (>70%)
+- [x] Fazer predições de teste
+- [x] Verificar detecção de anomalias
+- [x] Criar interface web para treinamento (/ml-training)
+
+### Fase 2: Configurar SMTP e Alertas
+- [x] Adicionar variáveis de ambiente SMTP
+- [x] Configurar nodemailer com Gmail
+- [x] Criar templates de alertas padrão
+- [x] Testar envio de email
+- [x] Configurar alertas de anomalias
+- [x] Configurar alertas de predições
+- [x] Criar interface web de configuração (/alerts-config)
+
+### Fase 3: Testes End-to-End
+- [x] Testar fluxo completo: anomalia → predição → alerta
+- [x] Validar auto-healing preventivo
+- [x] Testar múltiplos canais de notificação
+- [x] Verificar throttling de alertas
+- [x] Confirmar histórico de alertas
+- [x] Criar dashboard unificado (/ml-dashboard)
+
+### Fase 4: Documentação
+- [x] Criar guia rápido de uso (GUIA_RAPIDO_ML_ALERTAS.md)
+- [x] Documentar configuração SMTP
+- [x] Documentar uso de ML
+- [x] Criar exemplos práticos
+- [x] Incluir troubleshooting completo
