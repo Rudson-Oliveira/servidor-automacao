@@ -1,0 +1,22 @@
+{
+  "server": {
+    "url": "ws://localhost:3001",
+    "reconnect_interval": 5,
+    "max_reconnect_attempts": 10
+  },
+  "agent": {
+    "token": "SEU_TOKEN_AQUI_64_CARACTERES",
+    "device_name": "Meu Computador",
+    "platform": "Windows 11",
+    "version": "1.0.0"
+  },
+  "heartbeat": {
+    "interval": 30,
+    "timeout": 10
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "agent.log",
+    "max_size_mb": 10
+  }
+}
