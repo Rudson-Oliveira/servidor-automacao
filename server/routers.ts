@@ -35,8 +35,12 @@ import { mlPredictionRouter } from './routers/ml-prediction';
 import { prometheusRouter } from './routers/prometheus';
 import { selfAwarenessRouter } from './routers/self-awareness';
 import { pushNotificationsRouter } from './routers/push-notifications';
+import { downloadRouter } from './routers/download';
+import { installerRouter } from './routers/installer';
 
 export const appRouter = router({
+  download: downloadRouter,
+  installer: installerRouter,
   downloadAgent: downloadAgentRouter,
   agentVersions: agentVersionsRouter,
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
