@@ -88,7 +88,7 @@ export const pushNotificationsRouter = router({
         isActive: 1,
       });
 
-      return { success: true, subscriptionId: Number(result.insertId) };
+      return { success: true, subscriptionId: Number((result as any).insertId || 0) };
     }),
 
   /**
