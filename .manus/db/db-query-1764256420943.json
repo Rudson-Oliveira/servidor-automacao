@@ -1,9 +1,0 @@
-{
-  "query": "SHOW TABLES LIKE 'arquivos_mapeados'",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute SHOW TABLES LIKE 'arquivos_mapeados'",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 49
-}

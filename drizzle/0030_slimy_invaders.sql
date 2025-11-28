@@ -1,1 +1,0 @@
-ALTER TABLE `desktop_agents` MODIFY COLUMN `status` enum('online','offline','busy','error') NOT NULL DEFAULT 'offline';

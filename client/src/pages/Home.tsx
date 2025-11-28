@@ -1,218 +1,272 @@
-import { Link } from 'wouter';
-import Header from '@/components/Header';
+import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import {
-  MessageSquare,
-  FileText,
-  Monitor,
-  Globe,
-  Shield,
-  Activity,
-  Send,
-  FileCode,
-  Calendar,
-  ArrowRight,
-  CheckCircle2,
-} from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Settings, BookOpen } from 'lucide-react';
+import { Link } from 'wouter';
 
-const features = [
-  {
-    category: 'WhatsApp Anti-Bloqueio',
-    icon: <MessageSquare className="h-8 w-8" />,
-    description:
-      'Sistema completo de envio em massa com proteção inteligente contra bloqueios, templates dinâmicos e agendamento de campanhas.',
-    color: 'text-green-600',
-    bgColor: 'bg-green-50',
-    features: [
-      'Envio em massa com anti-bloqueio dinâmico',
-      'Templates com variáveis personalizáveis',
-      'Agendamento de campanhas automático',
-      'Monitoramento de bloqueios em tempo real',
-      'Múltiplas sessões WhatsApp Web',
-    ],
-    links: [
-      { title: 'Enviar Mensagens', href: '/whatsapp/send', icon: <Send className="h-4 w-4" /> },
-      { title: 'Templates', href: '/whatsapp/templates', icon: <FileCode className="h-4 w-4" /> },
-      { title: 'Campanhas', href: '/whatsapp/campaigns', icon: <Calendar className="h-4 w-4" /> },
-    ],
-  },
-  {
-    category: 'Integração Obsidian',
-    icon: <FileText className="h-8 w-8" />,
-    description:
-      'Automatize a criação de catálogos de links no Obsidian através de URI schemes, scripts Python locais e plugin customizado.',
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-50',
-    features: [
-      'Geração de URIs do Obsidian',
-      'Scripts Python para automação local',
-      'Plugin Obsidian customizado',
-      'Sincronização bidirecional',
-    ],
-    links: [{ title: 'Catalogar Links', href: '/obsidian/catalogar', icon: <FileText className="h-4 w-4" /> }],
-  },
-  {
-    category: 'Captura de Desktop',
-    icon: <Monitor className="h-8 w-8" />,
-    description:
-      'Capture e analise telas do desktop automaticamente, detectando programas, janelas e conteúdo visual.',
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-50',
-    features: [
-      'Captura automática de tela',
-      'Detecção de programas ativos',
-      'Análise de janelas',
-      'OCR e extração de texto',
-    ],
-    links: [
-      { title: 'Capturar Tela', href: '/desktop/capture', icon: <Monitor className="h-4 w-4" /> },
-      { title: 'Desktop Control Pro', href: '/desktop/pro', icon: <Monitor className="h-4 w-4" /> },
-    ],
-  },
-  {
-    category: 'DeepSite Analysis',
-    icon: <Globe className="h-8 w-8" />,
-    description: 'Análise profunda de sites com extração de dados, mapeamento de estrutura e scraping inteligente.',
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-50',
-    features: [
-      'Scraping inteligente de sites',
-      'Extração de dados estruturados',
-      'Mapeamento de estrutura',
-      'Análise de conteúdo',
-    ],
-    links: [{ title: 'Analisar Site', href: '/deepsite', icon: <Globe className="h-4 w-4" /> }],
-  },
-  {
-    category: 'Sistema de Auto-Healing',
-    icon: <Shield className="h-8 w-8" />,
-    description:
-      'Monitoramento contínuo com correção automática de problemas, health checks e reinicialização inteligente de serviços.',
-    color: 'text-red-600',
-    bgColor: 'bg-red-50',
-    features: [
-      'Detecção automática de problemas',
-      'Correção proativa de erros',
-      'Health checks a cada 30s',
-      'Reinicialização inteligente',
-      'Retry com backoff exponencial',
-    ],
-    links: [
-      { title: 'Auto-Healing', href: '/auto-healing', icon: <Activity className="h-4 w-4" /> },
-      { title: 'Health Checks', href: '/health', icon: <Shield className="h-4 w-4" /> },
-    ],
-  },
-];
+interface Message {
+  id: string;
+  type: 'user' | 'system' | 'success' | 'error';
+  content: string;
+  timestamp: Date;
+}
+
+interface SystemStatus {
+  online: boolean;
+  version: string;
+  totalRequests: number;
+  errorsFixed: number;
+}
 
 export default function Home() {
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      type: 'system',
+      content: '👋 Olá! Sou o Sistema de Automação. Envie comandos ou pergunte algo!',
+      timestamp: new Date(),
+    },
+  ]);
+  const [inputValue, setInputValue] = useState('');
+  const [status, setStatus] = useState<SystemStatus>({
+    online: true,
+    version: '1.0.0',
+    totalRequests: 0,
+    errorsFixed: 0,
+  });
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Buscar status do sistema
+    fetchStatus();
+    
+    // Atualizar status a cada 5 segundos
+    const interval = setInterval(fetchStatus, 5000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Scroll para o final quando novas mensagens chegarem
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const fetchStatus = async () => {
+    try {
+      const response = await fetch('/api/status');
+      if (response.ok) {
+        const data = await response.json();
+        setStatus({
+          online: data.online,
+          version: data.versao,
+          totalRequests: data.total_requisicoes,
+          errorsFixed: data.erros_corrigidos,
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao buscar status:', error);
+    }
+  };
+
+  const sendMessage = async () => {
+    if (!inputValue.trim()) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      type: 'user',
+      content: inputValue,
+      timestamp: new Date(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInputValue('');
+
+    try {
+      const response = await fetch('/api/conversar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mensagem: inputValue }),
+      });
+
+      const data = await response.json();
+
+      const systemMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: data.sucesso ? 'system' : 'error',
+        content: data.sucesso ? data.resposta : `Erro: ${data.erro}`,
+        timestamp: new Date(),
+      };
+
+      setMessages((prev) => [...prev, systemMessage]);
+      fetchStatus();
+    } catch (error) {
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: 'error',
+        content: `Erro de conexão: ${error}`,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  };
+
+  const getMessageStyle = (type: Message['type']) => {
+    switch (type) {
+      case 'user':
+        return 'ml-auto bg-primary text-primary-foreground';
+      case 'system':
+        return 'bg-muted';
+      case 'success':
+        return 'bg-green-500 text-white';
+      case 'error':
+        return 'bg-destructive text-destructive-foreground';
+      default:
+        return 'bg-muted';
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    <div className="min-h-screen bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 p-4 md:p-8">
+      <div className="max-w-5xl mx-auto">
+        <Card className="shadow-2xl">
+          <CardHeader className="text-center">
+            <CardTitle className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
+              🤖 Sistema de Automação
+            </CardTitle>
+            <CardDescription className="text-lg">
+              Interface de Comunicação Comet/Manus ↔ Automação
+            </CardDescription>
+            <div className="mt-4 flex gap-3 flex-wrap justify-center">
+              <Link href="/configuracoes/ias">
+                <Button variant="outline" className="gap-2">
+                  <Settings className="h-4 w-4" />
+                  Configurar IAs
+                </Button>
+              </Link>
+              <Link href="/obsidian/catalogar">
+                <Button variant="outline" className="gap-2 border-purple-300 text-purple-700 hover:bg-purple-50">
+                  <BookOpen className="h-4 w-4" />
+                  Catalogar Links (Obsidian)
+                </Button>
+              </Link>
+            </div>
+          </CardHeader>
 
-      <main className="container py-8">
-        {/* Hero Section */}
-        <div className="mb-12 text-center">
-          <h1 className="text-4xl font-bold tracking-tight mb-4">
-            Servidor de Automação - Sistema de Comunicação
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Plataforma completa de automação com WhatsApp anti-bloqueio, integração Obsidian, captura de desktop,
-            análise de sites e auto-healing inteligente.
-          </p>
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
-          {features.map((feature, index) => (
-            <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
-              <CardHeader className={`${feature.bgColor} pb-4`}>
-                <div className="flex items-center gap-3 mb-2">
-                  <div className={feature.color}>{feature.icon}</div>
-                  <CardTitle className="text-xl">{feature.category}</CardTitle>
-                </div>
-                <CardDescription className="text-base">{feature.description}</CardDescription>
+          <CardContent className="space-y-6">
+            {/* Status do Sistema */}
+            <Card className="border-l-4 border-l-blue-500 bg-blue-50 dark:bg-blue-950">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Status do Sistema</CardTitle>
               </CardHeader>
-              <CardContent className="pt-6">
-                {/* Features List */}
-                <ul className="space-y-2 mb-6">
-                  {feature.features.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className={`h-4 w-4 mt-0.5 flex-shrink-0 ${feature.color}`} />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Action Links */}
-                <div className="flex flex-wrap gap-2">
-                  {feature.links.map((link, idx) => (
-                    <Button 
-                      key={idx} 
-                      variant="outline" 
-                      size="sm" 
-                      className="gap-2"
-                      onClick={() => window.location.href = link.href}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          window.location.href = link.href;
-                        }
-                      }}
-                      aria-label={`Navegar para ${link.title}`}
-                      role="link"
-                      tabIndex={0}
-                    >
-                      {link.icon}
-                      {link.title}
-                      <ArrowRight className="h-3 w-3" />
-                    </Button>
-                  ))}
+              <CardContent className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-blue-900 dark:text-blue-100">Status:</span>
+                  <Badge variant={status.online ? 'default' : 'destructive'}>
+                    {status.online ? '✅ Online' : '❌ Offline'}
+                  </Badge>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-blue-900 dark:text-blue-100">Versão:</span>
+                  <span className="text-blue-800 dark:text-blue-200">{status.version}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-blue-900 dark:text-blue-100">Requisições:</span>
+                  <span className="text-blue-800 dark:text-blue-200">{status.totalRequests}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-blue-900 dark:text-blue-100">Erros Corrigidos:</span>
+                  <span className="text-blue-800 dark:text-blue-200">{status.errorsFixed}</span>
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
 
-        {/* Quick Stats */}
-        <div className="mt-12 grid gap-4 md:grid-cols-4">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total de Funcionalidades</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">15+</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Integrações</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">8+</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground">APIs Disponíveis</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">65+</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-lg font-semibold">Online</span>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </main>
+            {/* Chat */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Chat em Tempo Real</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-[400px] w-full pr-4" ref={scrollRef}>
+                  <div className="space-y-4">
+                    {messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className={`max-w-[80%] rounded-lg p-3 ${getMessageStyle(message.type)} ${
+                          message.type === 'user' ? 'ml-auto' : ''
+                        }`}
+                      >
+                        <p className="text-sm">{message.content}</p>
+                        <p className="text-xs opacity-70 mt-1">
+                          {message.timestamp.toLocaleTimeString()}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+
+                <Separator className="my-4" />
+
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Digite sua mensagem ou comando..."
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className="flex-1"
+                  />
+                  <Button onClick={sendMessage}>Enviar</Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Endpoints */}
+            <Card className="border-l-4 border-l-green-500 bg-green-50 dark:bg-green-950">
+              <CardHeader>
+                <CardTitle className="text-lg">📡 Endpoints Disponíveis</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary">GET</Badge>
+                  <code className="text-sm">/api/status</code>
+                  <span className="text-sm text-muted-foreground">- Status do sistema</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary">POST</Badge>
+                  <code className="text-sm">/api/executar</code>
+                  <span className="text-sm text-muted-foreground">- Executar tarefa</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary">POST</Badge>
+                  <code className="text-sm">/api/corrigir-erro</code>
+                  <span className="text-sm text-muted-foreground">- Corrigir erro</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary">POST</Badge>
+                  <code className="text-sm">/api/conversar</code>
+                  <span className="text-sm text-muted-foreground">- Conversar</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary">GET</Badge>
+                  <code className="text-sm">/api/historico</code>
+                  <span className="text-sm text-muted-foreground">- Ver histórico</span>
+                </div>
+              </CardContent>
+            </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

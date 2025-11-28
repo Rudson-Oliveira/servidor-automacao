@@ -1,9 +1,0 @@
-{
-  "query": "CREATE INDEX IF NOT EXISTS `command_id_idx` ON `desktop_logs` (`command_id`);\nCREATE INDEX IF NOT EXISTS `agent_id_idx` ON `desktop_logs` (`agent_id`);\nCREATE INDEX IF NOT EXISTS `user_id_idx` ON `desktop_logs` (`user_id`);\nCREATE INDEX IF NOT EXISTS `level_idx` ON `desktop_logs` (`level`)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute CREATE INDEX IF NOT EXISTS `command_id_idx` ON `desktop_logs` (`command_id`);\nCREATE INDEX IF NOT EXISTS `agent_id_idx` ON `desktop_logs` (`agent_id`);\nCREATE INDEX IF NOT EXISTS `user_id_idx` ON `desktop_logs` (`user_id`);\nCREATE INDEX IF NOT EXISTS `level_idx` ON `desktop_logs` (`level`)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 1713
-}

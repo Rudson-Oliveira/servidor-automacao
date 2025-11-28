@@ -1,43 +1,16 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { downloadAgentRouter } from "./routers/download-agent";
-import { agentVersionsRouter } from "./routers/agent-versions";
 import { servidorRouter } from "./routers/servidor";
 import { deepsiteRouter } from "./routers/deepsite";
 import { publicProcedure, router } from "./_core/trpc";
 import { obsidianRouter } from "./routers/obsidian";
-import { obsidianAdvancedRouter } from "./routers/obsidianAdvanced";
 import { integrationRouter } from "./routers/integration";
 import { perplexityRouter } from "./routers/perplexity";
 import { apisPersonalizadasRouter } from "./routers/apis-personalizadas";
 import { desktopRouter } from "./routers/desktop";
-import { autoHealingRouter } from "./routers/auto-healing";
-import { healthRouter } from "./routers/health";
-import { uriSchemesRouter } from "./routers/uri-schemes";
-import { whatsappRouter } from './routers/whatsapp';
-import { whatsappProtectionRouter } from "./routers/whatsapp-protection";
-import { telemetryRouter } from "./routers/telemetry";
-import { predictiveHealingRouter } from "./routers/predictive-healing";
-import { knowledgeSyncRouter } from "./routers/knowledge-sync";
-import { bulkSendRouter } from './routers/bulk-send';
-import { templatesRouter } from './routers/templates';
-import { whatsappWebRouter } from './routers/whatsapp-web';
-import { desktopControlRouter } from './routers/desktop-control';
-import { notificationsRouter } from './routers/notifications';
-import { schedulerRouter } from './routers/scheduler';
-import { cacheRouter } from './routers/cache';
-import { orchestratorRouter } from './routers/orchestrator';
-import { aiGovernanceRouter } from './routers/ai-governance';
-import { aiGovernanceWebhooksRouter } from './routers/ai-governance-webhooks';
-import { alertsRouter } from './routers/alerts';
-import { mlPredictionRouter } from './routers/ml-prediction';
-import { prometheusRouter } from './routers/prometheus';
-import { selfAwarenessRouter } from './routers/self-awareness';
 
 export const appRouter = router({
-  downloadAgent: downloadAgentRouter,
-  agentVersions: agentVersionsRouter,
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   servidor: servidorRouter,
@@ -53,67 +26,20 @@ export const appRouter = router({
     }),
   }),
 
-  // Integração com Obsidian (geração de scripts)
+  // Integração com Obsidian
   obsidian: obsidianRouter,
-
-  // Integração Avançada com Obsidian (vaults, notas, sync)
-  obsidianAdvanced: obsidianAdvancedRouter,
 
   // Integração com IAs externas
   integration: integrationRouter,
 
-  // Orquestrador de Agentes
-  orchestrator: orchestratorRouter,
-
-  // Governança de IAs Externas
-  aiGovernance: aiGovernanceRouter,
-  
-  // Webhooks de Governança de IAs
-  aiGovernanceWebhooks: aiGovernanceWebhooksRouter,
-
   // Integração com Perplexity AI
   perplexity: perplexityRouter,
-
-  // Sistema de Notificações
-  notifications: notificationsRouter,
-
-  // Sistema de Agendamento
-  scheduler: schedulerRouter,
-
-  // Sistema de Cache Inteligente
-  cache: cacheRouter,
 
   // APIs Personalizadas
   apisPersonalizadas: apisPersonalizadasRouter,
 
   // Desktop Captures (Comet Vision)
   desktop: desktopRouter,
-
-  // Desktop Control System (Agents, Commands, Screenshots)
-  desktopControl: desktopControlRouter,
-
-  // Auto-Healing (Auto-Diagnóstico e Auto-Correção)
-  autoHealing: autoHealingRouter,
-
-  // Health Checks (Verificações de Saúde)
-  health: healthRouter,
-
-  // URI Schemes (Integração com Programas Locais)
-  uriSchemes: uriSchemesRouter,
-
-  // WhatsApp Anti-Bloqueio (Recrutamento)
-  whatsapp: whatsappRouter,
-  whatsappWeb: whatsappWebRouter,
-  whatsappProtection: whatsappProtectionRouter,
-  telemetry: telemetryRouter,
-  predictiveHealing: predictiveHealingRouter,
-  knowledgeSync: knowledgeSyncRouter,
-  bulkSend: bulkSendRouter,
-  templates: templatesRouter,
-  alerts: alertsRouter,
-  ml: mlPredictionRouter,
-  prometheus: prometheusRouter,
-  selfAwareness: selfAwarenessRouter,
 
   // TODO: add feature routers here, e.g.
   // todo: router({

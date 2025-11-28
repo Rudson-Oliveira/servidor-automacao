@@ -334,48 +334,6 @@ export const deepsiteRouter = router({
     }),
 
   /**
-   * Busca inteligente com múltiplos critérios
-   * Combina busca por nome, conteúdo e tags
-   */
-  buscarInteligente: publicProcedure
-    .input(z.object({
-      termo: z.string().min(1),
-      limite: z.number().int().positive().max(1000).default(10),
-    }))
-    .query(async ({ input }) => {
-      const db = await getDb();
-      if (!db) return [];
-      
-      const termos = input.termo.split(/\s+/).filter(t => t.length > 2);
-      
-      if (termos.length === 0) {
-        return [];
-      }
-      
-      // Construir query com OR para cada termo
-      const condicoes = termos.flatMap(termo => [
-        like(arquivosMapeados.nome, `%${termo}%`),
-        like(arquivosMapeados.conteudoIndexado, `%${termo}%`),
-        like(arquivosMapeados.tags, `%${termo}%`)
-      ]);
-      
-      const resultados = await db
-        .select()
-        .from(arquivosMapeados)
-        .where(or(...condicoes))
-        .limit(input.limite);
-      
-      return resultados.map(arquivo => ({
-        ...arquivo,
-        relevancia: termos.filter(t => 
-          arquivo.nome.toLowerCase().includes(t) ||
-          arquivo.conteudoIndexado?.toLowerCase().includes(t) ||
-          arquivo.tags?.toLowerCase().includes(t)
-        ).length / termos.length,
-      })).sort((a, b) => b.relevancia - a.relevancia);
-    }),
-
-  /**
    * Obtém estatísticas de análises
    */
   getEstatisticas: publicProcedure
