@@ -2737,3 +2737,48 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Assinatura HMAC SHA-256 para segurança
 - [x] Retry automático e desativação após 5 falhas consecutivas
 - [x] Limpeza automática de webhooks inativos (>30 dias)
+
+
+## 🔄 Sistema de Auto-Atualização Desktop Agent (NOVO)
+
+### Versionamento e Distribuição
+- [ ] Criar sistema de versionamento semântico (1.0.0 → 1.1.0 → 2.0.0)
+- [ ] Implementar API de distribuição de versões (/api/agent/versions)
+- [ ] Criar endpoint para download de versões específicas
+- [ ] Implementar changelog automático
+- [ ] Sistema de assinatura digital para validar integridade
+
+### Auto-Update no Agent
+- [ ] Implementar verificação automática de atualizações (a cada 6h)
+- [ ] Criar sistema de download incremental (apenas diff)
+- [ ] Implementar hot reload sem reiniciar agent
+- [ ] Sistema de rollback automático em caso de falha
+- [ ] Notificações de atualização disponível
+
+### Plugin System (Arquitetura Modular)
+- [ ] Criar sistema de plugins para comandos extensíveis
+- [ ] Implementar carregamento dinâmico de módulos
+- [ ] API para registrar novos comandos remotamente
+- [ ] Sistema de dependências entre plugins
+- [ ] Sandbox de segurança para plugins
+
+### Telemetria e Monitoramento
+- [ ] Implementar health check automático
+- [ ] Coletar métricas de performance (CPU, RAM, latência)
+- [ ] Sistema de alertas de problemas
+- [ ] Dashboard de saúde dos agents conectados
+- [ ] Logs estruturados com níveis de severidade
+
+### Dashboard de Gestão de Versões
+- [ ] Página de gerenciamento de versões (/dashboard/agent-versions)
+- [ ] Upload de novas versões do agent
+- [ ] Controle de rollout (gradual ou instantâneo)
+- [ ] Estatísticas de adoção de versões
+- [ ] Forçar atualização de agents específicos
+
+### Opções de Instalação
+- [ ] Finalizar página web interativa (/instalar-agent)
+- [ ] Criar link direto para INSTALADOR_COMPLETO.bat
+- [ ] Gerar executável .exe empacotado (PyInstaller)
+- [ ] Documentação completa de cada opção
+- [ ] Sistema de analytics de instalações

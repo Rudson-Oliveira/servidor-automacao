@@ -36,6 +36,8 @@ const DesktopScheduler = lazy(() => import("./pages/DesktopScheduler"));
 const DesktopControlPro = lazy(() => import("./pages/DesktopControlPro"));
 const CacheStats = lazy(() => import("./pages/CacheStats"));
 const OrchestratorDashboard = lazy(() => import("./pages/OrchestratorDashboard"));
+const InstalarDesktopAgent = lazy(() => import("./pages/InstalarDesktopAgent"));
+const AgentVersionsDashboard = lazy(() => import("./pages/AgentVersionsDashboard"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -51,6 +53,8 @@ function Router() {
       <Switch>
        <Route path={"/"} component={Home} />
       <Route path="/install" component={InstallPortal} />
+      <Route path="/instalar-agent" component={InstalarDesktopAgent} />
+      <Route path="/agent-versions" component={AgentVersionsDashboard} />
       <Route path="/control" component={ControlCenter} />
       <Route path="/ai-governance" component={AIGovernance} />
       <Route path={"/404"} component={NotFound} />

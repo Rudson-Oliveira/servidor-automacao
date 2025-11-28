@@ -1,6 +1,8 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
+import { downloadAgentRouter } from "./routers/download-agent";
+import { agentVersionsRouter } from "./routers/agent-versions";
 import { servidorRouter } from "./routers/servidor";
 import { deepsiteRouter } from "./routers/deepsite";
 import { publicProcedure, router } from "./_core/trpc";
@@ -27,6 +29,8 @@ import { aiGovernanceRouter } from './routers/ai-governance';
 import { aiGovernanceWebhooksRouter } from './routers/ai-governance-webhooks';
 
 export const appRouter = router({
+  downloadAgent: downloadAgentRouter,
+  agentVersions: agentVersionsRouter,
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   servidor: servidorRouter,
