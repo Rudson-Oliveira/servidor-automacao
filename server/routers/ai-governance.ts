@@ -3,6 +3,7 @@ import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import { TRPCError } from "@trpc/server";
 import { randomBytes, createHash } from "crypto";
 import { getDb } from "../db";
+import { webhookService } from "../_core/ai-governance-webhooks";
 import { 
   aiClients, 
   aiPolicies, 
@@ -293,7 +294,20 @@ export const aiGovernanceRouter = router({
 
       await db.insert(aiViolations).values(input);
 
-      // Atualizar contador de violações do cliente
+      // Emitir evento de violação
+      await webhookService.emitEvent({
+        type: 'violation_detected',
+        timestamp: new Date(),
+        aiId: input.clientId,
+        data: {
+          violationType: input.violationType,
+          severity: input.severity,
+          description: input.description,
+          endpoint: input.endpoint,
+        },
+      });
+
+      // Atualizar trust score do cliente
       const [client] = await db
         .select()
         .from(aiClients)
@@ -436,6 +450,16 @@ export const aiGovernanceRouter = router({
         severity: "critical",
         description: input.reason,
         actionTaken: "suspended"
+      });
+
+      // Emitir evento de suspensão
+      await webhookService.emitEvent({
+        type: 'session_suspended',
+        timestamp: new Date(),
+        aiId: input.clientId,
+        data: {
+          reason: input.reason,
+        },
       });
 
       return { success: true, message: "IA suspensa com sucesso" };
