@@ -246,6 +246,13 @@
       "when": 1764331984305,
       "tag": "0034_mature_mole_man",
       "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "5",
+      "when": 1764339351803,
+      "tag": "0035_colorful_oracle",
+      "breakpoints": true
     }
   ]
 }

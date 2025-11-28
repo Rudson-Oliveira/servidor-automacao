@@ -2782,3 +2782,58 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [ ] Gerar executável .exe empacotado (PyInstaller)
 - [ ] Documentação completa de cada opção
 - [ ] Sistema de analytics de instalações
+
+
+## 🐛 Correções de Testes (28/Nov/2025)
+
+- [ ] Remover teste obsoleto webhooks-integration.test.ts (tabela não existe)
+- [ ] Corrigir erros de criptografia em APIs personalizadas
+- [ ] Validar 100% dos testes passando (362/362)
+- [ ] Verificar TypeScript sem erros
+
+
+## 🧬 SISTEMA DE AUTO-EVOLUÇÃO E MELHORIA CONTÍNUA (DECISÃO AUTÔNOMA)
+
+### Fase 1: Sistema de Auto-Conhecimento
+- [x] Implementar telemetria avançada (métricas de performance, uso, erros)
+- [x] Criar sistema de logging estruturado com níveis de severidade
+- [x] Implementar rastreamento de dependências e versões
+- [x] Sistema de detecção de anomalias em tempo real
+- [ ] Dashboard de saúde do sistema com alertas proativos
+
+### Fase 2: Auto-Cura (Self-Healing)
+- [ ] Detector automático de falhas com diagnóstico
+- [ ] Sistema de restart inteligente de componentes
+- [ ] Rollback automático em caso de deploy com falha
+- [ ] Circuit breaker para APIs externas
+- [ ] Retry exponencial com backoff inteligente
+- [ ] Limpeza automática de recursos (memória, cache, conexões)
+
+### Fase 3: Antecipação de Problemas
+- [x] Análise preditiva de falhas (ML-based)
+- [x] Monitoramento de tendências de performance
+- [x] Alertas preventivos antes de falhas críticas
+- [ ] Validação automática de atualizações antes de aplicar
+- [ ] Testes de carga automáticos em produção (chaos engineering)
+
+### Fase 4: Auto-Evolução
+- [ ] Sistema de versionamento semântico automático
+- [ ] Detecção de código duplicado e refatoração sugerida
+- [ ] Análise de segurança contínua (CVE scanning)
+- [ ] Otimização automática de queries lentas
+- [ ] Compressão e otimização de assets
+- [ ] Atualização automática de dependências (com testes)
+
+### Fase 5: Meta-Aprendizado
+- [x] Registro de padrões de uso e otimização
+- [x] Sistema de recomendação de melhorias
+- [ ] Documentação auto-gerada do código
+- [ ] Testes automáticos gerados por IA
+- [ ] Sugestões de novas features baseadas em uso
+
+### Fase 6: Compartilhamento de Conhecimento
+- [x] API de exposição de métricas e aprendizados (estrutura criada)
+- [x] Sistema de exportação de conhecimento (via banco de dados)
+- [ ] Integração com outras instâncias do sistema
+- [ ] Protocolo de sincronização de melhorias
+- [ ] Repositório central de conhecimento coletivo
