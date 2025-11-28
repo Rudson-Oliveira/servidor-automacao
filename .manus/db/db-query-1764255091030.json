@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS `desktop_logs` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`command_id` int,\n\t`agent_id` int NOT NULL,\n\t`user_id` int NOT NULL,\n\t`level` enum('debug','info','warning','error') NOT NULL DEFAULT 'info',\n\t`message` text NOT NULL,\n\t`metadata` text,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `desktop_logs_id` PRIMARY KEY(`id`)\n)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute CREATE TABLE IF NOT EXISTS `desktop_logs` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`command_id` int,\n\t`agent_id` int NOT NULL,\n\t`user_id` int NOT NULL,\n\t`level` enum('debug','info','warning','error') NOT NULL DEFAULT 'info',\n\t`message` text NOT NULL,\n\t`metadata` text,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `desktop_logs_id` PRIMARY KEY(`id`)\n)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 177
-}

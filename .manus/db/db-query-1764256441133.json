@@ -1,9 +1,0 @@
-{
-  "query": "CREATE INDEX IF NOT EXISTS `departamento_id_idx` ON `arquivos_mapeados` (`departamento_id`);\nCREATE INDEX IF NOT EXISTS `nome_idx` ON `arquivos_mapeados` (`nome`);\nCREATE INDEX IF NOT EXISTS `extensao_idx` ON `arquivos_mapeados` (`extensao`);\nCREATE INDEX IF NOT EXISTS `tipo_arquivo_idx` ON `arquivos_mapeados` (`tipo_arquivo`);\nCREATE INDEX IF NOT EXISTS `hash_idx` ON `arquivos_mapeados` (`hash`)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute CREATE INDEX IF NOT EXISTS `departamento_id_idx` ON `arquivos_mapeados` (`departamento_id`);\nCREATE INDEX IF NOT EXISTS `nome_idx` ON `arquivos_mapeados` (`nome`);\nCREATE INDEX IF NOT EXISTS `extensao_idx` ON `arquivos_mapeados` (`extensao`);\nCREATE INDEX IF NOT EXISTS `tipo_arquivo_idx` ON `arquivos_mapeados` (`tipo_arquivo`);\nCREATE INDEX IF NOT EXISTS `hash_idx` ON `arquivos_mapeados` (`hash`)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 2171
-}

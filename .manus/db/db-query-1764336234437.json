@@ -1,9 +1,0 @@
-{
-  "query": "INSERT IGNORE INTO agent_versions (version, changelog, is_stable, is_active) VALUES\n('1.0.0', 'Versão inicial do Desktop Agent com suporte a comandos shell e screenshot', TRUE, TRUE);\n\nINSERT IGNORE INTO agent_plugins (name, display_name, description, version, author, command_types, is_enabled) VALUES\n('core_shell', 'Shell Commands', 'Executa comandos shell no sistema operacional', '1.0.0', 'Sistema', '[\"shell\"]', TRUE),\n('core_screenshot', 'Screenshot Capture', 'Captura screenshots da tela', '1.0.0', 'Sistema', '[\"screenshot\"]', TRUE),\n('core_file_ops', 'File Operations', 'Operações de arquivo (ler, escrever, copiar, mover)', '1.0.0', 'Sistema', '[\"read_file\", \"write_file\", \"copy_file\", \"move_file\"]', TRUE)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute INSERT IGNORE INTO agent_versions (version, changelog, is_stable, is_active) VALUES\n('1.0.0', 'Versão inicial do Desktop Agent com suporte a comandos shell e screenshot', TRUE, TRUE);\n\nINSERT IGNORE INTO agent_plugins (name, display_name, description, version, author, command_types, is_enabled) VALUES\n('core_shell', 'Shell Commands', 'Executa comandos shell no sistema operacional', '1.0.0', 'Sistema', '[\"shell\"]', TRUE),\n('core_screenshot', 'Screenshot Capture', 'Captura screenshots da tela', '1.0.0', 'Sistema', '[\"screenshot\"]', TRUE),\n('core_file_ops', 'File Operations', 'Operações de arquivo (ler, escrever, copiar, mover)', '1.0.0', 'Sistema', '[\"read_file\", \"write_file\", \"copy_file\", \"move_file\"]', TRUE)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 98
-}

@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS `desktop_screenshots` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`agent_id` int NOT NULL,\n\t`user_id` int NOT NULL,\n\t`image_url` text NOT NULL,\n\t`image_key` varchar(500) NOT NULL,\n\t`width` int,\n\t`height` int,\n\t`file_size` int,\n\t`format` varchar(20) DEFAULT 'png',\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `desktop_screenshots_id` PRIMARY KEY(`id`)\n)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute CREATE TABLE IF NOT EXISTS `desktop_screenshots` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`agent_id` int NOT NULL,\n\t`user_id` int NOT NULL,\n\t`image_url` text NOT NULL,\n\t`image_key` varchar(500) NOT NULL,\n\t`width` int,\n\t`height` int,\n\t`file_size` int,\n\t`format` varchar(20) DEFAULT 'png',\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `desktop_screenshots_id` PRIMARY KEY(`id`)\n)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 171
-}

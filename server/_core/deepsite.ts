@@ -18,7 +18,7 @@ import { ENV } from "./env";
 // ========================================
 
 const HUGGINGFACE_API_KEY = "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";
-const HUGGINGFACE_API_URL = "https://router.huggingface.co/models";
+const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models";
 
 // Modelos recomendados para diferentes tarefas
 const MODELS = {
