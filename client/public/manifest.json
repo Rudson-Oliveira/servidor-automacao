@@ -1,0 +1,116 @@
+{
+  "name": "Servidor de Automação - Sistema de Comunicação",
+  "short_name": "Servidor Auto",
+  "description": "Sistema completo de automação com integração Manus, Comet, WhatsApp, Obsidian e Desktop Control",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "categories": ["productivity", "utilities", "business"],
+  "icons": [
+    {
+      "src": "/cl-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://files.manuscdn.com/user_upload_by_module/web_dev_logo/310419663029031503/bSQBxxdNXSleaosv.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://files.manuscdn.com/user_upload_by_module/web_dev_logo/310419663029031503/bSQBxxdNXSleaosv.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://files.manuscdn.com/user_upload_by_module/web_dev_logo/310419663029031503/bSQBxxdNXSleaosv.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "WhatsApp",
+      "short_name": "WhatsApp",
+      "description": "Acessar automação WhatsApp",
+      "url": "/whatsapp",
+      "icons": [
+        {
+          "src": "/cl-logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Obsidian",
+      "short_name": "Obsidian",
+      "description": "Gerenciar notas Obsidian",
+      "url": "/obsidian",
+      "icons": [
+        {
+          "src": "/cl-logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Desktop Control",
+      "short_name": "Desktop",
+      "description": "Controle remoto do desktop",
+      "url": "/desktop-control",
+      "icons": [
+        {
+          "src": "/cl-logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "file",
+          "accept": ["image/*", "text/*", "application/pdf"]
+        }
+      ]
+    }
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+automacao",
+      "url": "/?action=%s"
+    }
+  ]
+}
