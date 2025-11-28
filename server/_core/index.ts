@@ -26,6 +26,7 @@ import obsidianUriRouter from "../routes/obsidian-uri";
 import deepsiteRouter from "../routes/deepsite";
 import { manusExplicarRouter } from "../routes/manus-explicar";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
+import { startDesktopAgentServer } from "../services/desktopAgentServer";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -102,6 +103,14 @@ async function startServer() {
 
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
+    
+    // Iniciar servidor WebSocket para Desktop Agents
+    try {
+      startDesktopAgentServer(3001);
+      console.log(`[DesktopAgent] WebSocket server started on port 3001`);
+    } catch (error) {
+      console.error(`[DesktopAgent] Failed to start WebSocket server:`, error);
+    }
   });
 }
 
