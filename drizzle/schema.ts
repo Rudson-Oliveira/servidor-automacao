@@ -40,6 +40,9 @@ export * from './schema-desktop-control';
 // Sistema de Webhooks
 export * from './schema-webhooks';
 
+// Governança de IAs Externas
+export * from './schema-ai-governance';
+
 // TODO: Add your tables here
 /**
  * Tabela de logs de auditoria para detecção de alucinações

@@ -239,6 +239,13 @@
       "when": 1764270510779,
       "tag": "0033_broken_firelord",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "5",
+      "when": 1764331984305,
+      "tag": "0034_mature_mole_man",
+      "breakpoints": true
     }
   ]
 }
