@@ -30,6 +30,9 @@ import { cacheRouter } from './routers/cache';
 import { orchestratorRouter } from './routers/orchestrator';
 import { aiGovernanceRouter } from './routers/ai-governance';
 import { aiGovernanceWebhooksRouter } from './routers/ai-governance-webhooks';
+import { alertsRouter } from './routers/alerts';
+import { mlPredictionRouter } from './routers/ml-prediction';
+import { prometheusRouter } from './routers/prometheus';
 
 export const appRouter = router({
   downloadAgent: downloadAgentRouter,
@@ -106,6 +109,9 @@ export const appRouter = router({
   knowledgeSync: knowledgeSyncRouter,
   bulkSend: bulkSendRouter,
   templates: templatesRouter,
+  alerts: alertsRouter,
+  ml: mlPredictionRouter,
+  prometheus: prometheusRouter,
 
   // TODO: add feature routers here, e.g.
   // todo: router({

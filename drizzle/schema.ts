@@ -709,3 +709,5 @@ export type InsertDesktopJanela = typeof desktopJanelas.$inferInsert;
 export * from './schema-campaigns';
 export * from './schema-notifications';
 export * from './schema-scheduler';
+export * from './schema-alerts';
+export * from './schema-ml';
