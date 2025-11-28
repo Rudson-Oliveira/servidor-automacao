@@ -135,7 +135,7 @@ export async function trainModel(
     .select()
     .from(telemetryMetrics)
     .where(
-      eq(telemetryMetrics.metricName, metricName)
+      eq(telemetryMetrics.name, metricName)
     )
     .orderBy(desc(telemetryMetrics.timestamp))
     .limit(1000);
@@ -280,7 +280,7 @@ export async function predict(
   const metrics = await db
     .select()
     .from(telemetryMetrics)
-    .where(eq(telemetryMetrics.metricName, metricName))
+    .where(eq(telemetryMetrics.name, metricName))
     .orderBy(desc(telemetryMetrics.timestamp))
     .limit(MODEL_CONFIG.sequenceLength);
 

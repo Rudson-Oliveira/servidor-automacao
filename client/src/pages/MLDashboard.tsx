@@ -53,7 +53,7 @@ export default function MLDashboard() {
       toast.error("Configure um email primeiro em Configurações de Alertas");
       return;
     }
-    testAlertMutation.mutate({ email: config.emailAddress });
+    testAlertMutation.mutate({ channel: "email" });
   };
 
   const allTrained = Object.values(trainingStatus).every(s => s === "success");

@@ -695,7 +695,7 @@ export const desktopJanelas = mysqlTable("desktop_janelas", {
   processoIdx: index("processo_idx").on(table.processo),
 }));
 
-export type DesktopAgent = typeof desktopAgents.$inferSelect;
+// export type DesktopAgent = typeof desktopAgents.$inferSelect; // TODO: definir tabela desktopAgents
 
 // ========================================
 // TELEMETRIA E AUTO-CONHECIMENTO

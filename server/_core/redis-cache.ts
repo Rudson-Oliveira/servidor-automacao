@@ -174,6 +174,20 @@ class RedisCache {
   }
 
   /**
+   * Wrapper para cache-aside pattern
+   */
+  async wrap<T>(key: string, fn: () => Promise<T>, ttl?: number): Promise<T> {
+    const cached = await this.get<T>(key);
+    if (cached !== null) {
+      return cached;
+    }
+
+    const value = await fn();
+    await this.set(key, value, ttl);
+    return value;
+  }
+
+  /**
    * Deletar entrada do cache
    */
   async delete(key: string): Promise<boolean> {
@@ -229,7 +243,7 @@ class RedisCache {
     }
 
     // Também deletar do fallback cache
-    for (const key of this.fallbackCache.keys()) {
+    for (const key of Array.from(this.fallbackCache.keys())) {
       if (this.matchPattern(key, pattern)) {
         this.fallbackCache.delete(key);
         count++;

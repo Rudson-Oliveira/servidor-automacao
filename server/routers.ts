@@ -33,6 +33,7 @@ import { aiGovernanceWebhooksRouter } from './routers/ai-governance-webhooks';
 import { alertsRouter } from './routers/alerts';
 import { mlPredictionRouter } from './routers/ml-prediction';
 import { prometheusRouter } from './routers/prometheus';
+import { selfAwarenessRouter } from './routers/self-awareness';
 
 export const appRouter = router({
   downloadAgent: downloadAgentRouter,
@@ -112,6 +113,7 @@ export const appRouter = router({
   alerts: alertsRouter,
   ml: mlPredictionRouter,
   prometheus: prometheusRouter,
+  selfAwareness: selfAwarenessRouter,
 
   // TODO: add feature routers here, e.g.
   // todo: router({

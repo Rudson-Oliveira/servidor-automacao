@@ -57,7 +57,7 @@ export default function AlertsConfig() {
       toast.error("Digite um email para teste");
       return;
     }
-    testMutation.mutate({ email });
+    testMutation.mutate({ channel: "email" });
   };
 
   if (isLoading) {

@@ -200,11 +200,11 @@ export const mlPredictionRouter = router({
     // Buscar métricas únicas
     const metrics = await db
       .select({
-        metricName: telemetryMetrics.metricName,
-        component: telemetryMetrics.component,
+        metricName: telemetryMetrics.name,
+        component: telemetryMetrics.type,
       })
       .from(telemetryMetrics)
-      .groupBy(telemetryMetrics.metricName, telemetryMetrics.component);
+      .groupBy(telemetryMetrics.name, telemetryMetrics.type);
 
     // Contar pontos de dados para cada métrica
     const metricsWithCounts = await Promise.all(
@@ -213,7 +213,7 @@ export const mlPredictionRouter = router({
           .select()
           .from(telemetryMetrics)
           .where(
-            eq(telemetryMetrics.metricName, metric.metricName)
+            eq(telemetryMetrics.name, metric.metricName)
           )
           .limit(1000);
 

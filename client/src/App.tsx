@@ -42,6 +42,7 @@ const AgentVersionsDashboard = lazy(() => import("./pages/AgentVersionsDashboard
 const MLTraining = lazy(() => import("./pages/MLTraining"));
 const AlertsConfig = lazy(() => import("./pages/AlertsConfig"));
 const MLDashboard = lazy(() => import("./pages/MLDashboard"));
+const SelfAwareness = lazy(() => import("./pages/SelfAwareness"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -83,6 +84,7 @@ function Router() {
         <Route path="/ml-training" component={MLTraining} />
         <Route path="/alerts-config" component={AlertsConfig} />
         <Route path="/ml-dashboard" component={MLDashboard} />
+        <Route path="/self-awareness" component={SelfAwareness} />
         <Route path="/cache" component={CacheStats} />
         <Route path={"/cadastro"} component={Cadastro} />
         <Route path={"/login"} component={Login} />

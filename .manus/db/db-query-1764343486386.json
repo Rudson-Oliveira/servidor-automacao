@@ -1,0 +1,9 @@
+{
+  "query": "ALTER TABLE `alert_templates` \nADD COLUMN IF NOT EXISTS `email_subject` varchar(255),\nADD COLUMN IF NOT EXISTS `email_body` text,\nADD COLUMN IF NOT EXISTS `email_html` text,\nADD COLUMN IF NOT EXISTS `whatsapp_message` text,\nADD COLUMN IF NOT EXISTS `push_title` varchar(100),\nADD COLUMN IF NOT EXISTS `push_body` text,\nADD COLUMN IF NOT EXISTS `is_system` boolean NOT NULL DEFAULT false,\nADD COLUMN IF NOT EXISTS `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\nMODIFY COLUMN `type` enum('anomaly', 'prediction', 'error', 'performance', 'custom') NOT NULL;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute ALTER TABLE `alert_templates` \nADD COLUMN IF NOT EXISTS `email_subject` varchar(255),\nADD COLUMN IF NOT EXISTS `email_body` text,\nADD COLUMN IF NOT EXISTS `email_html` text,\nADD COLUMN IF NOT EXISTS `whatsapp_message` text,\nADD COLUMN IF NOT EXISTS `push_title` varchar(100),\nADD COLUMN IF NOT EXISTS `push_body` text,\nADD COLUMN IF NOT EXISTS `is_system` boolean NOT NULL DEFAULT false,\nADD COLUMN IF NOT EXISTS `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\nMODIFY COLUMN `type` enum('anomaly', 'prediction', 'error', 'performance', 'custom') NOT NULL;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 2933
+}
