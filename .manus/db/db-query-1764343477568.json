@@ -1,9 +1,0 @@
-{
-  "query": "ALTER TABLE `alert_history` \nMODIFY COLUMN `type` enum('anomaly', 'prediction', 'error', 'performance', 'custom') NOT NULL,\nMODIFY COLUMN `source_id` int;",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute ALTER TABLE `alert_history` \nMODIFY COLUMN `type` enum('anomaly', 'prediction', 'error', 'performance', 'custom') NOT NULL,\nMODIFY COLUMN `source_id` int;",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 936
-}

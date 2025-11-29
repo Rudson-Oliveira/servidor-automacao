@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS `obsidian_operations` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`operacao` varchar(100) NOT NULL,\n\t`caminho_arquivo` varchar(1000),\n\t`status` enum('sucesso','falha','pendente') NOT NULL DEFAULT 'pendente',\n\t`tentativas` int DEFAULT 1,\n\t`erro` text,\n\t`detalhes` text,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `obsidian_operations_id` PRIMARY KEY(`id`)\n);\nCREATE INDEX IF NOT EXISTS `operacao_idx` ON `obsidian_operations` (`operacao`);\nCREATE INDEX IF NOT EXISTS `status_idx` ON `obsidian_operations` (`status`);\nCREATE INDEX IF NOT EXISTS `created_at_idx` ON `obsidian_operations` (`createdAt`);",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute CREATE TABLE IF NOT EXISTS `obsidian_operations` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`operacao` varchar(100) NOT NULL,\n\t`caminho_arquivo` varchar(1000),\n\t`status` enum('sucesso','falha','pendente') NOT NULL DEFAULT 'pendente',\n\t`tentativas` int DEFAULT 1,\n\t`erro` text,\n\t`detalhes` text,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `obsidian_operations_id` PRIMARY KEY(`id`)\n);\nCREATE INDEX IF NOT EXISTS `operacao_idx` ON `obsidian_operations` (`operacao`);\nCREATE INDEX IF NOT EXISTS `status_idx` ON `obsidian_operations` (`status`);\nCREATE INDEX IF NOT EXISTS `created_at_idx` ON `obsidian_operations` (`createdAt`);",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 1357
-}

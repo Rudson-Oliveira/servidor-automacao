@@ -1,9 +1,0 @@
-{
-  "query": "ALTER TABLE `alert_configs` \nADD COLUMN IF NOT EXISTS `email_address` varchar(320),\nADD COLUMN IF NOT EXISTS `anomaly_alerts` boolean NOT NULL DEFAULT true,\nADD COLUMN IF NOT EXISTS `prediction_alerts` boolean NOT NULL DEFAULT true,\nADD COLUMN IF NOT EXISTS `error_alerts` boolean NOT NULL DEFAULT true,\nADD COLUMN IF NOT EXISTS `performance_alerts` boolean NOT NULL DEFAULT true,\nADD COLUMN IF NOT EXISTS `allowed_hours` json,\nADD COLUMN IF NOT EXISTS `allowed_days` json,\nADD COLUMN IF NOT EXISTS `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute ALTER TABLE `alert_configs` \nADD COLUMN IF NOT EXISTS `email_address` varchar(320),\nADD COLUMN IF NOT EXISTS `anomaly_alerts` boolean NOT NULL DEFAULT true,\nADD COLUMN IF NOT EXISTS `prediction_alerts` boolean NOT NULL DEFAULT true,\nADD COLUMN IF NOT EXISTS `error_alerts` boolean NOT NULL DEFAULT true,\nADD COLUMN IF NOT EXISTS `performance_alerts` boolean NOT NULL DEFAULT true,\nADD COLUMN IF NOT EXISTS `allowed_hours` json,\nADD COLUMN IF NOT EXISTS `allowed_days` json,\nADD COLUMN IF NOT EXISTS `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 2568
-}

@@ -175,15 +175,11 @@ describe('WhatsAppRateLimiter', () => {
     });
 
     it('deve priorizar mensagens high', () => {
-      // Criar número com 31 dias de idade para evitar restrições de intervalo
-      const createdAt = new Date();
-      createdAt.setDate(createdAt.getDate() - 31);
-      
       const number: WhatsAppNumber = {
         id: 'num_priority',
         phone: '+5511999999999',
         type: 'business',
-        createdAt,
+        createdAt: new Date(),
         status: 'active',
         dailyLimit: 150,
         hourlyLimit: 30,
@@ -191,9 +187,6 @@ describe('WhatsAppRateLimiter', () => {
       };
 
       limiter.registerNumber(number);
-      
-      // Desabilitar verificação de horário comercial para testes
-      limiter.disableBusinessHoursCheck();
 
       limiter.queueMessage('num_priority', '+5511111111111', 'Mensagem normal', 'normal');
       limiter.queueMessage('num_priority', '+5511222222222', 'Mensagem urgente', 'high');

@@ -1,9 +1,0 @@
-{
-  "query": "CREATE TABLE IF NOT EXISTS `apis_personalizadas` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`nome` varchar(200) NOT NULL,\n\t`descricao` text,\n\t`url` varchar(500) NOT NULL,\n\t`metodo` enum('GET','POST','PUT','DELETE','PATCH') NOT NULL DEFAULT 'POST',\n\t`headers` text,\n\t`chave_api` varchar(500),\n\t`tipo_autenticacao` enum('none','bearer','api_key','basic','custom') DEFAULT 'bearer',\n\t`parametros` text,\n\t`ativa` int NOT NULL DEFAULT 1,\n\t`teste_conexao` int DEFAULT 0,\n\t`ultimo_teste` timestamp NULL,\n\t`mensagem_erro` text,\n\t`uso_count` int DEFAULT 0,\n\t`createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\t`updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `apis_personalizadas_id` PRIMARY KEY(`id`)\n)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute CREATE TABLE IF NOT EXISTS `apis_personalizadas` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`nome` varchar(200) NOT NULL,\n\t`descricao` text,\n\t`url` varchar(500) NOT NULL,\n\t`metodo` enum('GET','POST','PUT','DELETE','PATCH') NOT NULL DEFAULT 'POST',\n\t`headers` text,\n\t`chave_api` varchar(500),\n\t`tipo_autenticacao` enum('none','bearer','api_key','basic','custom') DEFAULT 'bearer',\n\t`parametros` text,\n\t`ativa` int NOT NULL DEFAULT 1,\n\t`teste_conexao` int DEFAULT 0,\n\t`ultimo_teste` timestamp NULL,\n\t`mensagem_erro` text,\n\t`uso_count` int DEFAULT 0,\n\t`createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\t`updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `apis_personalizadas_id` PRIMARY KEY(`id`)\n)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 337
-}

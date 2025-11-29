@@ -40,9 +40,6 @@ export * from './schema-desktop-control';
 // Sistema de Webhooks
 export * from './schema-webhooks';
 
-// Governança de IAs Externas
-export * from './schema-ai-governance';
-
 // TODO: Add your tables here
 /**
  * Tabela de logs de auditoria para detecção de alucinações
@@ -695,13 +692,7 @@ export const desktopJanelas = mysqlTable("desktop_janelas", {
   processoIdx: index("processo_idx").on(table.processo),
 }));
 
-// export type DesktopAgent = typeof desktopAgents.$inferSelect; // TODO: definir tabela desktopAgents
-
-// ========================================
-// TELEMETRIA E AUTO-CONHECIMENTO
-// ========================================
-
-export * from "./schema-telemetry";
+export type DesktopJanela = typeof desktopJanelas.$inferSelect;
 export type InsertDesktopJanela = typeof desktopJanelas.$inferInsert;
 
 
@@ -709,5 +700,3 @@ export type InsertDesktopJanela = typeof desktopJanelas.$inferInsert;
 export * from './schema-campaigns';
 export * from './schema-notifications';
 export * from './schema-scheduler';
-export * from './schema-alerts';
-export * from './schema-ml';

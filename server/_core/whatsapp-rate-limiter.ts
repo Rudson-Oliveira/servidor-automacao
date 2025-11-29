@@ -42,13 +42,6 @@ export class WhatsAppRateLimiter {
   private messageQueue: MessageQueueItem[] = [];
   private sendHistory: Map<string, Date[]> = new Map(); // numberId -> timestamps
   private stats: Map<string, SendStats[]> = new Map(); // numberId -> stats
-  private checkBusinessHours: boolean = true; // Pode ser desabilitado em testes
-  /**
-   * Desabilita verificação de horário comercial (usado em testes)
-   */
-  disableBusinessHoursCheck(): void {
-    this.checkBusinessHours = false;
-  }
 
   /**
    * Registra um número WhatsApp no sistema
@@ -187,16 +180,14 @@ export class WhatsAppRateLimiter {
       };
     }
 
-    // Verificar horário comercial (8h-21h) - apenas se habilitado
-    if (this.checkBusinessHours) {
-      const hour = new Date().getHours();
-      if (hour < 8 || hour >= 21) {
-        return {
-          allowed: false,
-          reason: 'Fora do horário comercial (8h-21h)',
-          waitSeconds: 3600,
-        };
-      }
+    // Verificar horário comercial (8h-21h)
+    const hour = new Date().getHours();
+    if (hour < 8 || hour >= 21) {
+      return {
+        allowed: false,
+        reason: 'Fora do horário comercial (8h-21h)',
+        waitSeconds: 3600,
+      };
     }
 
     return { allowed: true };
@@ -236,25 +227,25 @@ export class WhatsAppRateLimiter {
 
   /**
    * Obtém próxima mensagem da fila que pode ser enviada
-   * Respeita a prioridade e verifica se o número pode enviar
    */
   getNextMessage(): MessageQueueItem | null {
-    // Buscar mensagens pendentes ordenadas por prioridade (já ordenadas no queueMessage)
-    const pendingMessages = this.messageQueue.filter(msg => msg.status === 'pending');
-
-    for (const message of pendingMessages) {
-      const number = this.numbers.get(message.numberId);
-      
-      if (!number) {
-        continue;
-      }
-
+    // Tentar cada número disponível
+    for (const number of Array.from(this.numbers.values())) {
       if (number.status === 'blocked' || number.status === 'quarantine') {
         continue;
       }
 
       const canSend = this.canSendNow(number.id);
-      if (canSend.allowed) {
+      if (!canSend.allowed) {
+        continue;
+      }
+
+      // Buscar mensagem pendente para este número
+      const message = this.messageQueue.find(
+        msg => msg.numberId === number.id && msg.status === 'pending'
+      );
+
+      if (message) {
         return message;
       }
     }
