@@ -1,0 +1,27 @@
+# Python virtual environment
+venv/
+env/
+.venv/
+
+# Build directories
+build/
+dist/
+*.spec
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Logs
+*.log
+agent.log
+
+# Config with sensitive data
+config.json
+
+# OS files
+.DS_Store
+Thumbs.db
