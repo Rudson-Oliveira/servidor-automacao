@@ -11,7 +11,7 @@ const router = Router();
 // Download agent.py
 router.get("/agent.py", (req, res) => {
   try {
-    const agentPath = path.join(process.cwd(), "desktop-agent", "agent_v2.py");
+    const agentPath = path.join(process.cwd(), "desktop-agent", "agent.py");
     
     if (!fs.existsSync(agentPath)) {
       return res.status(404).json({ error: "Agent não encontrado" });

@@ -95,8 +95,8 @@ def download_agent(base_dir):
     print("[4/6] Baixando Desktop Agent...")
     
     try:
-        # Baixar agent_v2.py
-        url = "{}/api/download-agent/agent".format(SERVER_URL)
+        # Baixar agent.py
+        url = "{}/api/download/agent.py".format(SERVER_URL)
         agent_path = base_dir / "agent.py"
         
         print("  → Conectando ao servidor...")
@@ -110,8 +110,8 @@ def download_agent(base_dir):
         print()
         print("   Tentando usar agent local...")
         
-        # Se falhar, copiar agent_v2.py local
-        local_agent = Path(__file__).parent / "agent_v2.py"
+        # Se falhar, copiar agent.py local
+        local_agent = Path(__file__).parent / "agent.py"
         if local_agent.exists():
             import shutil
             agent_path = base_dir / "agent.py"
