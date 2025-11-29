@@ -309,7 +309,7 @@ if __name__ == "__main__":
    * Baixar instalador BAT
    */
   getInstallerBat: publicProcedure.query(() => {
-    const batPath = path.join(process.cwd(), "desktop-agent", "INSTALADOR_COMPLETO.bat");
+    const batPath = path.join(process.cwd(), "desktop-agent", "INSTALAR_DESKTOP_AGENT.bat");
     
     if (!fs.existsSync(batPath)) {
       throw new TRPCError({
@@ -322,7 +322,7 @@ if __name__ == "__main__":
 
     return {
       content,
-      filename: "INSTALADOR_COMPLETO.bat",
+      filename: "INSTALAR_DESKTOP_AGENT.bat",
       contentType: "application/x-bat",
     };
   }),
@@ -335,7 +335,8 @@ if __name__ == "__main__":
 
     return {
       agentPy: `${baseUrl}/api/download/agent.py`,
-      installerBat: `${baseUrl}/api/download/INSTALADOR_COMPLETO.bat`,
+      installerBat: `${baseUrl}/api/download/INSTALAR_DESKTOP_AGENT.bat`,
+      installerPy: `${baseUrl}/api/download/instalador_automatico.py`,
       installerExe: `${baseUrl}/api/download/DesktopAgent.exe`,
     };
   }),

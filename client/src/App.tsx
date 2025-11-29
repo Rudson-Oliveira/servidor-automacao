@@ -43,6 +43,7 @@ const MLTraining = lazy(() => import("./pages/MLTraining"));
 const AlertsConfig = lazy(() => import("./pages/AlertsConfig"));
 const MLDashboard = lazy(() => import("./pages/MLDashboard"));
 const SelfAwareness = lazy(() => import("./pages/SelfAwareness"));
+const DownloadAgent = lazy(() => import("./pages/DownloadAgent"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -59,6 +60,7 @@ function Router() {
        <Route path={"/"} component={Home} />
       <Route path="/install" component={InstallPortal} />
       <Route path="/instalar-agent" component={InstalarDesktopAgent} />
+      <Route path="/download-agent" component={DownloadAgent} />
       <Route path="/agent-versions" component={AgentVersionsDashboard} />
       <Route path="/control" component={ControlCenter} />
       <Route path="/ai-governance" component={AIGovernance} />
