@@ -176,7 +176,7 @@ const features = [
     ],
     links: [
       { title: 'Auto-Healing', href: '/auto-healing', icon: <Activity className="h-4 w-4" /> },
-      { title: 'Health Checks', href: '/health', icon: <Shield className="h-4 w-4" /> },
+      { title: 'Health Checks', href: '/health-checks', icon: <Shield className="h-4 w-4" /> },
     ],
   },
 ];

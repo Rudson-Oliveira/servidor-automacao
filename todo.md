@@ -3347,3 +3347,18 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [ ] Sugestões de melhorias
 - [ ] Aplicação automática de melhorias
 - [ ] Combinar elementos de diferentes IAs
+
+
+## 🔴 CORREÇÕES URGENTES - ROTAS 404 E BUGS (29/Nov/2025)
+
+### Rotas 404 - PRIORIDADE MÁXIMA
+- [x] Criar página AutoHealing.tsx para /auto-healing
+- [x] Criar página HealthChecks.tsx para /health-checks  
+- [x] Criar página TelefoniaGenspark.tsx para /telephony (já existia)
+- [x] Registrar rotas no App.tsx
+
+### Bugs de Encoding UTF-8
+- [x] Corrigir "Âgoro" → "Agora" (NÃO EXISTE NO CÓDIGO - cache do navegador)
+- [x] Corrigir "Informações do leão" → "Informações do Link" (NÃO EXISTE NO CÓDIGO)
+- [x] Corrigir "Título do lu" → "Título do Link" (NÃO EXISTE NO CÓDIGO)
+- [x] Verificar encoding UTF-8 em todos os arquivos (TODOS UTF-8 CORRETOS)
