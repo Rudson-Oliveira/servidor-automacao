@@ -3116,3 +3116,12 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Criar script Python standalone para gerar token (gerar_token_agent.py)
 - [ ] Testar geração de token via script Python
 - [ ] Validar correção da interface web
+
+## ✅ Correção Erro 403 - Download Agent (RESOLVIDO)
+
+- [x] Diagnosticar causa do erro 403 (Cloudflare WAF bloqueando .py)
+- [x] Implementar download via tRPC ao invés de REST
+- [x] Criar função generateInstallerPy com agent.py embutido
+- [x] Atualizar página DownloadAgent.tsx com novos handlers
+- [x] Testar endpoint tRPC localmente (FUNCIONANDO)
+- [x] Remover dependência de download externo no instalador

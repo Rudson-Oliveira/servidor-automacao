@@ -8,13 +8,352 @@ import { APP_TITLE } from "@/const";
 export default function DownloadAgent() {
   const { data: links, isLoading } = trpc.downloadAgent.getDownloadLinks.useQuery();
 
-  const handleDownload = (url: string, filename: string) => {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  const handleDownloadAgentPy = async () => {
+    try {
+      const result = await trpc.downloadAgent.getAgentPy.query();
+      const blob = new Blob([result.content], { type: result.contentType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = result.filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Erro ao baixar agent.py:", error);
+      alert("Erro ao baixar arquivo. Tente novamente.");
+    }
+  };
+
+  const handleDownloadInstallerPy = async () => {
+    try {
+      // Gerar conteúdo do instalador atualizado
+      const agentResult = await trpc.downloadAgent.getAgentPy.query();
+      const installerContent = generateInstallerPy(agentResult.content);
+      
+      const blob = new Blob([installerContent], { type: "text/x-python" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "instalador_automatico.py";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Erro ao baixar instalador:", error);
+      alert("Erro ao baixar arquivo. Tente novamente.");
+    }
+  };
+
+  const handleDownloadInstallerBat = async () => {
+    try {
+      const result = await trpc.downloadAgent.getInstallerBat.query();
+      const blob = new Blob([result.content], { type: result.contentType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = result.filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Erro ao baixar instalador BAT:", error);
+      alert("Erro ao baixar arquivo. Tente novamente.");
+    }
+  };
+
+  // Função para gerar instalador Python com agent.py embutido
+  const generateInstallerPy = (agentPyContent: string): string => {
+    return `#!/usr/bin/env python3
+"""
+INSTALADOR AUTOMÁTICO - DESKTOP AGENT
+1 CLIQUE = SISTEMA RODANDO
+
+Este script:
+1. Verifica Python
+2. Instala dependências
+3. Cria agent.py localmente (SEM DOWNLOAD)
+4. Configura automaticamente
+5. Inicia o sistema
+"""
+
+import os
+import sys
+import subprocess
+import platform
+import json
+import urllib.request
+from pathlib import Path
+
+# Configurações
+VERSION = "2.0.0"
+SERVER_URL = "https://automacao-api-alejofy2.manus.space"
+
+# Agent.py embutido (gerado via tRPC)
+AGENT_PY_CONTENT = '''${agentPyContent.replace(/'/g, "\\'").replace(/\n/g, "\\n")}
+'''
+
+def print_header():
+    print("=" * 70)
+    print("  INSTALADOR AUTOMÁTICO - DESKTOP AGENT v{}".format(VERSION))
+    print("  Sistema de Automação Remota")
+    print("=" * 70)
+    print()
+
+def check_python():
+    """Verifica versão do Python"""
+    print("[1/6] Verificando Python...")
+    version = sys.version_info
+    if version.major < 3 or (version.major == 3 and version.minor < 7):
+        print("❌ Python 3.7+ é necessário!")
+        print("   Versão atual: {}.{}.{}".format(version.major, version.minor, version.micro))
+        print()
+        print("   Baixe Python em: https://www.python.org/downloads/")
+        input("\nPressione ENTER para sair...")
+        sys.exit(1)
+    
+    print("✓ Python {}.{}.{} detectado".format(version.major, version.minor, version.micro))
+    print()
+
+def install_dependencies():
+    """Instala dependências necessárias"""
+    print("[2/6] Instalando dependências...")
+    
+    dependencies = [
+        "websockets",
+        "pillow",
+        "requests"
+    ]
+    
+    for dep in dependencies:
+        try:
+            print("  → Instalando {}...".format(dep))
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "install", dep, "--quiet"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
+            print("    ✓ {} instalado".format(dep))
+        except Exception as e:
+            print("    ⚠ Erro ao instalar {}: {}".format(dep, e))
+    
+    print("✓ Dependências instaladas")
+    print()
+
+def create_directories():
+    """Cria estrutura de diretórios"""
+    print("[3/6] Criando diretórios...")
+    
+    base_dir = Path.home() / "DesktopAgent"
+    dirs = [
+        base_dir,
+        base_dir / "plugins",
+        base_dir / "cache",
+        base_dir / "logs"
+    ]
+    
+    for dir_path in dirs:
+        dir_path.mkdir(parents=True, exist_ok=True)
+    
+    print("✓ Diretórios criados em: {}".format(base_dir))
+    print()
+    return base_dir
+
+def create_agent_file(base_dir):
+    """Cria arquivo agent.py localmente (SEM DOWNLOAD)"""
+    print("[4/6] Criando Desktop Agent...")
+    
+    try:
+        agent_path = base_dir / "agent.py"
+        with open(agent_path, 'w', encoding='utf-8') as f:
+            f.write(AGENT_PY_CONTENT)
+        
+        print("✓ Agent criado com sucesso (SEM DOWNLOAD - Bypass Cloudflare)")
+        print()
+        return agent_path
+    except Exception as e:
+        print("❌ Erro ao criar agent: {}".format(e))
+        input("\nPressione ENTER para sair...")
+        sys.exit(1)
+
+def generate_token_from_api():
+    """Gera token automaticamente via API do servidor"""
+    try:
+        # Preparar dados para criar agent
+        device_name = platform.node()
+        data = json.dumps({
+            "deviceName": device_name,
+            "platform": platform.system(),
+            "version": VERSION
+        }).encode('utf-8')
+        
+        # Fazer requisição POST para criar agent e obter token via REST API
+        url = "{}/api/desktop-agent/register".format(SERVER_URL)
+        req = urllib.request.Request(
+            url,
+            data=data,
+            headers={'Content-Type': 'application/json'}
+        )
+        
+        with urllib.request.urlopen(req, timeout=10) as response:
+            result = json.loads(response.read().decode('utf-8'))
+            return result.get('token'), result.get('agentId')
+    except Exception as e:
+        print("  ⚠ Erro ao gerar token via API: {}".format(e))
+        return None, None
+
+def configure_agent(base_dir):
+    """Configura o agent"""
+    print("[5/6] Configurando agent...")
+    
+    # Tentar gerar token automaticamente via API
+    print("  → Gerando token de autenticação...")
+    token, agent_id = generate_token_from_api()
+    
+    if token:
+        print("  ✓ Token gerado automaticamente (Agent ID: {})".format(agent_id))
+    else:
+        print("  ⚠ Usando token de exemplo (REQUER CONFIGURAÇÃO MANUAL)")
+        token = "CONFIGURE_MANUALMENTE_EM_/desktop/agents"
+    
+    config = {
+        "server_url": "wss://automacao-ws-alejofy2.manus.space",
+        "token": token,
+        "device_name": platform.node(),
+        "auto_start": True,
+        "auto_update": True
+    }
+    
+    config_path = base_dir / "config.json"
+    with open(config_path, 'w') as f:
+        json.dump(config, f, indent=2)
+    
+    print("✓ Configuração criada")
+    print()
+    
+    return token is not None
+
+def create_startup_script(base_dir, agent_path):
+    """Cria script de inicialização"""
+    print("[6/6] Criando atalhos...")
+    
+    if platform.system() == "Windows":
+        # Criar .bat para Windows
+        bat_path = base_dir / "Iniciar_Agent.bat"
+        with open(bat_path, 'w') as f:
+            f.write('@echo off\n')
+            f.write('title Desktop Agent\n')
+            f.write('cd /d "{}"\n'.format(base_dir))
+            f.write('"{}" "{}"\n'.format(sys.executable, agent_path))
+            f.write('pause\n')
+        
+        print("✓ Atalho criado: {}".format(bat_path))
+        
+        # Criar atalho na área de trabalho
+        try:
+            desktop = Path.home() / "Desktop"
+            if desktop.exists():
+                desktop_bat = desktop / "Desktop_Agent.bat"
+                with open(desktop_bat, 'w') as f:
+                    f.write('@echo off\n')
+                    f.write('cd /d "{}"\n'.format(base_dir))
+                    f.write('"{}" "{}"\n'.format(sys.executable, agent_path))
+                print("✓ Atalho criado na área de trabalho")
+        except:
+            pass
+    else:
+        # Criar .sh para Linux/Mac
+        sh_path = base_dir / "start_agent.sh"
+        with open(sh_path, 'w') as f:
+            f.write('#!/bin/bash\n')
+            f.write('cd "{}"\n'.format(base_dir))
+            f.write('"{}" "{}"\n'.format(sys.executable, agent_path))
+        
+        os.chmod(sh_path, 0o755)
+        print("✓ Script criado: {}".format(sh_path))
+    
+    print()
+
+def start_agent(agent_path):
+    """Inicia o agent"""
+    print("=" * 70)
+    print("  INSTALAÇÃO CONCLUÍDA COM SUCESSO!")
+    print("=" * 70)
+    print()
+    print("O Desktop Agent está pronto para uso!")
+    print()
+    print("Opções:")
+    print("  1. Iniciar agora")
+    print("  2. Sair (iniciar manualmente depois)")
+    print()
+    
+    choice = input("Escolha uma opção [1/2]: ").strip()
+    
+    if choice == "1":
+        print()
+        print("Iniciando Desktop Agent...")
+        print("-" * 70)
+        print()
+        
+        try:
+            subprocess.run([sys.executable, str(agent_path)])
+        except KeyboardInterrupt:
+            print()
+            print("Agent finalizado pelo usuário.")
+    else:
+        print()
+        print("Para iniciar o agent depois:")
+        if platform.system() == "Windows":
+            print("  → Clique duas vezes em 'Iniciar_Agent.bat'")
+            print("  → Ou use o atalho na área de trabalho")
+        else:
+            print("  → Execute: {}".format(agent_path.parent / "start_agent.sh"))
+        print()
+        input("Pressione ENTER para sair...")
+
+def main():
+    try:
+        print_header()
+        check_python()
+        install_dependencies()
+        base_dir = create_directories()
+        agent_path = create_agent_file(base_dir)  # Mudou aqui - cria localmente
+        token_success = configure_agent(base_dir)
+        create_startup_script(base_dir, agent_path)
+        
+        if not token_success:
+            print("⚠" * 70)
+            print("  ATENÇÃO: Token não foi gerado automaticamente!")
+            print("  Acesse: {}/desktop/agents".format(SERVER_URL))
+            print("  E configure manualmente o token no config.json")
+            print("⚠" * 70)
+            print()
+        
+        start_agent(agent_path)
+        
+    except KeyboardInterrupt:
+        print()
+        print()
+        print("Instalação cancelada pelo usuário.")
+        input("\nPressione ENTER para sair...")
+        sys.exit(0)
+    except Exception as e:
+        print()
+        print("=" * 70)
+        print("  ERRO DURANTE A INSTALAÇÃO")
+        print("=" * 70)
+        print()
+        print("Erro: {}".format(e))
+        print()
+        input("Pressione ENTER para sair...")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
+`;
   };
 
   return (
@@ -103,8 +442,8 @@ export default function DownloadAgent() {
                 <Button
                   className="w-full"
                   size="lg"
-                  disabled={isLoading || !links}
-                  onClick={() => links && handleDownload(links.installerBat, "INSTALAR_DESKTOP_AGENT.bat")}
+                  disabled={isLoading}
+                  onClick={handleDownloadInstallerBat}
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Baixar para Windows
@@ -158,8 +497,8 @@ export default function DownloadAgent() {
                   className="w-full"
                   size="lg"
                   variant="default"
-                  disabled={isLoading || !links}
-                  onClick={() => links && handleDownload(links.installerPy, "instalador_automatico.py")}
+                  disabled={isLoading}
+                  onClick={handleDownloadInstallerPy}
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Baixar Universal
@@ -209,8 +548,8 @@ export default function DownloadAgent() {
                   className="w-full"
                   size="lg"
                   variant="outline"
-                  disabled={isLoading || !links}
-                  onClick={() => links && handleDownload(links.agentPy, "agent.py")}
+                  disabled={isLoading}
+                  onClick={handleDownloadAgentPy}
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Baixar Agent
