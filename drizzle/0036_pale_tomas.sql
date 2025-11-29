@@ -1,0 +1,63 @@
+CREATE TABLE `alert_configs` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`user_id` int NOT NULL,
+	`email_enabled` boolean NOT NULL DEFAULT true,
+	`email_address` varchar(320),
+	`whatsapp_enabled` boolean NOT NULL DEFAULT false,
+	`whatsapp_number` varchar(20),
+	`push_enabled` boolean NOT NULL DEFAULT true,
+	`min_severity` enum('low','medium','high','critical') NOT NULL DEFAULT 'medium',
+	`anomaly_alerts` boolean NOT NULL DEFAULT true,
+	`prediction_alerts` boolean NOT NULL DEFAULT true,
+	`error_alerts` boolean NOT NULL DEFAULT true,
+	`performance_alerts` boolean NOT NULL DEFAULT true,
+	`throttle_minutes` int NOT NULL DEFAULT 15,
+	`allowed_hours` json,
+	`allowed_days` json,
+	`created_at` timestamp NOT NULL DEFAULT (now()),
+	`updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `alert_configs_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `alert_history` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`user_id` int NOT NULL,
+	`config_id` int,
+	`type` enum('anomaly','prediction','error','performance','custom') NOT NULL,
+	`severity` enum('low','medium','high','critical') NOT NULL,
+	`title` varchar(255) NOT NULL,
+	`message` text NOT NULL,
+	`metadata` json,
+	`channels` json NOT NULL,
+	`email_sent` boolean NOT NULL DEFAULT false,
+	`email_error` text,
+	`whatsapp_sent` boolean NOT NULL DEFAULT false,
+	`whatsapp_error` text,
+	`push_sent` boolean NOT NULL DEFAULT false,
+	`push_error` text,
+	`source_type` varchar(50),
+	`source_id` int,
+	`sent_at` timestamp NOT NULL,
+	`created_at` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `alert_history_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `alert_templates` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`name` varchar(100) NOT NULL,
+	`type` enum('anomaly','prediction','error','performance','custom') NOT NULL,
+	`severity` enum('low','medium','high','critical') NOT NULL,
+	`email_subject` varchar(255),
+	`email_body` text,
+	`email_html` text,
+	`whatsapp_message` text,
+	`push_title` varchar(100),
+	`push_body` text,
+	`variables` json,
+	`is_active` boolean NOT NULL DEFAULT true,
+	`is_system` boolean NOT NULL DEFAULT false,
+	`created_at` timestamp NOT NULL DEFAULT (now()),
+	`updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `alert_templates_id` PRIMARY KEY(`id`),
+	CONSTRAINT `alert_templates_name_unique` UNIQUE(`name`)
+);

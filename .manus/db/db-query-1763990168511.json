@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS `desktop_captures` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  `screenshot_url` text NOT NULL,\n  `resolucao_largura` int NOT NULL,\n  `resolucao_altura` int NOT NULL,\n  `total_programas` int DEFAULT 0,\n  `total_janelas` int DEFAULT 0,\n  `analisado` int DEFAULT 0,\n  `analise_texto` text,\n  `tags_detectadas` text,\n  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  CONSTRAINT `desktop_captures_id` PRIMARY KEY(`id`),\n  INDEX `timestamp_idx` (`timestamp`),\n  INDEX `analisado_idx` (`analisado`)\n)",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute CREATE TABLE IF NOT EXISTS `desktop_captures` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  `screenshot_url` text NOT NULL,\n  `resolucao_largura` int NOT NULL,\n  `resolucao_altura` int NOT NULL,\n  `total_programas` int DEFAULT 0,\n  `total_janelas` int DEFAULT 0,\n  `analisado` int DEFAULT 0,\n  `analise_texto` text,\n  `tags_detectadas` text,\n  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  CONSTRAINT `desktop_captures_id` PRIMARY KEY(`id`),\n  INDEX `timestamp_idx` (`timestamp`),\n  INDEX `analisado_idx` (`analisado`)\n)",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1519
+}

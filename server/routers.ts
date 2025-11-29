@@ -1,6 +1,8 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
+import { downloadAgentRouter } from "./routers/download-agent";
+import { agentVersionsRouter } from "./routers/agent-versions";
 import { servidorRouter } from "./routers/servidor";
 import { deepsiteRouter } from "./routers/deepsite";
 import { publicProcedure, router } from "./_core/trpc";
@@ -14,7 +16,10 @@ import { autoHealingRouter } from "./routers/auto-healing";
 import { healthRouter } from "./routers/health";
 import { uriSchemesRouter } from "./routers/uri-schemes";
 import { whatsappRouter } from './routers/whatsapp';
-import { whatsappProtectionRouter } from './routers/whatsapp-protection';
+import { whatsappProtectionRouter } from "./routers/whatsapp-protection";
+import { telemetryRouter } from "./routers/telemetry";
+import { predictiveHealingRouter } from "./routers/predictive-healing";
+import { knowledgeSyncRouter } from "./routers/knowledge-sync";
 import { bulkSendRouter } from './routers/bulk-send';
 import { templatesRouter } from './routers/templates';
 import { whatsappWebRouter } from './routers/whatsapp-web';
@@ -23,8 +28,16 @@ import { notificationsRouter } from './routers/notifications';
 import { schedulerRouter } from './routers/scheduler';
 import { cacheRouter } from './routers/cache';
 import { orchestratorRouter } from './routers/orchestrator';
+import { aiGovernanceRouter } from './routers/ai-governance';
+import { aiGovernanceWebhooksRouter } from './routers/ai-governance-webhooks';
+import { alertsRouter } from './routers/alerts';
+import { mlPredictionRouter } from './routers/ml-prediction';
+import { prometheusRouter } from './routers/prometheus';
+import { selfAwarenessRouter } from './routers/self-awareness';
 
 export const appRouter = router({
+  downloadAgent: downloadAgentRouter,
+  agentVersions: agentVersionsRouter,
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   servidor: servidorRouter,
@@ -51,6 +64,12 @@ export const appRouter = router({
 
   // Orquestrador de Agentes
   orchestrator: orchestratorRouter,
+
+  // Governança de IAs Externas
+  aiGovernance: aiGovernanceRouter,
+  
+  // Webhooks de Governança de IAs
+  aiGovernanceWebhooks: aiGovernanceWebhooksRouter,
 
   // Integração com Perplexity AI
   perplexity: perplexityRouter,
@@ -86,8 +105,15 @@ export const appRouter = router({
   whatsapp: whatsappRouter,
   whatsappWeb: whatsappWebRouter,
   whatsappProtection: whatsappProtectionRouter,
+  telemetry: telemetryRouter,
+  predictiveHealing: predictiveHealingRouter,
+  knowledgeSync: knowledgeSyncRouter,
   bulkSend: bulkSendRouter,
   templates: templatesRouter,
+  alerts: alertsRouter,
+  ml: mlPredictionRouter,
+  prometheus: prometheusRouter,
+  selfAwareness: selfAwarenessRouter,
 
   // TODO: add feature routers here, e.g.
   // todo: router({

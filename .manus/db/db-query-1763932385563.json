@@ -1,0 +1,18 @@
+{
+  "query": "SELECT id, nome, descricao, categoria, autonomia_nivel, tags FROM skills WHERE nome = 'Analisar Website';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute SELECT id, nome, descricao, categoria, autonomia_nivel, tags FROM skills WHERE nome = 'Analisar Website';",
+  "rows": [
+    {
+      "id": "300001",
+      "nome": "Analisar Website",
+      "descricao": "Analisa websites usando a API DeepSITE: faz scraping de conteúdo, extrai metadados, analisa com IA, gera resumos e gerencia cache. Ideal para pesquisa de concorrentes, análise de conteúdo e extração de dados.",
+      "categoria": "Análise Web",
+      "autonomia_nivel": "alta",
+      "tags": "deepsite,scraping,web,analise,ia,website,metadados,resumo,cache"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\tdescricao\tcategoria\tautonomia_nivel\ttags\n300001\tAnalisar Website\tAnalisa websites usando a API DeepSITE: faz scraping de conteúdo, extrai metadados, analisa com IA, gera resumos e gerencia cache. Ideal para pesquisa de concorrentes, análise de conteúdo e extração de dados.\tAnálise Web\talta\tdeepsite,scraping,web,analise,ia,website,metadados,resumo,cache\n",
+  "stderr": "",
+  "execution_time_ms": 118
+}

@@ -1,0 +1,90 @@
+{
+  "query": "SELECT COUNT(*) as total, categoria, COUNT(*) as por_categoria FROM skills GROUP BY categoria;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute SELECT COUNT(*) as total, categoria, COUNT(*) as por_categoria FROM skills GROUP BY categoria;",
+  "rows": [
+    {
+      "total": "1",
+      "categoria": "pesquisa",
+      "por_categoria": "1"
+    },
+    {
+      "total": "1",
+      "categoria": "gestao_arquivos",
+      "por_categoria": "1"
+    },
+    {
+      "total": "1",
+      "categoria": "agendamento",
+      "por_categoria": "1"
+    },
+    {
+      "total": "3",
+      "categoria": "produtividade",
+      "por_categoria": "3"
+    },
+    {
+      "total": "1",
+      "categoria": "NULL",
+      "por_categoria": "1"
+    },
+    {
+      "total": "1",
+      "categoria": "processamento_imagem",
+      "por_categoria": "1"
+    },
+    {
+      "total": "4",
+      "categoria": "analise",
+      "por_categoria": "4"
+    },
+    {
+      "total": "3",
+      "categoria": "planejamento",
+      "por_categoria": "3"
+    },
+    {
+      "total": "2",
+      "categoria": "busca",
+      "por_categoria": "2"
+    },
+    {
+      "total": "1",
+      "categoria": "backup",
+      "por_categoria": "1"
+    },
+    {
+      "total": "1",
+      "categoria": "Automação de Arquivos",
+      "por_categoria": "1"
+    },
+    {
+      "total": "2",
+      "categoria": "comunicacao",
+      "por_categoria": "2"
+    },
+    {
+      "total": "1",
+      "categoria": "relatorios",
+      "por_categoria": "1"
+    },
+    {
+      "total": "1",
+      "categoria": "Análise Web",
+      "por_categoria": "1"
+    },
+    {
+      "total": "1",
+      "categoria": "teste",
+      "por_categoria": "1"
+    },
+    {
+      "total": "1",
+      "categoria": "organizacao",
+      "por_categoria": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "total\tcategoria\tpor_categoria\n1\tpesquisa\t1\n1\tgestao_arquivos\t1\n1\tagendamento\t1\n3\tprodutividade\t3\n1\tNULL\t1\n1\tprocessamento_imagem\t1\n4\tanalise\t4\n3\tplanejamento\t3\n2\tbusca\t2\n1\tbackup\t1\n1\tAutomação de Arquivos\t1\n2\tcomunicacao\t2\n1\trelatorios\t1\n1\tAnálise Web\t1\n1\tteste\t1\n1\torganizacao\t1\n",
+  "stderr": "",
+  "execution_time_ms": 115
+}
