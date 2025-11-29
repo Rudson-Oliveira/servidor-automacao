@@ -48,6 +48,7 @@ const DownloadAgent = lazy(() => import("./pages/DownloadAgent"));
 const DesktopAgents = lazy(() => import("./pages/DesktopAgents"));
 const AutomacoesSimples = lazy(() => import("./pages/AutomacoesSimples"));
 const ObsidianInteligente = lazy(() => import("./pages/ObsidianInteligente"));
+const TelefoniaGenspark = lazy(() => import("./pages/TelefoniaGenspark"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -103,6 +104,7 @@ function Router() {
         <Route path={"/obsidian/vaults"} component={ObsidianVaults} />
         <Route path={"/obsidian/inteligente"} component={ObsidianInteligente} />
         <Route path={"/obsidian"} component={ObsidianVaults} />
+        <Route path={"/telefonia-genspark"} component={TelefoniaGenspark} />
         <Route path={"/404"} component={NotFound} />
         {/* Final fallback route */}
         <Route component={NotFound} />

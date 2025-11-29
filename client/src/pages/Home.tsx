@@ -15,9 +15,47 @@ import {
   ArrowRight,
   CheckCircle2,
   Wand2,
+  Phone,
+  Brain,
 } from 'lucide-react';
 
 const features = [
+  {
+    category: 'Telefonia Genspark',
+    icon: <Phone className="h-8 w-8" />,
+    description:
+      'Atendimento telefônico inteligente 24/7 com IA. Número virtual para atender clientes automaticamente via Genspark.',
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50',
+    features: [
+      'Número de telefone virtual',
+      'Atendimento 24 horas por dia',
+      'Processamento com Genspark IA',
+      'Transferência para humano',
+      'Histórico e analytics',
+    ],
+    links: [
+      { title: 'Acessar Telefonia', href: '/telefonia-genspark', icon: <Phone className="h-4 w-4" /> },
+    ],
+  },
+  {
+    category: 'Obsidian Inteligente',
+    icon: <Brain className="h-8 w-8" />,
+    description:
+      'Crie notas completas no Obsidian usando IA. Basta descrever o que você quer e a IA gera tudo: conteúdo, tags, links e metadados.',
+    color: 'text-purple-600',
+    bgColor: 'bg-purple-50',
+    features: [
+      'Geração com Gemini, GPT, Claude, Perplexity',
+      'Tags automáticas inteligentes',
+      'Links relacionados entre notas',
+      'Frontmatter YAML automático',
+      'Dataview queries prontas',
+    ],
+    links: [
+      { title: 'Criar Nota com IA', href: '/obsidian/inteligente', icon: <Brain className="h-4 w-4" /> },
+    ],
+  },
   {
     category: 'Automações Simples (Para Leigos)',
     icon: <Wand2 className="h-8 w-8" />,

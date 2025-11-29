@@ -37,6 +37,7 @@ import { selfAwarenessRouter } from './routers/self-awareness';
 import { desktopAuthRouter } from './routers/desktop-auth';
 import { orchestratorMultiIARouter } from './routers/orchestrator-multi-ia';
 import { obsidianAIRouter } from './routers/obsidian-ai';
+import { telephonyRouter } from './routers/telephony';
 
 export const appRouter = router({
   downloadAgent: downloadAgentRouter,
@@ -66,6 +67,9 @@ export const appRouter = router({
 
   // Integração Obsidian com IA (geração de conteúdo)
   obsidianAI: obsidianAIRouter,
+
+  // Telefonia com Genspark (atendimento inteligente)
+  telephony: telephonyRouter,
 
   // Integração com IAs externas
   integration: integrationRouter,
