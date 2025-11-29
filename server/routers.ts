@@ -34,7 +34,6 @@ import { alertsRouter } from './routers/alerts';
 import { mlPredictionRouter } from './routers/ml-prediction';
 import { prometheusRouter } from './routers/prometheus';
 import { selfAwarenessRouter } from './routers/self-awareness';
-import { pushNotificationsRouter } from './routers/push-notifications';
 
 export const appRouter = router({
   downloadAgent: downloadAgentRouter,
@@ -115,7 +114,6 @@ export const appRouter = router({
   ml: mlPredictionRouter,
   prometheus: prometheusRouter,
   selfAwareness: selfAwarenessRouter,
-  pushNotifications: pushNotificationsRouter,
 
   // TODO: add feature routers here, e.g.
   // todo: router({

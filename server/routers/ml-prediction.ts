@@ -2,7 +2,7 @@ import { z } from "zod";
 import { protectedProcedure, router } from "../_core/trpc";
 import { getDb } from "../db";
 import { mlPredictions, telemetryMetrics } from "../../drizzle/schema";
-import { desc, eq, gte, and } from "drizzle-orm";
+import { desc, eq, gte } from "drizzle-orm";
 import {
   trainModel,
   predict,
@@ -94,22 +94,23 @@ export const mlPredictionRouter = router({
 
       const cutoffTime = new Date(Date.now() - input.hoursAgo * 60 * 60 * 1000);
 
-      const conditions = [gte(mlPredictions.predictedAt, cutoffTime)];
-      
-      if (input.metricName) {
-        conditions.push(eq(mlPredictions.metricName, input.metricName));
-      }
-      
-      if (input.component) {
-        conditions.push(eq(mlPredictions.component, input.component));
-      }
-
-      const predictions = await db
+      let query = db
         .select()
         .from(mlPredictions)
-        .where(and(...conditions))
+        .where(gte(mlPredictions.predictedAt, cutoffTime))
         .orderBy(desc(mlPredictions.predictedAt))
         .limit(input.limit);
+
+      // Filtros opcionais
+      if (input.metricName) {
+        query = query.where(eq(mlPredictions.metricName, input.metricName));
+      }
+
+      if (input.component) {
+        query = query.where(eq(mlPredictions.component, input.component));
+      }
+
+      const predictions = await query;
 
       return predictions;
     }),
@@ -155,9 +156,7 @@ export const mlPredictionRouter = router({
       for (const pred of predictions) {
         if (pred.actualValue !== null) {
           total++;
-          const predicted = parseFloat(pred.predictedValue);
-          const actual = parseFloat(pred.actualValue);
-          const error = Math.abs(predicted - actual) / predicted;
+          const error = Math.abs(pred.predictedValue - pred.actualValue) / pred.predictedValue;
           totalError += error;
 
           if (error < 0.1) correct++; // 10% de erro aceitável
@@ -252,9 +251,7 @@ export const mlPredictionRouter = router({
     for (const pred of recentPredictions) {
       if (pred.actualValue !== null) {
         total++;
-        const predicted = parseFloat(pred.predictedValue);
-        const actual = parseFloat(pred.actualValue);
-        const error = Math.abs(predicted - actual) / predicted;
+        const error = Math.abs(pred.predictedValue - pred.actualValue) / pred.predictedValue;
         if (error < 0.1) correct++;
       }
     }
@@ -263,7 +260,7 @@ export const mlPredictionRouter = router({
 
     // Confiança média
     const avgConfidence =
-      recentPredictions.reduce((sum, p) => sum + parseFloat(p.confidence), 0) / recentPredictions.length || 0;
+      recentPredictions.reduce((sum, p) => sum + p.confidence, 0) / recentPredictions.length || 0;
 
     return {
       totalPredictions: recentPredictions.length,

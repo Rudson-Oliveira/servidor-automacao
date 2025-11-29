@@ -711,4 +711,3 @@ export * from './schema-notifications';
 export * from './schema-scheduler';
 export * from './schema-alerts';
 export * from './schema-ml';
-export * from './schema-push';

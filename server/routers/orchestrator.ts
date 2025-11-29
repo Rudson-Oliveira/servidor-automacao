@@ -16,7 +16,7 @@ export const orchestratorRouter = router({
       z.object({
         type: z.enum(["shell", "screenshot", "file-search", "command"]),
         priority: z.number().min(1).max(10).default(5),
-        payload: z.record(z.string(), z.any()),
+        payload: z.record(z.any()),
         maxRetries: z.number().min(0).max(10).default(3),
         targetAgentId: z.string().optional(), // Se especificado, força uso deste agent
       })
@@ -40,7 +40,8 @@ export const orchestratorRouter = router({
    * Listar todos os agentes registrados
    */
   listAgents: protectedProcedure.query(() => {
-    const agents = orchestrator.getAgents();
+    const stats = orchestrator.getStats();
+    const agents = Array.from(stats.agents.values());
 
     return {
       agents: agents.map((agent) => ({
@@ -52,11 +53,11 @@ export const orchestratorRouter = router({
         maxLoad: agent.maxLoad,
         totalTasksCompleted: agent.totalTasksCompleted,
         totalTasksFailed: agent.totalTasksFailed,
-        averageResponseTime: agent.averageResponseTime,
-        lastHeartbeat: agent.lastHeartbeat,
+        circuitBreakerState: agent.circuitBreakerState,
+        lastHealthCheck: agent.lastHealthCheck,
       })),
       total: agents.length,
-      idle: agents.filter((a) => a.status === "idle").length,
+      online: agents.filter((a) => a.status === "online").length,
       offline: agents.filter((a) => a.status === "offline").length,
     };
   }),
@@ -69,16 +70,16 @@ export const orchestratorRouter = router({
 
     return {
       totalAgents: stats.totalAgents,
-      activeAgents: stats.activeAgents,
+      onlineAgents: stats.onlineAgents,
       offlineAgents: stats.offlineAgents,
       totalTasks: stats.totalTasks,
       completedTasks: stats.completedTasks,
       failedTasks: stats.failedTasks,
       pendingTasks: stats.pendingTasks,
-      // successRate calculado no frontend
+      successRate: stats.successRate,
       averageWaitTime: stats.averageWaitTime,
       averageExecutionTime: stats.averageExecutionTime,
-      // circuitBreakersOpen calculado no frontend
+      circuitBreakersOpen: stats.circuitBreakersOpen,
     };
   }),
 
@@ -86,7 +87,8 @@ export const orchestratorRouter = router({
    * Obter fila de tarefas pendentes
    */
   getPendingTasks: protectedProcedure.query(() => {
-    const tasks = orchestrator.getTasks().filter((t) => t.status === "pending");
+    const stats = orchestrator.getStats();
+    const tasks = Array.from(stats.tasks.values()).filter((t) => t.status === "pending");
 
     return {
       tasks: tasks.map((task) => ({
@@ -106,7 +108,8 @@ export const orchestratorRouter = router({
    * Obter tarefas em execução
    */
   getRunningTasks: protectedProcedure.query(() => {
-    const tasks = orchestrator.getTasks().filter((t) => t.status === "running");
+    const stats = orchestrator.getStats();
+    const tasks = Array.from(stats.tasks.values()).filter((t) => t.status === "running");
 
     return {
       tasks: tasks.map((task) => ({
@@ -126,9 +129,10 @@ export const orchestratorRouter = router({
    * Obter tarefas concluídas (últimas 50)
    */
   getCompletedTasks: protectedProcedure.query(() => {
-    const tasks = orchestrator.getTasks()
+    const stats = orchestrator.getStats();
+    const tasks = Array.from(stats.tasks.values())
       .filter((t) => t.status === "completed")
-      .sort((a, b) => (b.completedAt || 0) - (a.completedAt || 0))
+      .sort((a, b) => (b.completedAt?.getTime() || 0) - (a.completedAt?.getTime() || 0))
       .slice(0, 50);
 
     return {
@@ -137,10 +141,11 @@ export const orchestratorRouter = router({
         type: task.type,
         priority: task.priority,
         status: task.status,
-        assignedAgent: task.assignedAgent,
+        assignedAgentId: task.assignedAgentId,
         createdAt: task.createdAt,
         startedAt: task.startedAt,
         completedAt: task.completedAt,
+        executionTime: task.executionTime,
       })),
       total: tasks.length,
     };
