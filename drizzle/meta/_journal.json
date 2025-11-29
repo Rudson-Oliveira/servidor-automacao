@@ -3,62 +3,6 @@
   "dialect": "mysql",
   "entries": [
     {
-      "idx": 0,
-      "version": "5",
-      "when": 1763815525159,
-      "tag": "0000_milky_leader",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1763815646347,
-      "tag": "0001_careful_agent_zero",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1763817489179,
-      "tag": "0002_broken_spirit",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1763818616580,
-      "tag": "0003_ancient_lockjaw",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1763820133756,
-      "tag": "0004_simple_ironclad",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1763820207367,
-      "tag": "0005_worthless_norrin_radd",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1763842632609,
-      "tag": "0006_curly_scalphunter",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "5",
-      "when": 1763842656139,
-      "tag": "0007_cool_tombstone",
-      "breakpoints": true
-    },
-    {
       "idx": 8,
       "version": "5",
       "when": 1763850532820,
@@ -243,29 +187,8 @@
     {
       "idx": 34,
       "version": "5",
-      "when": 1764331984305,
-      "tag": "0034_mature_mole_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 35,
-      "version": "5",
-      "when": 1764339351803,
-      "tag": "0035_colorful_oracle",
-      "breakpoints": true
-    },
-    {
-      "idx": 36,
-      "version": "5",
-      "when": 1764340851657,
-      "tag": "0036_pale_tomas",
-      "breakpoints": true
-    },
-    {
-      "idx": 37,
-      "version": "5",
-      "when": 1764341331818,
-      "tag": "0037_silky_thunderbolt_ross",
+      "when": 1764394759450,
+      "tag": "0034_needy_nomad",
       "breakpoints": true
     }
   ]
