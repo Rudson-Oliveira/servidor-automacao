@@ -44,8 +44,6 @@ const AlertsConfig = lazy(() => import("./pages/AlertsConfig"));
 const MLDashboard = lazy(() => import("./pages/MLDashboard"));
 const SelfAwareness = lazy(() => import("./pages/SelfAwareness"));
 const NotificationSettings = lazy(() => import("./pages/NotificationSettings"));
-const Download = lazy(() => import("./pages/Download"));
-const DownloadInstalador = lazy(() => import("./pages/DownloadInstalador"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -61,8 +59,6 @@ function Router() {
       <Switch>
        <Route path={"/"} component={Home} />
       <Route path="/install" component={InstallPortal} />
-      <Route path="/download" component={Download} />
-      <Route path="/download/instalador" component={DownloadInstalador} />
       <Route path="/instalar-agent" component={InstalarDesktopAgent} />
       <Route path="/agent-versions" component={AgentVersionsDashboard} />
       <Route path="/control" component={ControlCenter} />

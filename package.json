@@ -13,8 +13,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
-    "db:push": "drizzle-kit generate && drizzle-kit migrate",
-    "build:exe": "node scripts/build-exe.js"
+    "db:push": "drizzle-kit generate && drizzle-kit migrate"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.693.0",
@@ -130,7 +129,6 @@
     "@types/web-push": "^3.6.4",
     "@types/ws": "^8.18.1",
     "@vitejs/plugin-react": "^5.0.4",
-    "@yao-pkg/pkg": "^6.10.1",
     "add": "^2.0.6",
     "autoprefixer": "^10.4.20",
     "drizzle-kit": "^0.31.4",
@@ -160,21 +158,6 @@
     ],
     "onlyBuiltDependencies": [
       "@tensorflow/tfjs-node"
-    ]
-  },
-  "pkg": {
-    "targets": [
-      "node18-win-x64"
-    ],
-    "outputPath": "dist/installer",
-    "scripts": [
-      "server/**/*.ts",
-      "server/**/*.js"
-    ],
-    "assets": [
-      "node_modules/**/*",
-      "drizzle/**/*",
-      "shared/**/*"
     ]
   }
 }
