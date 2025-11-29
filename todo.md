@@ -3086,3 +3086,26 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Interface web com instruções completas
 - [x] Download automático de config.json
 - [x] Guia passo a passo integrado na interface
+
+
+## 🚀 Instalação 100% Automática do Desktop Agent
+
+### Requisitos do Usuário
+- [x] Instalador deve gerar token automaticamente via API
+- [x] Zero passos manuais para o usuário
+- [x] Configuração automática do config.json
+- [x] Página de download deve aparecer na home do site
+
+### Implementação
+- [x] Modificar instalador_automatico.py para chamar API
+- [x] Criar endpoint público desktopAuth.autoRegister
+- [x] Gerar token e salvar config.json automaticamente
+- [x] Adicionar card "Download Desktop Agent" na Home.tsx
+- [x] Link direto para /download-agent na página inicial
+- [x] Criar testes unitários (4/4 passando)
+
+### Validação
+- [x] Endpoint testado e funcionando
+- [x] Token gerado automaticamente (64 caracteres hex)
+- [x] Agent salvo no banco com userId=1
+- [x] Card visível na página inicial

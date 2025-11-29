@@ -123,13 +123,52 @@ def download_agent(base_dir):
             input("\nPressione ENTER para sair...")
             sys.exit(1)
 
+def generate_token_from_api():
+    """Gera token automaticamente via API do servidor"""
+    try:
+        import urllib.request
+        import json
+        
+        # Preparar dados para criar agent
+        device_name = platform.node()
+        data = json.dumps({
+            "deviceName": device_name,
+            "platform": platform.system(),
+            "version": VERSION
+        }).encode('utf-8')
+        
+        # Fazer requisição POST para criar agent e obter token via tRPC
+        url = "{}/api/trpc/desktopAuth.autoRegister".format(SERVER_URL)
+        req = urllib.request.Request(
+            url,
+            data=data,
+            headers={'Content-Type': 'application/json'}
+        )
+        
+        with urllib.request.urlopen(req, timeout=10) as response:
+            result = json.loads(response.read().decode('utf-8'))
+            return result.get('token'), result.get('agentId')
+    except Exception as e:
+        print("  ⚠ Erro ao gerar token via API: {}".format(e))
+        return None, None
+
 def configure_agent(base_dir):
     """Configura o agent"""
     print("[5/6] Configurando agent...")
     
+    # Tentar gerar token automaticamente via API
+    print("  → Gerando token de autenticação...")
+    token, agent_id = generate_token_from_api()
+    
+    if token:
+        print("  ✓ Token gerado automaticamente (Agent ID: {})".format(agent_id))
+    else:
+        print("  ⚠ Usando token de exemplo (REQUER CONFIGURAÇÃO MANUAL)")
+        token = "CONFIGURE_MANUALMENTE_EM_/desktop/agents"
+    
     config = {
-        "server_url": "wss://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer/ws/desktop-agent",
-        "token": "86fa95160005ff2e3e971acf9d8620abaa4a27bc064e7b8a41980dbde6ea990e",
+        "server_url": "wss://3001-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer",
+        "token": token,
         "device_name": platform.node(),
         "auto_start": True,
         "auto_update": True
@@ -141,6 +180,8 @@ def configure_agent(base_dir):
     
     print("✓ Configuração criada")
     print()
+    
+    return token is not None
 
 def create_startup_script(base_dir, agent_path):
     """Cria script de inicialização"""
@@ -227,8 +268,17 @@ def main():
         install_dependencies()
         base_dir = create_directories()
         agent_path = download_agent(base_dir)
-        configure_agent(base_dir)
+        token_success = configure_agent(base_dir)
         create_startup_script(base_dir, agent_path)
+        
+        if not token_success:
+            print("⚠" * 70)
+            print("  ATENÇÃO: Token não foi gerado automaticamente!")
+            print("  Acesse: {}/desktop/agents".format(SERVER_URL))
+            print("  E configure manualmente o token no config.json")
+            print("⚠" * 70)
+            print()
+        
         start_agent(agent_path)
         
     except KeyboardInterrupt:

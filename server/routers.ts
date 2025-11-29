@@ -34,6 +34,7 @@ import { alertsRouter } from './routers/alerts';
 import { mlPredictionRouter } from './routers/ml-prediction';
 import { prometheusRouter } from './routers/prometheus';
 import { selfAwarenessRouter } from './routers/self-awareness';
+import { desktopAuthRouter } from './routers/desktop-auth';
 
 export const appRouter = router({
   downloadAgent: downloadAgentRouter,
@@ -42,6 +43,7 @@ export const appRouter = router({
   system: systemRouter,
   servidor: servidorRouter,
   deepsite: deepsiteRouter,
+  desktopAuth: desktopAuthRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {

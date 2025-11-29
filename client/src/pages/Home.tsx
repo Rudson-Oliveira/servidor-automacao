@@ -53,6 +53,25 @@ const features = [
     links: [{ title: 'Catalogar Links', href: '/obsidian/catalogar', icon: <FileText className="h-4 w-4" /> }],
   },
   {
+    category: 'Desktop Agent',
+    icon: <Monitor className="h-8 w-8" />,
+    description:
+      'Instale o Desktop Agent no seu computador para controle remoto total. Execução de comandos, automação de tarefas e captura de tela.',
+    color: 'text-cyan-600',
+    bgColor: 'bg-cyan-50',
+    features: [
+      'Instalação 100% automática',
+      'Token gerado automaticamente',
+      'Controle remoto completo',
+      'Captura de tela em tempo real',
+      'Execução de comandos',
+    ],
+    links: [
+      { title: 'Download Agent', href: '/download-agent', icon: <Monitor className="h-4 w-4" /> },
+      { title: 'Gerenciar Agents', href: '/desktop/agents', icon: <Activity className="h-4 w-4" /> },
+    ],
+  },
+  {
     category: 'Captura de Desktop',
     icon: <Monitor className="h-8 w-8" />,
     description:
