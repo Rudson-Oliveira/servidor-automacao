@@ -3109,3 +3109,10 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Token gerado automaticamente (64 caracteres hex)
 - [x] Agent salvo no banco com userId=1
 - [x] Card visível na página inicial
+
+## Correções Urgentes - Desktop Agent
+
+- [x] Corrigir erro React NotFoundError na página /desktop/agents
+- [x] Criar script Python standalone para gerar token (gerar_token_agent.py)
+- [ ] Testar geração de token via script Python
+- [ ] Validar correção da interface web

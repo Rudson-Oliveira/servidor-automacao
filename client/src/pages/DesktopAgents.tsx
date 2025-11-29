@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Copy, Download, Plus, RefreshCw } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -65,26 +65,11 @@ export default function DesktopAgents() {
     if (!generatedToken) return;
 
     const config = {
-      server: {
-        url: `wss://${window.location.host.replace('3000', '3001')}`,
-        reconnect_interval: 5,
-        max_reconnect_attempts: 10,
-      },
-      agent: {
-        token: generatedToken,
-        device_name: deviceName || "Desktop Agent",
-        platform: platform || "Windows 11",
-        version: "1.0.0",
-      },
-      heartbeat: {
-        interval: 30,
-        timeout: 10,
-      },
-      logging: {
-        level: "INFO",
-        file: "agent.log",
-        max_size_mb: 10,
-      },
+      server_url: `wss://${window.location.host.replace('3000', '3001')}`,
+      token: generatedToken,
+      device_name: deviceName || "Desktop Agent",
+      platform: platform || "Windows 11",
+      version: "1.0.0",
     };
 
     navigator.clipboard.writeText(JSON.stringify(config, null, 2));
@@ -95,26 +80,11 @@ export default function DesktopAgents() {
     if (!generatedToken) return;
 
     const config = {
-      server: {
-        url: `wss://${window.location.host.replace('3000', '3001')}`,
-        reconnect_interval: 5,
-        max_reconnect_attempts: 10,
-      },
-      agent: {
-        token: generatedToken,
-        device_name: deviceName || "Desktop Agent",
-        platform: platform || "Windows 11",
-        version: "1.0.0",
-      },
-      heartbeat: {
-        interval: 30,
-        timeout: 10,
-      },
-      logging: {
-        level: "INFO",
-        file: "agent.log",
-        max_size_mb: 10,
-      },
+      server_url: `wss://${window.location.host.replace('3000', '3001')}`,
+      token: generatedToken,
+      device_name: deviceName || "Desktop Agent",
+      platform: platform || "Windows 11",
+      version: "1.0.0",
     };
 
     const blob = new Blob([JSON.stringify(config, null, 2)], { type: "application/json" });
@@ -275,119 +245,100 @@ export default function DesktopAgents() {
       </Card>
 
       {/* Dialog com Token Gerado */}
-      <Dialog open={showTokenDialog} onOpenChange={setShowTokenDialog}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>🎉 Agent Criado com Sucesso!</DialogTitle>
-            <DialogDescription>
-              Copie o token abaixo e configure no seu Desktop Agent
-            </DialogDescription>
-          </DialogHeader>
+      {showTokenDialog && generatedToken && (
+        <Dialog open={showTokenDialog} onOpenChange={setShowTokenDialog}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>🎉 Agent Criado com Sucesso!</DialogTitle>
+              <DialogDescription>
+                Copie o token abaixo e configure no seu Desktop Agent
+              </DialogDescription>
+            </DialogHeader>
 
-          <Tabs defaultValue="token" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="token">Token</TabsTrigger>
-              <TabsTrigger value="config">config.json</TabsTrigger>
-              <TabsTrigger value="instructions">Instruções</TabsTrigger>
-            </TabsList>
+            <Tabs defaultValue="token" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="token">Token</TabsTrigger>
+                <TabsTrigger value="config">config.json</TabsTrigger>
+                <TabsTrigger value="instructions">Instruções</TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="token" className="space-y-4">
-              <div>
-                <Label>Token de Autenticação (64 caracteres)</Label>
-                <div className="flex gap-2 mt-2">
-                  <Input value={generatedToken || ""} readOnly className="font-mono text-xs" />
-                  <Button variant="outline" size="icon" onClick={copyToken}>
-                    <Copy className="w-4 h-4" />
-                  </Button>
+              <TabsContent value="token" className="space-y-4">
+                <div>
+                  <Label>Token de Autenticação (64 caracteres)</Label>
+                  <div className="flex gap-2 mt-2">
+                    <Input value={generatedToken} readOnly className="font-mono text-xs" />
+                    <Button variant="outline" size="icon" onClick={copyToken}>
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              <Alert>
-                <AlertDescription>
-                  ⚠️ <strong>Importante:</strong> Guarde este token em local seguro. Ele não será exibido novamente.
-                </AlertDescription>
-              </Alert>
-            </TabsContent>
+                <Alert>
+                  <AlertDescription>
+                    ⚠️ <strong>Importante:</strong> Guarde este token em local seguro. Ele não será exibido novamente.
+                  </AlertDescription>
+                </Alert>
+              </TabsContent>
 
-            <TabsContent value="config" className="space-y-4">
-              <div>
-                <Label>Arquivo config.json Completo</Label>
-                <pre className="mt-2 p-4 bg-muted rounded-lg text-xs overflow-x-auto">
-                  {JSON.stringify(
-                    {
-                      server: {
-                        url: `wss://${window.location.host.replace('3000', '3001')}`,
-                        reconnect_interval: 5,
-                        max_reconnect_attempts: 10,
-                      },
-                      agent: {
+              <TabsContent value="config" className="space-y-4">
+                <div>
+                  <Label>Arquivo config.json Completo</Label>
+                  <pre className="mt-2 p-4 bg-muted rounded-lg text-xs overflow-x-auto">
+                    {JSON.stringify(
+                      {
+                        server_url: `wss://${window.location.host.replace('3000', '3001')}`,
                         token: generatedToken,
                         device_name: deviceName || "Desktop Agent",
                         platform: platform || "Windows 11",
                         version: "1.0.0",
                       },
-                      heartbeat: {
-                        interval: 30,
-                        timeout: 10,
-                      },
-                      logging: {
-                        level: "INFO",
-                        file: "agent.log",
-                        max_size_mb: 10,
-                      },
-                    },
-                    null,
-                    2
-                  )}
-                </pre>
-              </div>
-              <div className="flex gap-2">
-                <Button variant="outline" onClick={copyConfig} className="flex-1">
-                  <Copy className="w-4 h-4 mr-2" />
-                  Copiar Configuração
-                </Button>
-                <Button onClick={downloadConfigFile} className="flex-1">
-                  <Download className="w-4 h-4 mr-2" />
-                  Baixar config.json
-                </Button>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="instructions" className="space-y-4">
-              <div className="space-y-4 text-sm">
-                <div>
-                  <h3 className="font-semibold mb-2">📝 Como Configurar:</h3>
-                  <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
-                    <li>Baixe o arquivo config.json usando o botão acima</li>
-                    <li>Coloque o arquivo na pasta do Desktop Agent (C:\Users\rudpa\DesktopAgent\)</li>
-                    <li>Substitua o arquivo config.json existente</li>
-                    <li>Reinicie o Desktop Agent</li>
-                  </ol>
+                      null,
+                      2
+                    )}
+                  </pre>
                 </div>
-
-                <div>
-                  <h3 className="font-semibold mb-2">🚀 Como Iniciar:</h3>
-                  <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
-                    <li>Abra o Prompt de Comando como Administrador</li>
-                    <li>
-                      Execute: <code className="bg-muted px-2 py-1 rounded">cd C:\Users\rudpa\DesktopAgent</code>
-                    </li>
-                    <li>
-                      Execute: <code className="bg-muted px-2 py-1 rounded">python agent.py</code>
-                    </li>
-                    <li>O agent deve conectar automaticamente e aparecer como "Online" acima</li>
-                  </ol>
+                <div className="flex gap-2">
+                  <Button variant="outline" onClick={copyConfig} className="flex-1">
+                    <Copy className="w-4 h-4 mr-2" />
+                    Copiar Configuração
+                  </Button>
+                  <Button onClick={downloadConfigFile} className="flex-1">
+                    <Download className="w-4 h-4 mr-2" />
+                    Baixar config.json
+                  </Button>
                 </div>
+              </TabsContent>
 
-                <Alert>
-                  <AlertDescription>
-                    💡 <strong>Dica:</strong> Você também pode usar o atalho "Iniciar_Agent.bat" na área de trabalho
-                  </AlertDescription>
-                </Alert>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </DialogContent>
-      </Dialog>
+              <TabsContent value="instructions" className="space-y-4">
+                <div className="space-y-4">
+                  <Alert>
+                    <AlertDescription>
+                      <strong>Passo 1:</strong> Baixe o Desktop Agent em{" "}
+                      <a href="/download-agent" className="text-primary underline" target="_blank">
+                        /download-agent
+                      </a>
+                    </AlertDescription>
+                  </Alert>
+                  <Alert>
+                    <AlertDescription>
+                      <strong>Passo 2:</strong> Copie o token acima ou baixe o arquivo config.json
+                    </AlertDescription>
+                  </Alert>
+                  <Alert>
+                    <AlertDescription>
+                      <strong>Passo 3:</strong> Cole o config.json no diretório do Desktop Agent
+                    </AlertDescription>
+                  </Alert>
+                  <Alert>
+                    <AlertDescription>
+                      <strong>Passo 4:</strong> Execute o Desktop Agent e ele conectará automaticamente
+                    </AlertDescription>
+                  </Alert>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
