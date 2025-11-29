@@ -1,7 +1,8 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { downloadAgentRouter } from "./routers/download-agent";
+import { publicProcedure, router } from "./_core/trpc";
+import { orchestratorRouter } from "./orchestrator";outers/download-agent";
 import { agentVersionsRouter } from "./routers/agent-versions";
 import { servidorRouter } from "./routers/servidor";
 import { deepsiteRouter } from "./routers/deepsite";
@@ -35,15 +36,14 @@ import { mlPredictionRouter } from './routers/ml-prediction';
 import { prometheusRouter } from './routers/prometheus';
 import { selfAwarenessRouter } from './routers/self-awareness';
 import { desktopAuthRouter } from './routers/desktop-auth';
-import { orchestratorMultiIARouter } from './routers/orchestrator-multi-ia';
 
 export const appRouter = router({
   downloadAgent: downloadAgentRouter,
-  agentVersions: agentVersionsRouter,
+  agentVexport const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
-  orchestratorMultiIA: orchestratorMultiIARouter,
-  servidor: servidorRouter,
+  orchestrator: orchestratorRouter,
+  auth: router({Router,
   deepsite: deepsiteRouter,
   desktopAuth: desktopAuthRouter,
   auth: router({

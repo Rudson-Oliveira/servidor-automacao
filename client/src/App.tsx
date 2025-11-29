@@ -28,6 +28,8 @@ const ObsidianVaults = lazy(() => import("./pages/ObsidianVaults"));
 const ObsidianVaultNotes = lazy(() => import("./pages/ObsidianVaultNotes"));
 const ObsidianGraph = lazy(() => import("./pages/ObsidianGraph"));
 const VyLikeCapture = lazy(() => import("./pages/VyLikeCapture"));
+const OrchestratorDashboard = lazy(() => import("./pages/orchestrator/OrchestratorDashboard"));
+const OrchestratorChat = lazy(() => import("./pages/orchestrator/OrchestratorChat"));
 const TelemetryDashboard = lazy(() => import("./pages/TelemetryDashboard"));
 const PerformanceDashboard = lazy(() => import("./pages/PerformanceDashboard"));
 const DesktopControl = lazy(() => import("./pages/DesktopControl"));
@@ -36,7 +38,6 @@ const DesktopHistory = lazy(() => import("./pages/DesktopHistory"));
 const DesktopScheduler = lazy(() => import("./pages/DesktopScheduler"));
 const DesktopControlPro = lazy(() => import("./pages/DesktopControlPro"));
 const CacheStats = lazy(() => import("./pages/CacheStats"));
-const OrchestratorDashboard = lazy(() => import("./pages/OrchestratorDashboard"));
 const InstalarDesktopAgent = lazy(() => import("./pages/InstalarDesktopAgent"));
 const AgentVersionsDashboard = lazy(() => import("./pages/AgentVersionsDashboard"));
 const MLTraining = lazy(() => import("./pages/MLTraining"));
@@ -67,6 +68,7 @@ function Router() {
       <Route path="/ai-governance" component={AIGovernance} />
       <Route path={"/404"} component={NotFound} />
         <Route path={"/orchestrator"} component={OrchestratorDashboard} />
+        <Route path={"/orchestrator/chat"} component={OrchestratorChat} />
         <Route path={"/whatsapp/send"} component={WhatsAppSend} />
         <Route path={"/whatsapp/templates"} component={WhatsAppTemplates} />
         <Route path={"/whatsapp/campaigns"} component={WhatsAppCampaigns} />

@@ -47,7 +47,39 @@ router.get("/agent.py", (req, res) => {
   }
 });
 
-// Download instalador Python com token
+// Download instalador Python v2 com token (autocontido)
+router.get("/instalador_automatico_v2.py", (req, res) => {
+  try {
+    const token = req.query.token || req.headers["x-download-token"];
+    
+    if (token !== DOWNLOAD_TOKEN) {
+      return res.status(401).json({ 
+        error: "Token inválido",
+        hint: "Use ?token=manus-agent-download-2024"
+      });
+    }
+
+    const pyPath = path.join(process.cwd(), "desktop-agent", "instalador_automatico_v2.py");
+    
+    if (!fs.existsSync(pyPath)) {
+      return res.status(404).json({ error: "Instalador v2 não encontrado" });
+    }
+
+    res.setHeader("Content-Type", "text/x-python");
+    res.setHeader("Content-Disposition", 'attachment; filename="instalador_automatico_v2.py"');
+    res.setHeader("Cache-Control", "no-cache");
+    
+    const fileStream = fs.createReadStream(pyPath);
+    fileStream.pipe(res);
+    
+    console.log("[Download Seguro] instalador_automatico_v2.py baixado com sucesso");
+  } catch (error) {
+    console.error("Erro ao servir instalador v2:", error);
+    res.status(500).json({ error: "Erro ao baixar arquivo" });
+  }
+});
+
+// Download instalador Python com token (versão legada)
 router.get("/instalador_automatico.py", (req, res) => {
   try {
     const token = req.query.token || req.headers["x-download-token"];
