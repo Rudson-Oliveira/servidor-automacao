@@ -328,15 +328,16 @@ if __name__ == "__main__":
   }),
 
   /**
-   * Gerar link de download direto
+   * Gerar link de download direto (usando endpoint seguro com token)
    */
   getDownloadLinks: publicProcedure.query(() => {
     const baseUrl = process.env.VITE_APP_URL || "https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer";
+    const token = "manus-agent-download-2024";
 
     return {
-      agentPy: `${baseUrl}/api/download/agent.py`,
+      agentPy: `${baseUrl}/api/download-secure/agent.py?token=${token}`,
       installerBat: `${baseUrl}/api/download/INSTALAR_DESKTOP_AGENT.bat`,
-      installerPy: `${baseUrl}/api/download/instalador_automatico.py`,
+      installerPy: `${baseUrl}/api/download-secure/instalador_automatico.py?token=${token}`,
       installerExe: `${baseUrl}/api/download/DesktopAgent.exe`,
     };
   }),

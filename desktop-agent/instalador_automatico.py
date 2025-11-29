@@ -23,6 +23,7 @@ from pathlib import Path
 # Configurações
 VERSION = "1.0.0"
 SERVER_URL = "https://automacao-api-alejofy2.manus.space"
+DOWNLOAD_TOKEN = "manus-agent-download-2024"  # Token para bypass Cloudflare
 
 def print_header():
     print("=" * 70)
@@ -95,12 +96,16 @@ def download_agent(base_dir):
     print("[4/6] Baixando Desktop Agent...")
     
     try:
-        # Baixar agent.py
-        url = "{}/api/download/agent.py".format(SERVER_URL)
+        # Baixar agent.py usando endpoint seguro
+        url = "{}/api/download-secure/agent.py?token={}".format(SERVER_URL, DOWNLOAD_TOKEN)
         agent_path = base_dir / "agent.py"
         
         print("  → Conectando ao servidor...")
-        urllib.request.urlretrieve(url, agent_path)
+        # Adicionar User-Agent para evitar bloqueio
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req) as response:
+            with open(agent_path, 'wb') as f:
+                f.write(response.read())
         
         print("✓ Agent baixado com sucesso")
         print()
