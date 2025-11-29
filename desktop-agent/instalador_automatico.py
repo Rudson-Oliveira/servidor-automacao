@@ -20,8 +20,9 @@ import json
 import time
 from pathlib import Path
 
+# Configurações
 VERSION = "1.0.0"
-SERVER_URL = "https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer"
+SERVER_URL = "https://automacao-api-alejofy2.manus.space"
 
 def print_header():
     print("=" * 70)
@@ -137,8 +138,8 @@ def generate_token_from_api():
             "version": VERSION
         }).encode('utf-8')
         
-        # Fazer requisição POST para criar agent e obter token via tRPC
-        url = "{}/api/trpc/desktopAuth.autoRegister".format(SERVER_URL)
+        # Fazer requisição POST para criar agent e obter token via REST API
+        url = "{}/api/desktop-agent/register".format(SERVER_URL)
         req = urllib.request.Request(
             url,
             data=data,
@@ -167,7 +168,7 @@ def configure_agent(base_dir):
         token = "CONFIGURE_MANUALMENTE_EM_/desktop/agents"
     
     config = {
-        "server_url": "wss://3001-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer",
+        "server_url": "wss://automacao-ws-alejofy2.manus.space",
         "token": token,
         "device_name": platform.node(),
         "auto_start": True,

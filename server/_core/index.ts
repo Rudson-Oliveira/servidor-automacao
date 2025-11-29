@@ -26,6 +26,7 @@ import obsidianUriRouter from "../routes/obsidian-uri";
 import deepsiteRouter from "../routes/deepsite";
 import { manusExplicarRouter } from "../routes/manus-explicar";
 import downloadFilesRouter from "../routes/download-files";
+import desktopAgentRegisterRouter from "../routes/desktop-agent-register";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
 import { startDesktopAgentServer } from "../services/desktopAgentServer";
 
@@ -81,6 +82,7 @@ async function startServer() {
   app.use("/api/deepsite", deepsiteRouter);
   app.use("/api/manus", manusExplicarRouter);
   app.use("/api/download", downloadFilesRouter);
+  app.use("/api/desktop-agent", desktopAgentRegisterRouter);
   // tRPC API
   app.use(
     "/api/trpc",
