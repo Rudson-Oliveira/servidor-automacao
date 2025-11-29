@@ -36,6 +36,7 @@ import { prometheusRouter } from './routers/prometheus';
 import { selfAwarenessRouter } from './routers/self-awareness';
 import { desktopAuthRouter } from './routers/desktop-auth';
 import { orchestratorMultiIARouter } from './routers/orchestrator-multi-ia';
+import { obsidianAIRouter } from './routers/obsidian-ai';
 
 export const appRouter = router({
   downloadAgent: downloadAgentRouter,
@@ -62,6 +63,9 @@ export const appRouter = router({
 
   // Integração Avançada com Obsidian (vaults, notas, sync)
   obsidianAdvanced: obsidianAdvancedRouter,
+
+  // Integração Obsidian com IA (geração de conteúdo)
+  obsidianAI: obsidianAIRouter,
 
   // Integração com IAs externas
   integration: integrationRouter,

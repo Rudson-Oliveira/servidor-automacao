@@ -46,6 +46,8 @@ const MLDashboard = lazy(() => import("./pages/MLDashboard"));
 const SelfAwareness = lazy(() => import("./pages/SelfAwareness"));
 const DownloadAgent = lazy(() => import("./pages/DownloadAgent"));
 const DesktopAgents = lazy(() => import("./pages/DesktopAgents"));
+const AutomacoesSimples = lazy(() => import("./pages/AutomacoesSimples"));
+const ObsidianInteligente = lazy(() => import("./pages/ObsidianInteligente"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -60,6 +62,7 @@ function Router() {
     <Suspense fallback={<LoadingFallback />}>
       <Switch>
        <Route path={"/"} component={Home} />
+      <Route path={"/automacoes-simples"} component={AutomacoesSimples} />
       <Route path="/install" component={InstallPortal} />
       <Route path="/instalar-agent" component={InstalarDesktopAgent} />
       <Route path="/download-agent" component={DownloadAgent} />
@@ -98,6 +101,7 @@ function Router() {
         <Route path={"/obsidian/graph"} component={ObsidianGraph} />
         <Route path={"/obsidian/vault/:id"} component={ObsidianVaultNotes} />
         <Route path={"/obsidian/vaults"} component={ObsidianVaults} />
+        <Route path={"/obsidian/inteligente"} component={ObsidianInteligente} />
         <Route path={"/obsidian"} component={ObsidianVaults} />
         <Route path={"/404"} component={NotFound} />
         {/* Final fallback route */}

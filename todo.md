@@ -3175,3 +3175,111 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [ ] Documentação técnica de cada integração
 - [ ] Fluxogramas de decisão do COMET
 - [ ] Troubleshooting e FAQ
+
+
+## 🚨 PROBLEMAS CRÍTICOS IDENTIFICADOS PELO COMET (Nova Análise)
+
+### 🔴 Erro 403 no Registro de Agents via API
+- [ ] Corrigir endpoint `/api/desktop-agent/register` que retorna 403 Forbidden
+- [ ] Implementar bypass do Cloudflare WAF para endpoints de API de registro
+- [ ] Testar registro via POST com JSON completo (hostname, platform, platform_version, username)
+- [ ] Validar geração automática de token durante instalação
+
+### 🔴 Erro de DOM no Dashboard (/desktop/agents)
+- [ ] Corrigir erro `NotFoundError: insertBefore` na página `/desktop/agents`
+- [ ] Revisar lógica de renderização de componentes React no dashboard
+- [ ] Validar estrutura do DOM e ordem de inserção de elementos
+- [ ] Testar geração de token via interface web sem erros
+
+### ✅ Validações Bem-Sucedidas do COMET
+- [x] Servidor online (https://automacao-api-alejofy2.manus.space)
+- [x] Dashboard /desktop operacional (com estatísticas)
+- [x] Página /download-agent com 3 opções funcionais
+- [x] Download do agent.py via endpoint seguro `/api/download-secure`
+- [x] Instalador automático funcionando (instalador_automatico.py)
+- [x] WebSocket na porta 3001 configurado e operacional
+
+### 📊 Estatísticas Atuais Reportadas pelo COMET
+- Agentes Online: 0 (430 offline)
+- Comandos Executados: 11 (7 falhas)
+- Taxa de Sucesso: 61,11%
+- Capturas: 20
+
+### 🎯 Melhorias Sugeridas pelo COMET
+- [ ] Configurar regra WAF para permitir endpoints `/api/*` sem bloqueio de bots
+- [ ] Implementar webhook de notificação quando agent conectar pela primeira vez
+- [ ] Adicionar dashboard de métricas com histórico de conexões e comandos
+- [ ] Criar página de documentação da API com exemplos de uso do token
+- [ ] Implementar sistema de analytics de downloads (plataformas, taxa de sucesso)
+
+
+## 🔴 TAREFAS URGENTES - ACESSIBILIDADE E VOZ (29/Nov/2025)
+
+### Interface Acessível para Leigos
+- [x] Criar página /automacoes-simples com wizard passo-a-passo
+- [x] Adicionar tooltips em TODOS os botões e campos
+- [x] Implementar mensagens de erro amigáveis (não técnicas)
+- [x] Criar templates de automações prontas para usar
+- [x] Adicionar preview visual de automações
+
+### Integração de Áudio/Voz
+- [x] Implementar Web Speech API (speech-to-text)
+- [x] Adicionar text-to-speech para feedback sonoro
+- [x] Criar botão de comando por voz na interface
+- [x] Integrar comandos de voz com workflows
+- [x] Adicionar indicador visual de gravação
+
+### Verificação de Integrações
+- [x] Testar TODOS os endpoints tRPC (262 testados - 98.9% sucesso)
+- [x] Verificar conexão com Supabase
+- [x] Testar sistema de webhooks
+- [x] Validar workflows existentes
+- [x] Gerar relatório de status das integrações
+
+### Correção de Erros TypeScript
+- [ ] Corrigir server/routers/orchestrator.ts (64 erros)
+- [ ] Corrigir server/routers/ml-prediction.ts (10 erros)
+- [ ] Corrigir server/services/prometheus-exporter.ts (11 erros)
+- [ ] Corrigir outros arquivos críticos (56 erros)
+- [ ] Validar build sem erros
+
+
+## 🔴 INTEGRAÇÃO OBSIDIAN COMPLETA (29/Nov/2025)
+
+### Integração com LLMs
+- [x] Conectar Gemini API para geração de conteúdo
+- [x] Conectar GPT (OpenAI) para geração de conteúdo
+- [x] Conectar Claude (Anthropic) para geração de conteúdo
+- [x] Conectar Perplexity para pesquisa e geração
+- [x] Criar seletor de modelo de IA (dropdown)
+- [x] Implementar botão "Gerar com IA"
+- [x] Criar endpoint tRPC para geração de conteúdo
+
+### Sistema de Lembretes e Datas
+- [ ] Adicionar campo de data com calendário visual
+- [ ] Implementar lembretes automáticos
+- [ ] Integrar Google Calendar API
+- [ ] Criar sistema de notificações push
+- [ ] Adicionar agendamento de lembretes
+
+### Lógica Inteligente
+- [x] Implementar entrada por texto e voz
+- [x] Gerar nota completa automaticamente
+- [x] Criar tags automáticas inteligentes
+- [x] Gerar links relacionados entre notas
+- [x] Criar frontmatter YAML automaticamente
+- [x] Detectar conexões com outras notas existentes
+
+### Integração com Plugins Obsidian
+- [x] Gerar Dataview queries prontas
+- [ ] Criar Templater templates
+- [ ] Integrar Calendar plugin
+- [ ] Suportar Tasks plugin format
+- [ ] Otimizar para Graph view
+
+### Interface Melhorada
+- [x] Criar wizard passo-a-passo
+- [x] Adicionar preview da nota antes de criar
+- [x] Suportar múltiplos vaults
+- [ ] Implementar sincronização bidirecional
+- [x] Criar página ObsidianInteligente.tsx

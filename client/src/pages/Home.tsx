@@ -14,9 +14,28 @@ import {
   Calendar,
   ArrowRight,
   CheckCircle2,
+  Wand2,
 } from 'lucide-react';
 
 const features = [
+  {
+    category: 'Automações Simples (Para Leigos)',
+    icon: <Wand2 className="h-8 w-8" />,
+    description:
+      'Configure automações sem precisar de conhecimento técnico. Interface simplificada com wizard passo-a-passo e comandos de voz.',
+    color: 'text-indigo-600',
+    bgColor: 'bg-indigo-50',
+    features: [
+      'Interface 100% visual e intuitiva',
+      'Comandos de voz (fale o que quer fazer)',
+      'Templates prontos para usar',
+      'Tooltips explicativos em tudo',
+      'Mensagens de erro amigáveis',
+    ],
+    links: [
+      { title: 'Começar Agora', href: '/automacoes-simples', icon: <Wand2 className="h-4 w-4" /> },
+    ],
+  },
   {
     category: 'WhatsApp Anti-Bloqueio',
     icon: <MessageSquare className="h-8 w-8" />,

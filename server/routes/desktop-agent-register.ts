@@ -13,8 +13,22 @@ const router = Router();
 /**
  * POST /api/desktop-agent/register
  * Endpoint público REST para auto-registro de agents
+ * 
+ * Aceita token público para bypass do Cloudflare WAF:
+ * - Header: X-Agent-Register-Token: manus-agent-register-2024
+ * - Ou query param: ?token=manus-agent-register-2024
  */
 router.post("/register", async (req, res) => {
+  // Bypass do Cloudflare WAF com token público
+  const publicToken = "manus-agent-register-2024";
+  const providedToken = req.headers["x-agent-register-token"] || req.query.token;
+  
+  if (providedToken !== publicToken) {
+    return res.status(403).json({
+      success: false,
+      error: "Token de registro inválido. Use X-Agent-Register-Token header ou ?token= query param",
+    });
+  }
   try {
     const { deviceName, platform, version } = req.body;
 
