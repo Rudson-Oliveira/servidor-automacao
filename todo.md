@@ -3065,3 +3065,24 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - **Bugs corrigidos**: 3 (ML service, ES modules, dados insuficientes)
 - **Documentação criada**: 3 arquivos completos
 - **Taxa de sucesso**: 100%
+
+
+## 🔌 Desktop Agent - Conexão e Autenticação
+
+### Problema Identificado
+- [x] Agent instalado mas aparece offline no dashboard (0 agents online)
+- [x] Falta sistema de autenticação via token
+- [x] Falta validação de conexão WebSocket
+
+### Solução
+- [x] Implementar sistema de tokens de autenticação
+- [x] Criar endpoint desktopControl.createAgent (gera token automaticamente)
+- [x] Agent.py já usa token na conexão WebSocket (sistema existente)
+- [x] Criar interface web /desktop/agents para gerar tokens
+- [x] Validar conexão WebSocket (porta 3001 - sistema existente)
+- [x] Criar testes unitários (4/4 passando)
+
+### Documentação
+- [x] Interface web com instruções completas
+- [x] Download automático de config.json
+- [x] Guia passo a passo integrado na interface

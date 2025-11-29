@@ -1,0 +1,393 @@
+import { useState } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { trpc } from "@/lib/trpc";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { toast } from "sonner";
+import { Copy, Download, Plus, RefreshCw } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+export default function DesktopAgents() {
+  const { user, loading: authLoading } = useAuth();
+  const [deviceName, setDeviceName] = useState("");
+  const [platform, setPlatform] = useState("");
+  const [showTokenDialog, setShowTokenDialog] = useState(false);
+  const [generatedToken, setGeneratedToken] = useState<string | null>(null);
+  const [generatedAgentId, setGeneratedAgentId] = useState<number | null>(null);
+
+  // Query para listar agents
+  const { data: agents, isLoading: loadingAgents, refetch: refetchAgents } = trpc.desktopControl.listAgents.useQuery(undefined, {
+    enabled: !!user,
+    refetchInterval: 5000, // Atualizar a cada 5 segundos
+  });
+
+  // Mutation para criar agent
+  const createAgentMutation = trpc.desktopControl.createAgent.useMutation({
+    onSuccess: (data) => {
+      toast.success(data.message);
+      setGeneratedToken(data.agent.token);
+      setGeneratedAgentId(data.agent.id);
+      setShowTokenDialog(true);
+      setDeviceName("");
+      setPlatform("");
+      refetchAgents();
+    },
+    onError: (error) => {
+      toast.error(`Erro ao criar agent: ${error.message}`);
+    },
+  });
+
+  const handleCreateAgent = () => {
+    if (!deviceName.trim()) {
+      toast.error("Nome do dispositivo é obrigatório");
+      return;
+    }
+
+    createAgentMutation.mutate({
+      deviceName: deviceName.trim(),
+      platform: platform.trim() || undefined,
+      version: "1.0.0",
+    });
+  };
+
+  const copyToken = () => {
+    if (generatedToken) {
+      navigator.clipboard.writeText(generatedToken);
+      toast.success("Token copiado para área de transferência!");
+    }
+  };
+
+  const copyConfig = () => {
+    if (!generatedToken) return;
+
+    const config = {
+      server: {
+        url: `wss://${window.location.host.replace('3000', '3001')}`,
+        reconnect_interval: 5,
+        max_reconnect_attempts: 10,
+      },
+      agent: {
+        token: generatedToken,
+        device_name: deviceName || "Desktop Agent",
+        platform: platform || "Windows 11",
+        version: "1.0.0",
+      },
+      heartbeat: {
+        interval: 30,
+        timeout: 10,
+      },
+      logging: {
+        level: "INFO",
+        file: "agent.log",
+        max_size_mb: 10,
+      },
+    };
+
+    navigator.clipboard.writeText(JSON.stringify(config, null, 2));
+    toast.success("Configuração copiada! Cole no arquivo config.json");
+  };
+
+  const downloadConfigFile = () => {
+    if (!generatedToken) return;
+
+    const config = {
+      server: {
+        url: `wss://${window.location.host.replace('3000', '3001')}`,
+        reconnect_interval: 5,
+        max_reconnect_attempts: 10,
+      },
+      agent: {
+        token: generatedToken,
+        device_name: deviceName || "Desktop Agent",
+        platform: platform || "Windows 11",
+        version: "1.0.0",
+      },
+      heartbeat: {
+        interval: 30,
+        timeout: 10,
+      },
+      logging: {
+        level: "INFO",
+        file: "agent.log",
+        max_size_mb: 10,
+      },
+    };
+
+    const blob = new Blob([JSON.stringify(config, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "config.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    toast.success("Arquivo config.json baixado!");
+  };
+
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <RefreshCw className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Autenticação Necessária</CardTitle>
+            <CardDescription>Faça login para gerenciar seus Desktop Agents</CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">Gerenciar Desktop Agents</h1>
+        <p className="text-muted-foreground">
+          Crie e gerencie agents para controle remoto de desktops
+        </p>
+      </div>
+
+      {/* Criar Novo Agent */}
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Plus className="w-5 h-5" />
+            Criar Novo Agent
+          </CardTitle>
+          <CardDescription>
+            Gere um token de autenticação para conectar um novo dispositivo
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="deviceName">Nome do Dispositivo *</Label>
+              <Input
+                id="deviceName"
+                placeholder="Ex: Meu PC Windows"
+                value={deviceName}
+                onChange={(e) => setDeviceName(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="platform">Plataforma (opcional)</Label>
+              <Input
+                id="platform"
+                placeholder="Ex: Windows 11, Linux Ubuntu, macOS"
+                value={platform}
+                onChange={(e) => setPlatform(e.target.value)}
+              />
+            </div>
+            <Button
+              onClick={handleCreateAgent}
+              disabled={createAgentMutation.isPending || !deviceName.trim()}
+              className="w-full"
+            >
+              {createAgentMutation.isPending ? (
+                <>
+                  <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                  Gerando Token...
+                </>
+              ) : (
+                <>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Gerar Token e Criar Agent
+                </>
+              )}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Lista de Agents */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Agents Cadastrados</CardTitle>
+              <CardDescription>
+                {agents?.length || 0} agent(s) cadastrado(s) • {agents?.filter((a) => a.isOnline).length || 0} online
+              </CardDescription>
+            </div>
+            <Button variant="outline" size="sm" onClick={() => refetchAgents()}>
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Atualizar
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {loadingAgents ? (
+            <div className="flex items-center justify-center py-8">
+              <RefreshCw className="w-6 h-6 animate-spin text-primary" />
+            </div>
+          ) : agents && agents.length > 0 ? (
+            <div className="space-y-4">
+              {agents.map((agent) => (
+                <div
+                  key={agent.id}
+                  className="flex items-center justify-between p-4 border rounded-lg"
+                >
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`w-3 h-3 rounded-full ${
+                        agent.isOnline ? "bg-green-500" : "bg-gray-400"
+                      }`}
+                    />
+                    <div>
+                      <h3 className="font-semibold">{agent.deviceName}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {agent.platform} • v{agent.version}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {agent.isOnline
+                          ? "Online"
+                          : `Offline há ${Math.floor(agent.timeSinceLastPing / 60)}min`}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    ID: {agent.id}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <Alert>
+              <AlertDescription>
+                Nenhum agent cadastrado. Crie um novo agent acima para começar.
+              </AlertDescription>
+            </Alert>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Dialog com Token Gerado */}
+      <Dialog open={showTokenDialog} onOpenChange={setShowTokenDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>🎉 Agent Criado com Sucesso!</DialogTitle>
+            <DialogDescription>
+              Copie o token abaixo e configure no seu Desktop Agent
+            </DialogDescription>
+          </DialogHeader>
+
+          <Tabs defaultValue="token" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="token">Token</TabsTrigger>
+              <TabsTrigger value="config">config.json</TabsTrigger>
+              <TabsTrigger value="instructions">Instruções</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="token" className="space-y-4">
+              <div>
+                <Label>Token de Autenticação (64 caracteres)</Label>
+                <div className="flex gap-2 mt-2">
+                  <Input value={generatedToken || ""} readOnly className="font-mono text-xs" />
+                  <Button variant="outline" size="icon" onClick={copyToken}>
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+              <Alert>
+                <AlertDescription>
+                  ⚠️ <strong>Importante:</strong> Guarde este token em local seguro. Ele não será exibido novamente.
+                </AlertDescription>
+              </Alert>
+            </TabsContent>
+
+            <TabsContent value="config" className="space-y-4">
+              <div>
+                <Label>Arquivo config.json Completo</Label>
+                <pre className="mt-2 p-4 bg-muted rounded-lg text-xs overflow-x-auto">
+                  {JSON.stringify(
+                    {
+                      server: {
+                        url: `wss://${window.location.host.replace('3000', '3001')}`,
+                        reconnect_interval: 5,
+                        max_reconnect_attempts: 10,
+                      },
+                      agent: {
+                        token: generatedToken,
+                        device_name: deviceName || "Desktop Agent",
+                        platform: platform || "Windows 11",
+                        version: "1.0.0",
+                      },
+                      heartbeat: {
+                        interval: 30,
+                        timeout: 10,
+                      },
+                      logging: {
+                        level: "INFO",
+                        file: "agent.log",
+                        max_size_mb: 10,
+                      },
+                    },
+                    null,
+                    2
+                  )}
+                </pre>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={copyConfig} className="flex-1">
+                  <Copy className="w-4 h-4 mr-2" />
+                  Copiar Configuração
+                </Button>
+                <Button onClick={downloadConfigFile} className="flex-1">
+                  <Download className="w-4 h-4 mr-2" />
+                  Baixar config.json
+                </Button>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="instructions" className="space-y-4">
+              <div className="space-y-4 text-sm">
+                <div>
+                  <h3 className="font-semibold mb-2">📝 Como Configurar:</h3>
+                  <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
+                    <li>Baixe o arquivo config.json usando o botão acima</li>
+                    <li>Coloque o arquivo na pasta do Desktop Agent (C:\Users\rudpa\DesktopAgent\)</li>
+                    <li>Substitua o arquivo config.json existente</li>
+                    <li>Reinicie o Desktop Agent</li>
+                  </ol>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold mb-2">🚀 Como Iniciar:</h3>
+                  <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
+                    <li>Abra o Prompt de Comando como Administrador</li>
+                    <li>
+                      Execute: <code className="bg-muted px-2 py-1 rounded">cd C:\Users\rudpa\DesktopAgent</code>
+                    </li>
+                    <li>
+                      Execute: <code className="bg-muted px-2 py-1 rounded">python agent.py</code>
+                    </li>
+                    <li>O agent deve conectar automaticamente e aparecer como "Online" acima</li>
+                  </ol>
+                </div>
+
+                <Alert>
+                  <AlertDescription>
+                    💡 <strong>Dica:</strong> Você também pode usar o atalho "Iniciar_Agent.bat" na área de trabalho
+                  </AlertDescription>
+                </Alert>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

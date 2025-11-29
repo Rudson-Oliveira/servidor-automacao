@@ -8,6 +8,7 @@ import {
   listUserLogs,
   getAgentById,
   getCommandById,
+  createAgent,
 } from "../db-desktop-control";
 import { validateCommand, listWhitelist, listBlacklist, listAudit, addWhitelistRule, addBlacklistRule } from "../command-security";
 
@@ -24,6 +25,48 @@ import { validateCommand, listWhitelist, listBlacklist, listAudit, addWhitelistR
  */
 
 export const desktopControlRouter = router({
+  /**
+   * Cria um novo Desktop Agent e retorna o token de autenticação
+   */
+  createAgent: protectedProcedure
+    .input(
+      z.object({
+        deviceName: z.string().min(1, "Nome do dispositivo é obrigatório"),
+        platform: z.string().optional(),
+        version: z.string().default("1.0.0"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { deviceName, platform, version } = input;
+      
+      // Detectar plataforma automaticamente se não fornecida
+      const detectedPlatform = platform || "Unknown";
+      
+      // Criar agent no banco de dados
+      const agent = await createAgent(
+        ctx.user.id,
+        deviceName,
+        detectedPlatform,
+        version
+      );
+      
+      console.log(`[DesktopControl] Novo agent criado: ${agent.id} (${agent.deviceName})`);
+      
+      return {
+        success: true,
+        agent: {
+          id: agent.id,
+          deviceName: agent.deviceName,
+          token: agent.token,
+          platform: agent.platform,
+          version: agent.version,
+          status: agent.status,
+          createdAt: agent.createdAt,
+        },
+        message: `Agent "${agent.deviceName}" criado com sucesso`,
+      };
+    }),
+
   /**
    * Lista todos os agents do usuário autenticado
    */
