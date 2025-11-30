@@ -3,14 +3,63 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Download as DownloadIcon, CheckCircle2, Shield, Zap, HelpCircle } from "lucide-react";
 import VideoTutorial from "@/components/VideoTutorial";
+import { notificationService } from "@/services/NotificationService";
 
 export default function Download() {
-  const handleDownloadCometa = () => {
-    window.location.href = "/api/download/cometa.exe";
+  const handleDownloadCometa = async () => {
+    const notificationId = notificationService.showDownloadStart(
+      'desktop',
+      'cometa.exe',
+      '~15 MB'
+    );
+    
+    try {
+      // Simular progresso do download
+      for (let i = 0; i <= 100; i += 20) {
+        await new Promise(resolve => setTimeout(resolve, 150));
+        notificationService.updateDownloadProgress(notificationId, i);
+      }
+      
+      // Executar download real
+      window.location.href = "/api/download/cometa.exe";
+      
+      // Aguardar um pouco antes de mostrar conclusão
+      await new Promise(resolve => setTimeout(resolve, 500));
+      notificationService.showDownloadComplete(notificationId);
+    } catch (error) {
+      notificationService.showDownloadError(
+        notificationId,
+        error instanceof Error ? error.message : 'Erro desconhecido'
+      );
+    }
   };
 
-  const handleDownloadExtension = () => {
-    window.location.href = "/api/download/browser-extension.zip";
+  const handleDownloadExtension = async () => {
+    const notificationId = notificationService.showDownloadStart(
+      'extension',
+      'browser-extension.zip',
+      '~50 KB'
+    );
+    
+    try {
+      // Simular progresso do download (mais rápido por ser menor)
+      for (let i = 0; i <= 100; i += 25) {
+        await new Promise(resolve => setTimeout(resolve, 80));
+        notificationService.updateDownloadProgress(notificationId, i);
+      }
+      
+      // Executar download real
+      window.location.href = "/api/download/browser-extension.zip";
+      
+      // Aguardar um pouco antes de mostrar conclusão
+      await new Promise(resolve => setTimeout(resolve, 300));
+      notificationService.showDownloadComplete(notificationId);
+    } catch (error) {
+      notificationService.showDownloadError(
+        notificationId,
+        error instanceof Error ? error.message : 'Erro desconhecido'
+      );
+    }
   };
 
   return (

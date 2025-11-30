@@ -3420,3 +3420,17 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Criar componente VideoTutorial com passos de instalação
 - [x] Integrar VideoTutorial na página /download
 - [x] Testar endpoints de download e rastreamento
+
+
+## 🔔 Sistema de Notificações de Download (URGENTE)
+
+- [x] Instalar react-hot-toast
+- [x] Criar NotificationService.ts com interface completa
+- [x] Modificar Download.tsx com notificações progressivas
+- [x] Configurar Toaster em App.tsx
+- [x] Testar notificações de início de download
+- [x] Testar barra de progresso
+- [x] Testar notificações de conclusão
+- [x] Testar instruções para usuários leigos
+- [x] Testar tratamento de erros
+- [x] Gerar evidências visuais (testes unitários 16/16 passando)

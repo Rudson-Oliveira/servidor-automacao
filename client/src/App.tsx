@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/sonner";
+import { Toaster as HotToaster } from "react-hot-toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -138,6 +139,17 @@ function App() {
       >
         <TooltipProvider>
           <Toaster />
+          <HotToaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                borderRadius: '10px',
+                fontSize: '16px',
+                fontWeight: '500',
+              },
+            }}
+          />
           <Router />
         </TooltipProvider>
       </ThemeProvider>
