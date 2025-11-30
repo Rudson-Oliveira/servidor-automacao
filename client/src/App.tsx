@@ -52,6 +52,7 @@ const TelefoniaGenspark = lazy(() => import("./pages/TelefoniaGenspark"));
 const AutoHealing = lazy(() => import("./pages/AutoHealing"));
 const HealthChecks = lazy(() => import("./pages/HealthChecks"));
 const InstallationPortal = lazy(() => import("./pages/InstallationPortal"));
+const Download = lazy(() => import("./pages/Download"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -70,6 +71,7 @@ function Router() {
       <Route path="/install" component={InstallPortal} />
       <Route path="/instalar-agent" component={InstalarDesktopAgent} />
       <Route path="/download-agent" component={DownloadAgent} />
+      <Route path="/download" component={Download} />
       <Route path="/agent-versions" component={AgentVersionsDashboard} />
       <Route path="/control" component={ControlCenter} />
       <Route path="/ai-governance" component={AIGovernance} />

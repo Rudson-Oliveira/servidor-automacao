@@ -29,6 +29,7 @@ import {
   Activity,
   Link as LinkIcon,
   Menu,
+  Download,
 } from 'lucide-react';
 
 interface MenuItem {
@@ -168,7 +169,16 @@ export default function MobileMenu() {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="mt-6">
+        <div className="mt-6 space-y-4">
+          {/* Botão de Instalar em Destaque */}
+          <Button
+            onClick={() => handleNavigate('/download')}
+            className="w-full h-14 bg-green-500 hover:bg-green-600 text-white text-lg font-bold gap-2"
+          >
+            <Download className="h-6 w-6" />
+            💾 INSTALAR COMETA IA
+          </Button>
+
           <Accordion type="single" collapsible className="w-full">
             {/* WhatsApp */}
             <AccordionItem value="whatsapp">

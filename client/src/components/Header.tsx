@@ -22,6 +22,7 @@ import {
   Users,
   Link as LinkIcon,
   ArrowLeft,
+  Download,
 } from 'lucide-react';
 import { APP_TITLE, APP_LOGO } from '@/const';
 import MobileMenu from '@/components/MobileMenu';
@@ -257,6 +258,19 @@ export default function Header({ showBackButton = false, onBack }: HeaderProps) 
               >
                 {menuCategories.deepsite.icon}
                 {menuCategories.deepsite.title}
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
+            {/* Instalar */}
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                href="/download"
+                className={`group inline-flex h-10 w-max items-center justify-center rounded-md bg-green-500 hover:bg-green-600 text-white px-4 py-2 text-sm font-bold transition-colors focus:outline-none gap-2 ${
+                  location === '/download' ? 'bg-green-600' : ''
+                }`}
+              >
+                <Download className="h-5 w-5" />
+                💾 INSTALAR
               </NavigationMenuLink>
             </NavigationMenuItem>
 
