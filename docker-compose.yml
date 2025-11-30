@@ -1,0 +1,171 @@
+version: '3.8'
+
+services:
+  # Frontend - React + Vite + shadcn/ui
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: automacao-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://backend:8000
+      - VITE_WS_URL=ws://backend:8000/ws
+    volumes:
+      - ./client:/app/client
+      - /app/client/node_modules
+    networks:
+      - automacao-network
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Backend - FastAPI + WebSocket
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: automacao-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://automacao:automacao123@postgres:5432/automacao_dev
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET=${JWT_SECRET}
+      - WHATSAPP_MOCK=true
+      - OBSIDIAN_MOCK=true
+      - TELEFONICA_MOCK=true
+      - ABACUS_MOCK=true
+    volumes:
+      - ./server:/app/server
+      - ./shared:/app/shared
+      - ./logs:/app/logs
+    networks:
+      - automacao-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Desktop Agent - Python com Xvfb (simulação headless)
+  desktop-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile.desktop-agent
+    container_name: automacao-desktop-agent
+    environment:
+      - DISPLAY=:99
+      - BACKEND_URL=http://backend:8000
+      - HEADLESS=true
+    volumes:
+      - ./desktop-agent:/app/desktop-agent
+      - ./screenshots:/app/screenshots
+      - ./logs:/app/logs
+    networks:
+      - automacao-network
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Database - PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: automacao-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=automacao
+      - POSTGRES_PASSWORD=automacao123
+      - POSTGRES_DB=automacao_dev
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - automacao-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U automacao"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Cache - Redis
+  redis:
+    image: redis:7-alpine
+    container_name: automacao-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - automacao-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Monitoring - Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: automacao-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - automacao-network
+    depends_on:
+      - backend
+
+  # Monitoring - Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: automacao-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_INSTALL_PLUGINS=redis-datasource
+    volumes:
+      - ./monitoring/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - grafana-data:/var/lib/grafana
+    networks:
+      - automacao-network
+    depends_on:
+      - prometheus
+
+networks:
+  automacao-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+
+volumes:
+  postgres-data:
+  redis-data:
+  prometheus-data:
+  grafana-data:

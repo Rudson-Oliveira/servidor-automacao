@@ -1,0 +1,26 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Instalar dependências do sistema
+RUN apk add --no-cache curl
+
+# Copiar package.json e instalar dependências
+COPY client/package.json client/pnpm-lock.yaml* ./client/
+COPY package.json pnpm-lock.yaml* ./
+
+# Instalar pnpm globalmente
+RUN npm install -g pnpm
+
+# Instalar dependências
+WORKDIR /app/client
+RUN pnpm install --frozen-lockfile
+
+# Copiar código fonte
+COPY client/ ./
+
+# Expor porta
+EXPOSE 3000
+
+# Comando para desenvolvimento com hot reload
+CMD ["pnpm", "dev", "--host", "0.0.0.0"]

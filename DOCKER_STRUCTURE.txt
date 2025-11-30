@@ -1,0 +1,47 @@
+🐳 ESTRUTURA DO AMBIENTE DOCKER
+================================
+
+📁 Arquivos Principais:
+├── docker-compose.yml              (Orquestração de 7 containers)
+├── Dockerfile.frontend             (React + Vite)
+├── Dockerfile.backend              (FastAPI + WebSocket)
+├── Dockerfile.desktop-agent        (Python + Xvfb)
+└── .env.development                (Variáveis de ambiente)
+
+📁 Scripts de Gerenciamento:
+├── scripts/init-dev.sh             (Inicializar ambiente)
+├── scripts/teardown-dev.sh         (Limpar ambiente)
+├── scripts/start-desktop-agent.sh  (Iniciar agent headless)
+└── scripts/init-db.sql             (Setup inicial PostgreSQL)
+
+📁 Mock Services (APIs Simuladas):
+├── server/mocks/whatsapp-mock.ts   (WhatsApp API)
+├── server/mocks/obsidian-mock.ts   (Obsidian URI)
+├── server/mocks/telefonica-mock.ts (Genspark/Telefonica)
+├── server/mocks/abacus-mock.ts     (Abacus AI)
+└── server/mocks/index.ts           (Exportações)
+
+📁 Monitoring:
+├── monitoring/prometheus.yml       (Configuração Prometheus)
+└── monitoring/grafana-datasources.yml (Datasources Grafana)
+
+📁 Diretórios de Dados:
+├── logs/                           (Logs dos serviços)
+├── screenshots/                    (Screenshots do desktop agent)
+└── [volumes Docker]                (postgres-data, redis-data, etc.)
+
+🎯 CONTAINERS (7 serviços):
+1. frontend          → localhost:3000  (React + Vite)
+2. backend           → localhost:8000  (FastAPI + WebSocket)
+3. desktop-agent     → headless        (Python + Xvfb + Chromium)
+4. postgres          → localhost:5432  (PostgreSQL 15)
+5. redis             → localhost:6379  (Redis 7)
+6. prometheus        → localhost:9090  (Métricas)
+7. grafana           → localhost:3001  (Dashboards)
+
+🔒 SEGURANÇA:
+- Network isolada (172.25.0.0/16)
+- Mocks ativados por padrão (sem risco de bloqueios)
+- Volumes persistentes para dados
+- Health checks em todos os serviços
+

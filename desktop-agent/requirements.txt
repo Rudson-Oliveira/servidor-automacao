@@ -9,3 +9,9 @@ Pillow==10.2.0
 
 # Utilitários
 python-dotenv==1.0.0
+
+# Automação e simulação headless
+selenium==4.16.0
+playwright==1.40.0
+pyvirtualdisplay==3.0
+requests==2.31.0
