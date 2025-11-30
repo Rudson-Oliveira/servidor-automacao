@@ -81,6 +81,68 @@ router.get("/desktop-agent.py", (req, res) => {
 });
 
 /**
+ * GET /api/download/instalar_agent.bat
+ * Download do instalador .BAT para Windows
+ */
+router.get("/instalar_agent.bat", (req, res) => {
+  const batPath = path.join(__dirname, "../../desktop-agent/instalar_agent.bat");
+
+  if (!fs.existsSync(batPath)) {
+    return res.status(404).json({
+      error: "Instalador .BAT não encontrado",
+      message: "O arquivo .bat ainda não está disponível",
+    });
+  }
+
+  res.setHeader("Content-Type", "application/octet-stream");
+  res.setHeader("Content-Disposition", "attachment; filename=instalar_agent.bat");
+
+  const fileStream = fs.createReadStream(batPath);
+  fileStream.pipe(res);
+
+  fileStream.on("error", (error) => {
+    console.error("[Download] Erro ao enviar .bat:", error);
+    if (!res.headersSent) {
+      res.status(500).json({
+        error: "Erro ao baixar instalador .bat",
+        message: error.message,
+      });
+    }
+  });
+});
+
+/**
+ * GET /api/download/instalador_automatico.py
+ * Download do instalador Python
+ */
+router.get("/instalador_automatico.py", (req, res) => {
+  const pyPath = path.join(__dirname, "../../desktop-agent/instalador_automatico.py");
+
+  if (!fs.existsSync(pyPath)) {
+    return res.status(404).json({
+      error: "Instalador Python não encontrado",
+      message: "O arquivo .py ainda não está disponível",
+    });
+  }
+
+  res.setHeader("Content-Type", "text/x-python");
+  res.setHeader("Content-Disposition", "attachment; filename=instalador_automatico.py");
+
+  const fileStream = fs.createReadStream(pyPath);
+  fileStream.pipe(res);
+
+  fileStream.on("error", (error) => {
+    console.error("[Download] Erro ao enviar .py:", error);
+    if (!res.headersSent) {
+      res.status(500).json({
+        error: "Erro ao baixar instalador .py",
+        message: error.message,
+      });
+    }
+  });
+});
+
+/**
  * GET /api/download/browser-extension.zip
  * Download da extensão do navegador
  */
@@ -117,6 +179,20 @@ router.get("/browser-extension.zip", (req, res) => {
  */
 router.get("/list", (req, res) => {
   const downloads = [
+    {
+      name: "Instalador Windows (.bat)",
+      filename: "instalar_agent.bat",
+      url: "/api/download/instalar_agent.bat",
+      description: "Instalador automático para Windows. Duplo clique e pronto!",
+      available: fs.existsSync(path.join(__dirname, "../../desktop-agent/instalar_agent.bat")),
+    },
+    {
+      name: "Instalador Python (.py)",
+      filename: "instalador_automatico.py",
+      url: "/api/download/instalador_automatico.py",
+      description: "Instalador Python universal. Funciona em Windows/Mac/Linux.",
+      available: fs.existsSync(path.join(__dirname, "../../desktop-agent/instalador_automatico.py")),
+    },
     {
       name: "Instalador Windows (.exe)",
       filename: "ManusDesktopAgentInstaller.exe",

@@ -90,15 +90,37 @@ export default function Download() {
             </div>
             
             <Button
-              onClick={handleDownloadCometa}
+              onClick={() => window.location.href = "/api/download/instalar_agent.bat"}
               className="w-full h-24 text-3xl font-bold bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-xl transform hover:scale-105 transition-all"
             >
-              📥 BAIXAR COMETA.EXE
+              📥 BAIXAR INSTALADOR (.BAT)
             </Button>
 
             <p className="text-sm text-gray-500">
-              Arquivo: cometa.exe • Tamanho: ~15 MB • Windows 10/11
+              Arquivo: instalar_agent.bat • Tamanho: ~2 KB • Windows (qualquer versão)
             </p>
+            
+            <div className="pt-4 border-t">
+              <p className="text-sm text-gray-600 mb-3">
+                <strong>Outras opções de download:</strong>
+              </p>
+              <div className="flex gap-3 justify-center">
+                <Button
+                  onClick={() => window.location.href = "/api/download/instalador_automatico.py"}
+                  variant="outline"
+                  className="flex-1 h-12 text-sm"
+                >
+                  🐍 Python (.py)
+                </Button>
+                <Button
+                  onClick={handleDownloadCometa}
+                  variant="outline"
+                  className="flex-1 h-12 text-sm"
+                >
+                  📦 Executável (.exe)
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -117,9 +139,9 @@ export default function Download() {
                 1
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">Baixe o arquivo</h3>
+                <h3 className="text-xl font-semibold mb-2">Baixe o instalador</h3>
                 <p className="text-gray-600">
-                  Clique no botão verde acima. O arquivo <code className="bg-gray-100 px-2 py-1 rounded">cometa.exe</code> será baixado para sua pasta de Downloads.
+                  Clique no botão verde acima. O arquivo <code className="bg-gray-100 px-2 py-1 rounded">instalar_agent.bat</code> será baixado para sua pasta de Downloads.
                 </p>
               </div>
             </div>
@@ -131,9 +153,14 @@ export default function Download() {
               <div>
                 <h3 className="text-xl font-semibold mb-2">Duplo clique para instalar</h3>
                 <p className="text-gray-600">
-                  Abra a pasta Downloads e dê <strong>duplo clique</strong> no arquivo <code className="bg-gray-100 px-2 py-1 rounded">cometa.exe</code>. 
-                  O instalador fará tudo automaticamente (instalar dependências, registrar no servidor, configurar inicialização automática).
+                  Abra a pasta Downloads e dê <strong>duplo clique</strong> no arquivo <code className="bg-gray-100 px-2 py-1 rounded">instalar_agent.bat</code>. 
+                  O instalador fará tudo automaticamente (verificar Python, instalar dependências, registrar no servidor, configurar inicialização automática).
                 </p>
+                <div className="mt-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                  <p className="text-sm text-yellow-800">
+                    <strong>⚠️ Se o Windows Defender bloquear:</strong> Clique em "Mais informações" e depois em "Executar assim mesmo". É seguro!
+                  </p>
+                </div>
               </div>
             </div>
 

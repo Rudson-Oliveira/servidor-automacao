@@ -29,6 +29,7 @@ def print_header():
     print("=" * 70)
     print("  INSTALADOR AUTOMÁTICO - DESKTOP AGENT v{}".format(VERSION))
     print("  Sistema de Automação Remota")
+    print("  Arquitetura: {} {}".format(platform.system(), platform.machine()))
     print("=" * 70)
     print()
 
@@ -36,15 +37,23 @@ def check_python():
     """Verifica versão do Python"""
     print("[1/6] Verificando Python...")
     version = sys.version_info
+    arch = platform.machine()
+    
+    print("  → Sistema: {} {}".format(platform.system(), platform.release()))
+    print("  → Arquitetura: {}".format(arch))
+    print("  → Python: {}.{}.{}".format(version.major, version.minor, version.micro))
+    print()
+    
     if version.major < 3 or (version.major == 3 and version.minor < 7):
         print("❌ Python 3.7+ é necessário!")
         print("   Versão atual: {}.{}.{}".format(version.major, version.minor, version.micro))
         print()
         print("   Baixe Python em: https://www.python.org/downloads/")
+        print("   IMPORTANTE: Marque 'Add Python to PATH' durante a instalação!")
         input("\nPressione ENTER para sair...")
         sys.exit(1)
     
-    print("✓ Python {}.{}.{} detectado".format(version.major, version.minor, version.micro))
+    print("✓ Python {}.{}.{} compatível detectado".format(version.major, version.minor, version.micro))
     print()
 
 def install_dependencies():

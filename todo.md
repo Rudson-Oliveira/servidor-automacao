@@ -3443,3 +3443,11 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
   - [x] Desabilitar refetch ao focar janela (refetchOnWindowFocus: false)
   - [x] Adicionar staleTime para otimizar cache do tRPC
   - [x] Redução de ~70% nas requisições (de 36/min para 8-12/min)
+
+## 🔧 Correção de Compatibilidade do Instalador
+
+- [x] Criar instalador .BAT universal para Windows
+- [x] Melhorar instalador Python com detecção de arquitetura
+- [x] Adicionar endpoints de download para .bat e .py
+- [x] Atualizar página de download com novas opções
+- [x] Adicionar aviso sobre Windows Defender
