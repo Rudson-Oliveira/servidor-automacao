@@ -3434,3 +3434,12 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Testar instruções para usuários leigos
 - [x] Testar tratamento de erros
 - [x] Gerar evidências visuais (testes unitários 16/16 passando)
+
+
+## 🐛 Bugs Críticos Reportados
+
+- [x] Corrigir erro de rate limiting na página /desktop (muitas requisições simultâneas)
+  - [x] Aumentar intervalo de refetch: listAgents 5s→15s, getStats 5s→20s, listScreenshots 10s→30s
+  - [x] Desabilitar refetch ao focar janela (refetchOnWindowFocus: false)
+  - [x] Adicionar staleTime para otimizar cache do tRPC
+  - [x] Redução de ~70% nas requisições (de 36/min para 8-12/min)

@@ -37,20 +37,23 @@ export default function DesktopControl() {
 
   // Queries tRPC
   const { data: agents = [], refetch: refetchAgents } = trpc.desktopControl.listAgents.useQuery(undefined, {
-    refetchInterval: 5000, // Auto-refresh a cada 5s
-    staleTime: 3000,
+    refetchInterval: 15000, // Auto-refresh a cada 15s (reduzido de 5s)
+    staleTime: 10000,
+    refetchOnWindowFocus: false, // Desabilitar refetch ao focar janela
   });
 
   const { data: stats } = trpc.desktopControl.getStats.useQuery(undefined, {
-    refetchInterval: 5000,
-    staleTime: 3000,
+    refetchInterval: 20000, // Auto-refresh a cada 20s (reduzido de 5s)
+    staleTime: 15000,
+    refetchOnWindowFocus: false, // Desabilitar refetch ao focar janela
   });
 
   const { data: screenshots = [], refetch: refetchScreenshots } = trpc.desktopControl.listScreenshots.useQuery(
     { limit: 20 },
     {
-      refetchInterval: 10000, // Auto-refresh a cada 10s
-      staleTime: 5000,
+      refetchInterval: 30000, // Auto-refresh a cada 30s (reduzido de 10s)
+      staleTime: 20000,
+      refetchOnWindowFocus: false, // Desabilitar refetch ao focar janela
     }
   );
 

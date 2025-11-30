@@ -22,7 +22,9 @@ export default function DesktopAgents() {
   // Query para listar agents
   const { data: agents, isLoading: loadingAgents, refetch: refetchAgents } = trpc.desktopControl.listAgents.useQuery(undefined, {
     enabled: !!user,
-    refetchInterval: 5000, // Atualizar a cada 5 segundos
+    refetchInterval: 15000, // Atualizar a cada 15 segundos (reduzido de 5s)
+    staleTime: 10000,
+    refetchOnWindowFocus: false, // Desabilitar refetch ao focar janela
   });
 
   // Mutation para criar agent
