@@ -53,6 +53,7 @@ const AutoHealing = lazy(() => import("./pages/AutoHealing"));
 const HealthChecks = lazy(() => import("./pages/HealthChecks"));
 const InstallationPortal = lazy(() => import("./pages/InstallationPortal"));
 const Download = lazy(() => import("./pages/Download"));
+const DownloadAnalyticsDashboard = lazy(() => import("./pages/DownloadAnalyticsDashboard"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -72,6 +73,7 @@ function Router() {
       <Route path="/instalar-agent" component={InstalarDesktopAgent} />
       <Route path="/download-agent" component={DownloadAgent} />
       <Route path="/download" component={Download} />
+      <Route path="/download-analytics" component={DownloadAnalyticsDashboard} />
       <Route path="/agent-versions" component={AgentVersionsDashboard} />
       <Route path="/control" component={ControlCenter} />
       <Route path="/ai-governance" component={AIGovernance} />

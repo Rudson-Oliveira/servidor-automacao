@@ -1,0 +1,17 @@
+{
+  "query": "SELECT * FROM download_analytics",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute SELECT * FROM download_analytics",
+  "rows": [
+    {
+      "id": "1",
+      "file_name": "cometa.exe",
+      "download_count": "1",
+      "last_download": "2025-11-30 09:25:54",
+      "created_at": "2025-11-30 09:25:54"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tfile_name\tdownload_count\tlast_download\tcreated_at\n1\tcometa.exe\t1\t2025-11-30 09:25:54\t2025-11-30 09:25:54\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}

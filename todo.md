@@ -3408,3 +3408,15 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Validar controle de navegador (infraestrutura já existente)
 - [x] Gerar evidências de cada etapa
 - [x] Documentar processo completo
+
+## Endpoints de Download e Analytics
+
+- [x] Criar endpoints REST /api/download/cometa.exe e /api/download/browser-extension.zip
+- [x] Criar pasta downloads/ com arquivos placeholder
+- [x] Implementar sistema de analytics de downloads (rastreamento)
+- [x] Criar tabela download_analytics no banco de dados
+- [x] Criar componente DownloadAnalytics com métricas em tempo real
+- [x] Criar dashboard de métricas de downloads (/download-analytics)
+- [x] Criar componente VideoTutorial com passos de instalação
+- [x] Integrar VideoTutorial na página /download
+- [x] Testar endpoints de download e rastreamento

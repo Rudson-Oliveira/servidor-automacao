@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Download as DownloadIcon, CheckCircle2, Shield, Zap, HelpCircle } from "lucide-react";
+import VideoTutorial from "@/components/VideoTutorial";
 
 export default function Download() {
   const handleDownloadCometa = () => {
@@ -51,6 +52,9 @@ export default function Download() {
             </p>
           </CardContent>
         </Card>
+
+        {/* Vídeo Tutorial */}
+        <VideoTutorial />
 
         {/* 3 Passos Simples */}
         <Card>
