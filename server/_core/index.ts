@@ -27,6 +27,7 @@ import deepsiteRouter from "../routes/deepsite";
 import { manusExplicarRouter } from "../routes/manus-explicar";
 import downloadFilesRouter from "../routes/download-files";
 import downloadAgentSecureRouter from "../routes/download-agent-secure";
+import downloadRouter from "../routes/download";
 import desktopAgentRegisterRouter from "../routes/desktop-agent-register";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
 import { startDesktopAgentServer } from "../services/desktopAgentServer";
@@ -84,6 +85,7 @@ async function startServer() {
   app.use("/api/manus", manusExplicarRouter);
   app.use("/api/download", downloadFilesRouter);
   app.use("/api/download-secure", downloadAgentSecureRouter);
+  app.use("/api/download", downloadRouter);
   app.use("/api/desktop-agent", desktopAgentRegisterRouter);
   // tRPC API
   app.use(

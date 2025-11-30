@@ -38,6 +38,7 @@ import { desktopAuthRouter } from './routers/desktop-auth';
 import { orchestratorMultiIARouter } from './routers/orchestrator-multi-ia';
 import { obsidianAIRouter } from './routers/obsidian-ai';
 import { telephonyRouter } from './routers/telephony';
+import { installRouter } from './routers/install';
 
 export const appRouter = router({
   downloadAgent: downloadAgentRouter,
@@ -70,6 +71,9 @@ export const appRouter = router({
 
   // Telefonia com Genspark (atendimento inteligente)
   telephony: telephonyRouter,
+
+  // Sistema de Instalação de Agentes
+  install: installRouter,
 
   // Integração com IAs externas
   integration: integrationRouter,

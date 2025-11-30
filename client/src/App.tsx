@@ -51,6 +51,7 @@ const ObsidianInteligente = lazy(() => import("./pages/ObsidianInteligente"));
 const TelefoniaGenspark = lazy(() => import("./pages/TelefoniaGenspark"));
 const AutoHealing = lazy(() => import("./pages/AutoHealing"));
 const HealthChecks = lazy(() => import("./pages/HealthChecks"));
+const InstallationPortal = lazy(() => import("./pages/InstallationPortal"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -84,6 +85,7 @@ function Router() {
         <Route path="/dashboard-vision" component={DashboardVision} />
         <Route path="/configuracoes/ias" component={ConfiguracoesIAs} />
         <Route path="/desktop-captures" component={DesktopCaptures} />
+        <Route path="/desktop/capture" component={DesktopCaptures} />
         <Route path={"/desktop"} component={DesktopControl} />
         <Route path={"/desktop/pro"} component={DesktopControlPro} />
         <Route path="/desktop/security" component={DesktopSecurity} />
@@ -108,8 +110,8 @@ function Router() {
         <Route path={"/obsidian"} component={ObsidianVaults} />
         <Route path={"/telefonia-genspark"} component={TelefoniaGenspark} />
         <Route path={"/telephony"} component={TelefoniaGenspark} />
-        <Route path={"/auto-healing"} component={AutoHealing} />
-        <Route path={"/health-checks"} component={HealthChecks} />
+        <Route path={"/auto-healing"} component={AutoHealing} />        <Route path={"/health-checks"} component={HealthChecks} />
+        <Route path={"/installation-portal"} component={InstallationPortal} />
         <Route path={"/404"} component={NotFound} />
         {/* Final fallback route */}
         <Route component={NotFound} />
