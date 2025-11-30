@@ -18,7 +18,15 @@ from typing import Optional, Dict, Any
 import base64
 import os
 
-import websocket
+# Validar dependências críticas
+try:
+    import websocket
+except ImportError:
+    print("❌ Erro: Módulo 'websocket' não encontrado!")
+    print("💡 Execute: pip install websocket-client")
+    print("")
+    input("Pressione ENTER para sair...")
+    sys.exit(1)
 
 # Tentar importar Pillow para screenshots
 try:
@@ -64,6 +72,8 @@ class DesktopAgent:
         if not config_file.exists():
             print(f"❌ Arquivo de configuração não encontrado: {config_path}")
             print(f"💡 Copie config.example.json para config.json e configure seu token")
+            print("")
+            input("Pressione ENTER para sair...")
             sys.exit(1)
         
         try:
@@ -623,4 +633,19 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n\n🛑 Agent finalizado pelo usuário")
+        sys.exit(0)
+    except Exception as e:
+        print("\n" + "=" * 60)
+        print("❌ ERRO FATAL")
+        print("=" * 60)
+        print(f"Erro: {e}")
+        print("")
+        import traceback
+        traceback.print_exc()
+        print("")
+        input("Pressione ENTER para sair...")
+        sys.exit(1)

@@ -61,7 +61,7 @@ def install_dependencies():
     print("[2/6] Instalando dependências...")
     
     dependencies = [
-        "websockets",
+        "websocket-client",  # Biblioteca correta para WebSocket cliente
         "pillow",
         "requests"
     ]
@@ -153,11 +153,15 @@ def generate_token_from_api():
         }).encode('utf-8')
         
         # Fazer requisição POST para criar agent e obter token via REST API
+        # IMPORTANTE: Incluir token de registro no header para bypass do Cloudflare WAF
         url = "{}/api/desktop-agent/register".format(SERVER_URL)
         req = urllib.request.Request(
             url,
             data=data,
-            headers={'Content-Type': 'application/json'}
+            headers={
+                'Content-Type': 'application/json',
+                'X-Agent-Register-Token': 'manus-agent-register-2024'
+            }
         )
         
         with urllib.request.urlopen(req, timeout=10) as response:

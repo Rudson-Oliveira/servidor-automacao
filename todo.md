@@ -3451,3 +3451,26 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Adicionar endpoints de download para .bat e .py
 - [x] Atualizar página de download com novas opções
 - [x] Adicionar aviso sobre Windows Defender
+
+
+## 🐛 CORREÇÕES URGENTES - Instalador Windows (30/11/2025)
+
+### Problema 1: Erro HTTP 403 ao Gerar Token
+- [x] Investigar endpoint POST /api/desktop-agent/register
+- [x] Verificar autenticação do endpoint (requer header X-Agent-Register-Token)
+- [x] Corrigir validação de permissões (adicionar header no instalador)
+- [x] Testar geração de token via API (200 OK - token gerado com sucesso)
+
+### Problema 2: Desktop Agent Crashando ao Iniciar
+- [x] Investigar erro "Este aplicativo não pode ser executado em seu PC" (falta websocket-client)
+- [x] Verificar compatibilidade Windows AMD64 (OK)
+- [x] Corrigir script de inicialização (Iniciar_Agent.bat - OK)
+- [x] Adicionar tratamento de erros no agent.py (validar dependências + input antes de sair)
+- [x] Corrigir instalador para instalar websocket-client ao invés de websockets
+
+### Problema 3: Validação do Fluxo Completo
+- [x] Testar sintaxe Python do instalador (OK)
+- [x] Testar sintaxe Python do agent (OK)
+- [x] Validar endpoint de registro via curl (200 OK)
+- [x] Confirmar geração automática de token (agentId: 90003)
+- [x] Preparar documentação da solução final
