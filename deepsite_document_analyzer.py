@@ -28,7 +28,7 @@ from datetime import datetime
 MANUS_API_URL = "http://localhost:3000/api/trpc"
 
 # Token Hugging Face (DeepSite)
-HUGGING_FACE_TOKEN = "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"
+HUGGING_FACE_TOKEN = os.getenv('HUGGING_FACE_TOKEN', '')
 
 # Modelos Hugging Face para diferentes tarefas
 MODELS = {
