@@ -1,0 +1,81 @@
+{
+  "test": "Token Validation (Multiple Scenarios)",
+  "scenario": "Hostile environment with malformed tokens",
+  "totalTests": 9,
+  "passed": 9,
+  "failed": 0,
+  "results": [
+    {
+      "description": "Token válido (64 hex)",
+      "token": "1234567890abcdef1234...",
+      "expected": "ACEITAR",
+      "actual": "ACEITO",
+      "result": "Token válido",
+      "verdict": "PASSOU"
+    },
+    {
+      "description": "Token curto (6 chars)",
+      "token": "abc123...",
+      "expected": "REJEITAR",
+      "actual": "REJEITADO",
+      "result": "Token inválido: comprimento 6 (esperado: 64)",
+      "verdict": "PASSOU"
+    },
+    {
+      "description": "Caracteres não-hex",
+      "token": "gggggggggggggggggggg...",
+      "expected": "REJEITAR",
+      "actual": "REJEITADO",
+      "result": "Token inválido: contém caracteres não-hexadecimais",
+      "verdict": "PASSOU"
+    },
+    {
+      "description": "Placeholder (aaaa...)",
+      "token": "aaaaaaaaaaaaaaaaaaaa...",
+      "expected": "REJEITAR",
+      "actual": "REJEITADO",
+      "result": "Token inválido: parece ser um placeholder",
+      "verdict": "PASSOU"
+    },
+    {
+      "description": "Placeholder (0000...)",
+      "token": "00000000000000000000...",
+      "expected": "REJEITAR",
+      "actual": "REJEITADO",
+      "result": "Token inválido: parece ser um placeholder",
+      "verdict": "PASSOU"
+    },
+    {
+      "description": "Placeholder (1111...)",
+      "token": "11111111111111111111...",
+      "expected": "REJEITAR",
+      "actual": "REJEITADO",
+      "result": "Token inválido: parece ser um placeholder",
+      "verdict": "PASSOU"
+    },
+    {
+      "description": "Placeholder (ffff...)",
+      "token": "ffffffffffffffffffff...",
+      "expected": "REJEITAR",
+      "actual": "REJEITADO",
+      "result": "Token inválido: parece ser um placeholder",
+      "verdict": "PASSOU"
+    },
+    {
+      "description": "Token vazio",
+      "token": "...",
+      "expected": "REJEITAR",
+      "actual": "REJEITADO",
+      "result": "Token inválido: comprimento 0 (esperado: 64)",
+      "verdict": "PASSOU"
+    },
+    {
+      "description": "Token numérico válido",
+      "token": "12345678123456781234...",
+      "expected": "ACEITAR",
+      "actual": "ACEITO",
+      "result": "Token válido",
+      "verdict": "PASSOU"
+    }
+  ]
+}

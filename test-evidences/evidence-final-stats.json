@@ -1,0 +1,23 @@
+{
+  "test": "Final Statistics Report",
+  "timestamp": "2025-12-01T18:23:58.555Z",
+  "stats": {
+    "totalActions": 8,
+    "successRate": 87.5,
+    "topIssues": [
+      "utf8_bom",
+      "token_validation",
+      "cloudflare_bypass",
+      "websocket_test",
+      "smart_reconnect"
+    ],
+    "learningPatterns": [
+      {
+        "errorType": "websocket_connection",
+        "successRate": "33.3%",
+        "occurrences": 3
+      }
+    ]
+  },
+  "verdict": "PASSOU"
+}

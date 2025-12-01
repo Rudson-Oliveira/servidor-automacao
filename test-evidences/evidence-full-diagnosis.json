@@ -1,0 +1,18 @@
+{
+  "test": "Full Environment Diagnosis",
+  "scenario": "Complete hostile environment scan",
+  "duration": 22,
+  "diagnosis": {
+    "hostile": true,
+    "issuesFound": 1,
+    "issues": [
+      "WebSocket bloqueado - Antivírus ou proxy corporativo"
+    ],
+    "recommendations": [
+      "Usar polling como fallback"
+    ],
+    "bypassStrategy": "proxy",
+    "confidence": 85
+  },
+  "verdict": "PASSOU"
+}

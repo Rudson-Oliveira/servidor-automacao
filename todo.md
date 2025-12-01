@@ -3712,3 +3712,37 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [ ] Testar em ambiente hostil real
 - [ ] Confirmar taxa de sucesso > 95%
 - [ ] Documentar casos de sucesso
+
+
+## 🔍 Auditoria Forense - Desktop Agent (CRÍTICO)
+
+### Auditores (6 IAs)
+- [ ] COMET - Auditor principal
+- [ ] CLAUDE - Validação técnica
+- [ ] ABACUS - Análise de dados
+- [ ] GENSPARK - Verificação de segurança
+- [ ] GEMINI - Validação de integridade
+- [ ] DEEPSITE - Análise forense completa
+
+### Documentação Forense
+- [ ] Criar sistema de hash SHA-256 para evidências
+- [ ] Gerar timestamps ISO 8601 com milissegundos
+- [ ] Logs completos (entrada, processamento, saída)
+- [ ] Garantir reprodutibilidade (mesmos inputs = mesmos outputs)
+- [ ] Rastreabilidade completa (cada ação → evidência)
+- [ ] Assinaturas digitais de integridade
+
+### Evidências a Gerar
+- [ ] Evidência 1: UTF-8 BOM (antes/depois com hash)
+- [ ] Evidência 2: Validação de tokens (9 cenários)
+- [ ] Evidência 3: WebSocket (3 cenários hostis)
+- [ ] Evidência 4: Cloudflare WAF (bypass com headers)
+- [ ] Evidência 5: Reconexão inteligente (backoff exponencial)
+- [ ] Evidência Final: Diagnóstico completo + estatísticas
+
+### Relatório de Auditoria
+- [ ] Criar RELATORIO_AUDITORIA_FORENSE.md
+- [ ] Incluir hash de todas as evidências
+- [ ] Documentar procedimentos de teste
+- [ ] Garantir que auditores possam reproduzir testes
+- [ ] Criar checklist de validação para cada auditor

@@ -1,0 +1,38 @@
+{
+  "test": "WebSocket Connectivity (Hostile Environment)",
+  "scenario": "Firewall, DNS issues, invalid tokens",
+  "totalTests": 3,
+  "passed": 2,
+  "results": [
+    {
+      "description": "Firewall bloqueando porta",
+      "url": "http://localhost:99999",
+      "timeout": 2000,
+      "duration": 2,
+      "expectedFail": true,
+      "actualFail": true,
+      "result": "Falha: Invalid URL: ws://localhost:99999/desktop-agent",
+      "verdict": "PASSOU"
+    },
+    {
+      "description": "DNS não resolvido",
+      "url": "http://invalid-server-12345.local",
+      "timeout": 2000,
+      "duration": 16,
+      "expectedFail": true,
+      "actualFail": true,
+      "result": "Falha: getaddrinfo ENOTFOUND invalid-server-12345.local",
+      "verdict": "PASSOU"
+    },
+    {
+      "description": "Token inválido",
+      "url": "http://localhost:3000",
+      "timeout": 2000,
+      "duration": 22,
+      "expectedFail": true,
+      "actualFail": false,
+      "result": "Conexão estabelecida com sucesso",
+      "verdict": "FALHOU"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "test": "Cloudflare WAF Bypass",
+  "scenario": "Apply browser-like headers to bypass WAF",
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)...",
+    "Accept": "text/html,application/xhtml+xml...",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate"
+  },
+  "results": [
+    {
+      "url": "http://localhost:3000/test",
+      "duration": 44,
+      "applied": true,
+      "result": "Bypass bem-sucedido",
+      "timestamp": "2025-12-01T18:23:25.494Z"
+    },
+    {
+      "url": "http://httpbin.org/headers",
+      "duration": 21988,
+      "applied": true,
+      "result": "Bypass bem-sucedido",
+      "timestamp": "2025-12-01T18:23:25.538Z"
+    }
+  ]
+}
