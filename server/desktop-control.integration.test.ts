@@ -50,7 +50,7 @@ describe("Desktop Control Integration Tests", () => {
 
   beforeAll(async () => {
     // Criar agent de teste
-    const agent = await createAgent(1, "Test Integration Agent", "windows", "1.0.0");
+    const agent = await createAgent({ userId: 1, deviceName: "Test Integration Agent", platform: "windows", version: "1.0.0" });
     testAgentId = agent.id;
 
     // Criar comando de teste

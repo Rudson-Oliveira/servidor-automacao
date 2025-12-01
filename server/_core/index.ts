@@ -109,16 +109,16 @@ async function startServer() {
     console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
   }
 
+  // Iniciar servidor WebSocket ANTES do listen (usando HTTP upgrade)
+  try {
+    startDesktopAgentServer(server);
+    console.log(`[DesktopAgent] WebSocket server configured on path /desktop-agent`);
+  } catch (error) {
+    console.error(`[DesktopAgent] Failed to start WebSocket server:`, error);
+  }
+
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
-    
-    // Iniciar servidor WebSocket para Desktop Agents
-    try {
-      startDesktopAgentServer(3001);
-      console.log(`[DesktopAgent] WebSocket server started on port 3001`);
-    } catch (error) {
-      console.error(`[DesktopAgent] Failed to start WebSocket server:`, error);
-    }
   });
 }
 

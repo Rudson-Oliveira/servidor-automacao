@@ -1,5 +1,6 @@
 import { WebSocketServer, WebSocket } from "ws";
-import { IncomingMessage } from "http";
+import { IncomingMessage, Server as HttpServer } from "http";
+import { z } from "zod";
 import {
   getAgentByToken,
   updateAgentStatus,
@@ -11,25 +12,72 @@ import {
 import { storagePut } from "../storage";
 import { orchestrator } from "../_core/agent-orchestrator";
 
+// ============================================================================
+// SCHEMAS DE VALIDAÇÃO (ZOD)
+// ============================================================================
+
+const MessageSchema = z.object({
+  type: z.enum(['auth', 'heartbeat', 'command_result', 'log', 'poll_commands', 'command_status', 'ping', 'pong']),
+  timestamp: z.string().refine((t) => !isNaN(Date.parse(t)), {
+    message: 'Invalid ISO8601 timestamp'
+  }).optional(),
+  device_id: z.string().optional(),
+  payload: z.any().optional(),
+  correlationId: z.string().optional(),
+});
+
+const AuthMessageSchema = MessageSchema.extend({
+  type: z.literal('auth'),
+  token: z.string().min(1),
+});
+
+const HeartbeatMessageSchema = MessageSchema.extend({
+  type: z.literal('heartbeat'),
+  timestamp: z.string().refine((t) => !isNaN(Date.parse(t))),
+});
+
+const CommandResultMessageSchema = MessageSchema.extend({
+  type: z.literal('command_result'),
+  timestamp: z.string().refine((t) => !isNaN(Date.parse(t))),
+  commandId: z.number(),
+  success: z.boolean(),
+  result: z.any().optional(),
+  error: z.string().optional(),
+  executionTimeMs: z.number().optional(),
+});
+
+const LogMessageSchema = MessageSchema.extend({
+  type: z.literal('log'),
+  timestamp: z.string().refine((t) => !isNaN(Date.parse(t))),
+  level: z.enum(['debug', 'info', 'warning', 'error']),
+  message: z.string(),
+  metadata: z.any().optional(),
+});
+
+// ============================================================================
+// INTERFACES
+// ============================================================================
+
 interface AuthenticatedWebSocket extends WebSocket {
   agentId?: number;
   userId?: number;
   token?: string;
   isAlive?: boolean;
   heartbeatInterval?: NodeJS.Timeout;
+  clientId?: string; // IP do cliente para rate limiting
 }
 
 interface WebSocketMessage {
   type: string;
-  timestamp?: string; // ISO8601 timestamp
-  device_id?: string; // Identificador do dispositivo
+  timestamp?: string;
+  device_id?: string;
   data?: any;
 }
 
 interface CommandMessage {
   type: "command";
-  timestamp: string; // ISO8601 timestamp
-  device_id?: string; // Identificador do dispositivo
+  timestamp: string;
+  device_id?: string;
   commandId: number;
   commandType: string;
   commandData?: any;
@@ -37,8 +85,8 @@ interface CommandMessage {
 
 interface CommandResultMessage {
   type: "command_result";
-  timestamp: string; // ISO8601 timestamp
-  device_id?: string; // Identificador do dispositivo
+  timestamp: string;
+  device_id?: string;
   commandId: number;
   success: boolean;
   result?: any;
@@ -48,40 +96,113 @@ interface CommandResultMessage {
 
 interface HeartbeatMessage {
   type: "heartbeat";
-  timestamp: string; // ISO8601 timestamp (padronizado)
-  device_id?: string; // Identificador do dispositivo
+  timestamp: string;
+  device_id?: string;
 }
 
 interface AuthMessage {
   type: "auth";
-  timestamp: string; // ISO8601 timestamp
-  device_id?: string; // Identificador do dispositivo
+  timestamp: string;
+  device_id?: string;
   token: string;
 }
 
 interface LogMessage {
   type: "log";
-  timestamp: string; // ISO8601 timestamp
-  device_id?: string; // Identificador do dispositivo
+  timestamp: string;
+  device_id?: string;
   level: "debug" | "info" | "warning" | "error";
   message: string;
   metadata?: any;
 }
 
+interface ClientConnection {
+  ws: AuthenticatedWebSocket;
+  messages: number[]; // Timestamps das mensagens
+  connected: number; // Timestamp de conexão
+}
+
+// ============================================================================
+// SERVIDOR DESKTOP AGENT
+// ============================================================================
+
 export class DesktopAgentServer {
   private wss: WebSocketServer;
   private clients: Map<number, AuthenticatedWebSocket> = new Map();
+  private activeConnections: Map<string, ClientConnection> = new Map();
   private heartbeatInterval: number = 30000; // 30 segundos
-  private orchestratorEnabled: boolean = true; // Habilitar orquestração automática
+  private orchestratorEnabled: boolean = true;
+  
+  // Limites de proteção DoS
+  private readonly MAX_CONNECTIONS = 100;
+  private readonly RATE_LIMIT = { max: 10, window: 1000 }; // 10 msg/segundo
+  private readonly MAX_MESSAGE_SIZE = 1024 * 1024; // 1MB
 
-  constructor(port: number = 3001) {
-    this.wss = new WebSocketServer({ 
-      port,
-      path: '/desktop-agent' // Path específico para Desktop Agents
+  constructor(httpServer: HttpServer) {
+    // Criar WebSocket Server sem porta própria (usa HTTP upgrade)
+    this.wss = new WebSocketServer({ noServer: true });
+
+    // Handler de upgrade HTTP → WebSocket
+    httpServer.on('upgrade', (request, socket, head) => {
+      const pathname = new URL(request.url || '', `http://${request.headers.host}`).pathname;
+      
+      if (pathname === '/desktop-agent') {
+        // Autenticar ANTES do upgrade
+        const token = request.headers['authorization']?.replace('Bearer ', '');
+        
+        if (!token) {
+          socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+          socket.destroy();
+          console.log('[DesktopAgent] Upgrade rejeitado: token ausente');
+          return;
+        }
+
+        // Validar token de forma síncrona (busca no banco)
+        this.validateTokenSync(token)
+          .then((isValid) => {
+            if (!isValid) {
+              socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+              socket.destroy();
+              console.log('[DesktopAgent] Upgrade rejeitado: token inválido');
+              return;
+            }
+
+            // Upgrade para WebSocket
+            this.wss.handleUpgrade(request, socket, head, (ws) => {
+              this.wss.emit('connection', ws, request);
+            });
+          })
+          .catch((error) => {
+            console.error('[DesktopAgent] Erro ao validar token:', error);
+            socket.write('HTTP/1.1 500 Internal Server Error\r\n\r\n');
+            socket.destroy();
+          });
+      } else {
+        socket.write('HTTP/1.1 404 Not Found\r\n\r\n');
+        socket.destroy();
+      }
     });
 
+    // Handler de conexão WebSocket
     this.wss.on("connection", (ws: AuthenticatedWebSocket, req: IncomingMessage) => {
-      console.log(`[DesktopAgent] Nova conexão de ${req.socket.remoteAddress}`);
+      const clientId = (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress || 'unknown';
+      ws.clientId = clientId;
+
+      console.log(`[DesktopAgent] Nova conexão de ${clientId}`);
+
+      // Limitar conexões simultâneas
+      if (this.activeConnections.size >= this.MAX_CONNECTIONS) {
+        ws.close(1008, 'Server capacity reached');
+        console.log(`[DesktopAgent] Conexão rejeitada: capacidade máxima atingida (${this.MAX_CONNECTIONS})`);
+        return;
+      }
+
+      // Registrar conexão
+      this.activeConnections.set(clientId, {
+        ws,
+        messages: [],
+        connected: Date.now()
+      });
 
       // Marcar como vivo
       ws.isAlive = true;
@@ -89,11 +210,48 @@ export class DesktopAgentServer {
       // Handler de mensagens
       ws.on("message", async (data: Buffer) => {
         try {
-          const message: WebSocketMessage = JSON.parse(data.toString());
-          await this.handleMessage(ws, message, req);
+          // Validar tamanho da mensagem (máx 1MB)
+          if (data.length > this.MAX_MESSAGE_SIZE) {
+            ws.close(1009, 'Message too large');
+            console.log(`[DesktopAgent] Mensagem rejeitada: tamanho ${data.length} bytes excede ${this.MAX_MESSAGE_SIZE}`);
+            return;
+          }
+
+          // Rate limiting
+          const client = this.activeConnections.get(clientId);
+          if (client) {
+            const now = Date.now();
+            client.messages = client.messages.filter(t => now - t < this.RATE_LIMIT.window);
+            
+            if (client.messages.length >= this.RATE_LIMIT.max) {
+              ws.send(JSON.stringify({
+                type: 'error',
+                error: 'Rate limit exceeded',
+                timestamp: new Date().toISOString()
+              }));
+              console.log(`[DesktopAgent] Rate limit excedido para ${clientId}`);
+              return;
+            }
+            
+            client.messages.push(now);
+          }
+
+          // Parse e validação com Zod
+          const parsed = JSON.parse(data.toString());
+          const validated = MessageSchema.parse(parsed);
+
+          await this.handleMessage(ws, validated as WebSocketMessage, req);
         } catch (error) {
           console.error("[DesktopAgent] Erro ao processar mensagem:", error);
-          this.sendError(ws, "Invalid message format");
+          
+          if (error instanceof z.ZodError) {
+            const errorMessages = error.errors?.map(e => e.message).join(', ') || 'Validation failed';
+            this.sendError(ws, "Invalid message format: " + errorMessages);
+          } else if (error instanceof SyntaxError) {
+            this.sendError(ws, "JSON parse error");
+          } else {
+            this.sendError(ws, "Invalid message format");
+          }
         }
       });
 
@@ -105,6 +263,7 @@ export class DesktopAgentServer {
       // Handler de desconexão
       ws.on("close", async () => {
         await this.handleDisconnect(ws);
+        this.activeConnections.delete(clientId);
       });
 
       // Handler de erro
@@ -122,7 +281,20 @@ export class DesktopAgentServer {
     // Iniciar heartbeat checker
     this.startHeartbeatChecker();
 
-    console.log(`[DesktopAgent] Servidor WebSocket rodando na porta ${port}`);
+    console.log(`[DesktopAgent] Servidor WebSocket configurado no path /desktop-agent`);
+  }
+
+  /**
+   * Valida token de forma síncrona (para uso no upgrade handler)
+   */
+  private async validateTokenSync(token: string): Promise<boolean> {
+    try {
+      const agent = await getAgentByToken(token);
+      return agent !== undefined;
+    } catch (error) {
+      console.error('[DesktopAgent] Erro ao validar token:', error);
+      return false;
+    }
   }
 
   /**
@@ -251,7 +423,7 @@ export class DesktopAgentServer {
           id: `desktop-${agent.id}`,
           name: agent.deviceName || `Desktop Agent ${agent.id}`,
           capabilities: ["shell", "screenshot", "file-search", "command"],
-          maxLoad: 5, // Máximo de 5 tarefas simultâneas
+          maxLoad: 5,
         });
         console.log(`[Orchestrator] Agent ${agent.id} registrado no orchestrator`);
       } catch (error) {
@@ -289,7 +461,7 @@ export class DesktopAgentServer {
     // Responder com pong
     this.send(ws, {
       type: "heartbeat_ack",
-      timestamp: new Date().toISOString(), // ISO8601 timestamp
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -321,19 +493,13 @@ export class DesktopAgentServer {
       try {
         console.log(`[DesktopAgent] Processando screenshot do comando ${commandId}...`);
         
-        // Converter base64 para Buffer
         const imageBuffer = Buffer.from(result.image_base64, 'base64');
-        
-        // Determinar extensão baseado no formato
         const format = result.format || 'png';
         const extension = format === 'jpg' || format === 'jpeg' ? 'jpg' : 'png';
-        
-        // Gerar nome único para o arquivo
         const timestamp = Date.now();
         const randomSuffix = Math.random().toString(36).substring(2, 8);
         const fileName = `screenshots/${ws.agentId}/${timestamp}-${randomSuffix}.${extension}`;
         
-        // Upload para S3
         const { url } = await storagePut(
           fileName,
           imageBuffer,
@@ -342,22 +508,14 @@ export class DesktopAgentServer {
         
         console.log(`[DesktopAgent] Screenshot salvo em S3: ${url}`);
         
-        // Substituir base64 pela URL do S3
-        processedResult = {
-          ...result,
-          image_base64: undefined, // Remover base64 para economizar espaço no DB
-          screenshot_url: url,
-          screenshot_path: fileName,
-        };
-        
-      } catch (uploadError) {
-        console.error(`[DesktopAgent] Erro ao fazer upload do screenshot:`, uploadError);
-        // Continuar mesmo se o upload falhar
         processedResult = {
           ...result,
           image_base64: undefined,
-          upload_error: 'Falha ao fazer upload do screenshot',
+          image_url: url,
+          image_format: format,
         };
+      } catch (uploadError) {
+        console.error(`[DesktopAgent] Erro ao fazer upload do screenshot:`, uploadError);
       }
     }
 
@@ -366,29 +524,37 @@ export class DesktopAgentServer {
       commandId,
       success ? "completed" : "failed",
       processedResult,
-      error,
-      executionTimeMs
+      error
     );
 
-    // Log
+    // Log do resultado
     await addLog(
       ws.agentId,
       ws.userId!,
       success ? "info" : "error",
-      `Comando ${commandId} ${success ? "completado" : "falhou"}`,
+      `Comando ${commandId} ${success ? "executado" : "falhou"}`,
       commandId,
-      { result: processedResult, error, executionTimeMs }
+      {
+        executionTimeMs,
+        error: error || undefined,
+      }
     );
 
-    console.log(
-      `[DesktopAgent] Comando ${commandId} ${success ? "completado" : "falhou"} (${executionTimeMs}ms)`
-    );
+    // Enviar confirmação
+    this.send(ws, {
+      type: "command_result_ack",
+      commandId,
+      timestamp: new Date().toISOString(),
+    });
   }
 
   /**
-   * Processa log enviado pelo agent
+   * Processa log do agent
    */
-  private async handleLog(ws: AuthenticatedWebSocket, message: LogMessage): Promise<void> {
+  private async handleLog(
+    ws: AuthenticatedWebSocket,
+    message: LogMessage
+  ): Promise<void> {
     if (!ws.agentId) {
       this.sendError(ws, "Não autenticado");
       return;
@@ -397,14 +563,28 @@ export class DesktopAgentServer {
     const { level, message: logMessage, metadata } = message;
 
     await addLog(ws.agentId, ws.userId!, level, logMessage, undefined, metadata);
+
+    console.log(`[DesktopAgent] Log do agent ${ws.agentId} [${level}]: ${logMessage}`);
   }
 
   /**
-   * Processa atualização de status de comando (executing)
+   * Processa poll de comandos pendentes
+   */
+  private async handlePollCommands(ws: AuthenticatedWebSocket): Promise<void> {
+    if (!ws.agentId) {
+      this.sendError(ws, "Não autenticado");
+      return;
+    }
+
+    await this.sendPendingCommands(ws);
+  }
+
+  /**
+   * Processa atualização de status de comando
    */
   private async handleCommandStatus(
     ws: AuthenticatedWebSocket,
-    message: { commandId: number; status: string }
+    message: any
   ): Promise<void> {
     if (!ws.agentId) {
       this.sendError(ws, "Não autenticado");
@@ -413,91 +593,54 @@ export class DesktopAgentServer {
 
     const { commandId, status } = message;
 
-    console.log(`[DesktopAgent] Comando ${commandId} mudou para status: ${status}`);
-
-    // Atualizar status no banco
-    if (status === "executing") {
-      await updateCommandStatus(commandId, "executing");
-    }
-  }
-
-  /**
-   * Processa solicitação de polling de comandos pendentes
-   */
-  private async handlePollCommands(ws: AuthenticatedWebSocket): Promise<void> {
-    if (!ws.agentId) {
-      this.sendError(ws, "Não autenticado");
+    if (!commandId || !status) {
+      this.sendError(ws, "commandId e status são obrigatórios");
       return;
     }
 
-    console.log(`[DesktopAgent] Agent ${ws.agentId} solicitou polling de comandos`);
-    
-    console.log(`[DesktopAgent] Verificando comandos pendentes...`);
-    
-    // Enviar comandos pendentes
-    await this.sendPendingCommands(ws);
+    await updateCommandStatus(commandId, status);
+
+    console.log(`[DesktopAgent] Status do comando ${commandId} atualizado para ${status}`);
   }
 
   /**
-   * Envia comandos pendentes para o agent
+   * Envia comandos pendentes para um agent
    */
   private async sendPendingCommands(ws: AuthenticatedWebSocket): Promise<void> {
-    if (!ws.agentId) return;
-
-    const commands = await getPendingCommands(ws.agentId);
-
-    if (commands.length === 0) {
-      console.log(`[DesktopAgent] Nenhum comando pendente para agent ${ws.agentId}`);
+    if (!ws.agentId) {
       return;
     }
 
-    console.log(`[DesktopAgent] Enviando ${commands.length} comando(s) pendente(s) para agent ${ws.agentId}`);
+    const pendingCommands = await getPendingCommands(ws.agentId);
 
-    for (const command of commands) {
-      // Marcar como enviado
-      await updateCommandStatus(command.id, "sent");
+    console.log(`[DesktopAgent] Encontrados ${pendingCommands.length} comandos pendentes para agent ${ws.agentId}`);
 
-      // Enviar comando
+    for (const command of pendingCommands) {
       const commandMessage: CommandMessage = {
         type: "command",
+        timestamp: new Date().toISOString(),
         commandId: command.id,
         commandType: command.commandType,
-        commandData: command.commandData ? JSON.parse(command.commandData) : undefined,
+        commandData: command.commandData,
       };
 
       this.send(ws, commandMessage);
 
-      console.log(`[DesktopAgent] ✅ Comando ${command.id} (${command.commandType}) enviado para agent ${ws.agentId}`);
-      
-      // Log dos dados do comando
-      if (command.commandData) {
-        const data = JSON.parse(command.commandData);
-        if (command.commandType === 'shell') {
-          console.log(`[DesktopAgent]    Shell: ${data.command}`);
-        } else if (command.commandType === 'screenshot') {
-          console.log(`[DesktopAgent]    Screenshot: ${data.format || 'png'}`);
-        }
-      }
+      await updateCommandStatus(command.id, "sent");
+
+      console.log(`[DesktopAgent] Comando ${command.id} (${command.commandType}) enviado`);
     }
   }
 
   /**
-   * Inicia heartbeat periódico para o agent
+   * Inicia heartbeat para um cliente
    */
   private startHeartbeat(ws: AuthenticatedWebSocket): void {
-    if (ws.heartbeatInterval) {
-      clearInterval(ws.heartbeatInterval);
-    }
-
     ws.heartbeatInterval = setInterval(() => {
-      if (!ws.isAlive) {
-        console.log(`[DesktopAgent] Agent ${ws.agentId} não respondeu ao ping, desconectando...`);
-        ws.terminate();
-        return;
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.isAlive = false;
+        ws.ping();
       }
-
-      ws.isAlive = false;
-      ws.ping();
     }, this.heartbeatInterval);
   }
 
@@ -523,10 +666,8 @@ export class DesktopAgentServer {
     if (ws.agentId) {
       console.log(`[DesktopAgent] Agent ${ws.agentId} desconectado`);
 
-      // Remover cliente
       this.clients.delete(ws.agentId);
 
-      // Remover do orchestrator se habilitado
       if (this.orchestratorEnabled) {
         try {
           orchestrator.markAgentOffline(`desktop-${ws.agentId}`);
@@ -536,13 +677,9 @@ export class DesktopAgentServer {
         }
       }
 
-      // Atualizar status para offline
       await updateAgentStatus(ws.agentId, "offline");
-
-      // Log de desconexão
       await addLog(ws.agentId, ws.userId!, "info", "Desktop Agent desconectado");
 
-      // Limpar heartbeat
       if (ws.heartbeatInterval) {
         clearInterval(ws.heartbeatInterval);
       }
@@ -586,15 +723,13 @@ export class DesktopAgentServer {
 
     const commandMessage: CommandMessage = {
       type: "command",
-      timestamp: new Date().toISOString(), // ISO8601 timestamp
+      timestamp: new Date().toISOString(),
       commandId,
       commandType,
       commandData,
     };
 
     this.send(ws, commandMessage);
-
-    // Marcar como enviado
     await updateCommandStatus(commandId, "sent");
 
     console.log(`[DesktopAgent] Comando ${commandId} (${commandType}) enviado para agent ${agentId}`);
@@ -633,11 +768,11 @@ export class DesktopAgentServer {
 let desktopAgentServer: DesktopAgentServer | null = null;
 
 /**
- * Inicia o servidor WebSocket (apenas uma vez)
+ * Inicia o servidor WebSocket usando o servidor HTTP existente
  */
-export function startDesktopAgentServer(port: number = 3001): DesktopAgentServer {
+export function startDesktopAgentServer(httpServer: HttpServer): DesktopAgentServer {
   if (!desktopAgentServer) {
-    desktopAgentServer = new DesktopAgentServer(port);
+    desktopAgentServer = new DesktopAgentServer(httpServer);
   }
   return desktopAgentServer;
 }

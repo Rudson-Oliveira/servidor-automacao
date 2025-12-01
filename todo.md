@@ -3589,3 +3589,44 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Documentar testes automatizados
 - [x] Documentar segurança e validações
 - [x] Adicionar roadmap de funcionalidades futuras
+
+## 🔥 Correções Críticas WebSocket (Solicitação Comet/Claude - 01/12/2025)
+
+### Refatoração HTTP Upgrade
+- [x] Remover porta separada 3001 do WebSocket
+- [x] Implementar HTTP upgrade handler no path /desktop-agent
+- [x] Autenticação via Bearer token ANTES do upgrade
+- [x] Rejeitar paths inválidos com HTTP 404
+- [x] Atualizar servidor principal para usar HTTP server compartilhado
+
+### Rate Limiting e Proteção DoS
+- [x] Limitar conexões simultâneas (máx 100)
+- [x] Implementar rate limiting (10 mensagens/segundo por cliente)
+- [x] Validar tamanho de mensagens (máx 1MB)
+- [x] Rastreamento de conexões por IP
+- [x] Rejeição automática de mensagens grandes
+
+### Validação de Schema com Zod
+- [x] Criar schemas Zod para todos os tipos de mensagem
+- [x] Validar mensagens no handler principal
+- [x] Tratamento de erros de validação
+- [x] Mensagens de erro descritivas
+
+### Testes HTTP 101
+- [x] Criar websocket.handshake.test.ts completo
+- [x] Teste HTTP 101 Switching Protocols
+- [x] Teste rejeição sem token (HTTP 401)
+- [x] Teste rejeição path inválido (HTTP 404)
+- [x] Teste validação Zod
+- [x] Teste rate limiting (10 msg/s)
+- [x] Teste limite de tamanho (1MB)
+- [x] Atualizar websocket.connection.test.ts para novo sistema
+- [x] Corrigir assinatura createAgent() em todos os testes
+
+### Resultados
+- [x] 6/7 testes novos passando (websocket.handshake.test.ts)
+- [x] 3/6 testes antigos passando (websocket.connection.test.ts)
+- [x] Sistema HTTP upgrade funcionando perfeitamente
+- [x] Rate limiting validado e ativo
+- [x] Validação Zod funcionando
+- [x] Proteção DoS implementada

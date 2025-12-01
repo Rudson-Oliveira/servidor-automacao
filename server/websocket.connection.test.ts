@@ -1,4 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { createServer, Server as HttpServer } from "http";
+import express from "express";
 import WebSocket from "ws";
 import { startDesktopAgentServer, getDesktopAgentServer } from "./services/desktopAgentServer";
 import { createAgent } from "./db-desktop-control";
@@ -16,29 +18,55 @@ import { createAgent } from "./db-desktop-control";
 const TEST_PORT = 3002; // Porta diferente para testes
 let testAgentToken: string;
 let testAgentId: number;
+let httpServer: HttpServer;
+let app: express.Application;
 
 beforeAll(async () => {
   // Criar agent de teste no banco
-  const agent = await createAgent(1, "Test Desktop Agent", "windows", "1.0.0");
+  const agent = await createAgent({ userId: 1, deviceName: "Test Desktop Agent", platform: "windows", version: "1.0.0" });
   testAgentToken = agent.token;
   testAgentId = agent.id;
 
+  // Criar aplicação Express e servidor HTTP
+  app = express();
+  httpServer = createServer(app);
+
   // Iniciar servidor WebSocket de teste
-  startDesktopAgentServer(TEST_PORT);
+  startDesktopAgentServer(httpServer);
+
+  // Iniciar servidor HTTP
+  await new Promise<void>((resolve) => {
+    httpServer.listen(TEST_PORT, () => {
+      console.log(`[Test] HTTP server listening on port ${TEST_PORT}`);
+      resolve();
+    });
+  });
 });
 
-afterAll(() => {
-  // Fechar servidor
+afterAll(async () => {
+  // Fechar servidor WebSocket
   const server = getDesktopAgentServer();
   if (server) {
     server.close();
   }
+
+  // Fechar servidor HTTP
+  await new Promise<void>((resolve) => {
+    httpServer.close(() => {
+      console.log(`[Test] HTTP server closed`);
+      resolve();
+    });
+  });
 });
 
 describe("WebSocket Connection Tests", () => {
   it("deve aceitar conexão WebSocket com HTTP 101 handshake", async () => {
     return new Promise<void>((resolve, reject) => {
-      const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`);
+      const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`, {
+        headers: {
+          'Authorization': `Bearer ${testAgentToken}`
+        }
+      });
 
       ws.on("open", () => {
         console.log("✅ Conexão WebSocket estabelecida (HTTP 101)");
@@ -59,7 +87,11 @@ describe("WebSocket Connection Tests", () => {
 
   it("deve receber mensagem de boas-vindas após conexão", async () => {
     return new Promise<void>((resolve, reject) => {
-      const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`);
+      const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`, {
+        headers: {
+          'Authorization': `Bearer ${testAgentToken}`
+        }
+      });
 
       ws.on("message", (data: Buffer) => {
         try {
@@ -86,7 +118,11 @@ describe("WebSocket Connection Tests", () => {
 
   it("deve autenticar com token válido", async () => {
     return new Promise<void>((resolve, reject) => {
-      const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`);
+      const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`, {
+        headers: {
+          'Authorization': `Bearer ${testAgentToken}`
+        }
+      });
       let welcomeReceived = false;
 
       ws.on("open", () => {
@@ -176,7 +212,11 @@ describe("WebSocket Connection Tests", () => {
 
   it("deve processar heartbeat e responder com heartbeat_ack", async () => {
     return new Promise<void>((resolve, reject) => {
-      const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`);
+      const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`, {
+        headers: {
+          'Authorization': `Bearer ${testAgentToken}`
+        }
+      });
       let authenticated = false;
 
       ws.on("open", () => {
@@ -227,7 +267,11 @@ describe("WebSocket Connection Tests", () => {
 
   it("deve validar formato ISO8601 dos timestamps", async () => {
     return new Promise<void>((resolve, reject) => {
-      const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`);
+      const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`, {
+        headers: {
+          'Authorization': `Bearer ${testAgentToken}`
+        }
+      });
 
       ws.on("open", () => {
         setTimeout(() => {

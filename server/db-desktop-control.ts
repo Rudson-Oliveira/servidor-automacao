@@ -25,12 +25,12 @@ export function generateAgentToken(): string {
  * Cria um novo Desktop Agent no banco de dados
  * @returns Agent criado com token gerado automaticamente
  */
-export async function createAgent(
-  userId: number,
-  deviceName: string,
-  platform: string,
-  version: string
-): Promise<DesktopAgent> {
+export async function createAgent(data: {
+  userId: number;
+  deviceName: string;
+  platform: string;
+  version: string;
+}): Promise<DesktopAgent> {
   const db = await getDb();
   if (!db) {
     throw new Error("Database not available");
@@ -41,11 +41,11 @@ export async function createAgent(
   const [agent] = await db
     .insert(desktopAgents)
     .values({
-      userId,
+      userId: data.userId,
       token,
-      deviceName,
-      platform,
-      version,
+      deviceName: data.deviceName,
+      platform: data.platform,
+      version: data.version,
       status: "offline",
       lastPing: new Date(),
     })
