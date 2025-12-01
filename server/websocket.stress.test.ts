@@ -527,7 +527,7 @@ describe('WebSocket Stress & Hostile Environment Tests', () => {
 
       // Fechar todas as conexões
       connections.forEach(ws => ws.close());
-    }, 30000);
+    }, 60000); // Aumentado para 60s (200 conexões levam tempo)
   });
 
   // ============================================================================

@@ -10,7 +10,7 @@
     "type": "utf8_bom",
     "applied": true,
     "result": "BOM removido com sucesso",
-    "timestamp": "2025-12-01T20:01:38.187Z"
+    "timestamp": "2025-12-01T21:15:23.259Z"
   },
   "after": {
     "hasBOM": false,

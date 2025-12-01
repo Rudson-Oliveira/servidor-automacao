@@ -30,6 +30,7 @@ import downloadAgentSecureRouter from "../routes/download-agent-secure";
 import downloadRouter from "../routes/download";
 import desktopAgentRegisterRouter from "../routes/desktop-agent-register";
 import healthRouter from "../routes/health";
+import metricsRouter from "../routes/metrics";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
 import { startDesktopAgentServer } from "../services/desktopAgentServer";
 import { startHealthMonitoring } from "../health-monitor";
@@ -98,6 +99,7 @@ async function startServer() {
   app.use("/api/download", downloadRouter);
   app.use("/api/desktop-agent", desktopAgentRegisterRouter);
   app.use("/api/health", healthRouter);
+  app.use("/api", metricsRouter); // Endpoint /api/metrics para Prometheus
   // tRPC API
   app.use(
     "/api/trpc",

@@ -255,7 +255,13 @@ export class DesktopAgentServer {
         }
       });
 
-      // Handler de pong (resposta ao ping)
+      // Handler de ping (cliente envia ping)
+      ws.on("ping", () => {
+        ws.isAlive = true;
+        ws.pong(); // Responder com pong
+      });
+
+      // Handler de pong (resposta ao ping do servidor)
       ws.on("pong", () => {
         ws.isAlive = true;
       });
@@ -654,7 +660,12 @@ export class DesktopAgentServer {
           console.log(`[DesktopAgent] Agent ${agentId} inativo, removendo...`);
           this.clients.delete(agentId);
           ws.terminate();
+          return;
         }
+        
+        // Marcar como não-vivo e enviar ping
+        ws.isAlive = false;
+        ws.ping();
       });
     }, this.heartbeatInterval);
   }

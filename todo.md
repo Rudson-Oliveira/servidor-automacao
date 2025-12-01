@@ -404,6 +404,31 @@
 - [ ] Confirmar 100% de precisão
 
 
+## 🚀 Melhorias de Curto Prazo (Solicitadas pelo Usuário - HOJE)
+
+### Prioridade ALTA (Implementar AGORA)
+- [x] Corrigir autenticação dupla do WebSocket (VERIFICADO: não é problema - welcome é parte do protocolo)
+- [ ] Aumentar cobertura de testes de 89.2% para 98%+
+  - [ ] Corrigir Desktop Agent Healing (6 testes)
+  - [ ] Corrigir Desktop Control E2E (35 testes)
+  - [ ] Corrigir WebSocket Stress (3 testes)
+- [ ] Documentar fluxo de autenticação completo
+  - [ ] Criar diagrama de sequência
+  - [ ] Documentar upgrade do WebSocket
+  - [ ] Explicar uso de tokens
+
+### Prioridade MÉDIA (Esta Semana)
+- [ ] Implementar testes de stress (100+ agents simultâneos)
+- [ ] Adicionar monitoramento de métricas
+- [ ] Melhorar logging estruturado (JSON + correlation IDs)
+
+### Prioridade BAIXA (Este Mês)
+- [ ] Implementar screenshot real (Windows/Linux/Mac)
+- [ ] Adicionar funcionalidades avançadas (scripts Python remotos, transferência de arquivos)
+- [ ] Otimizar performance (cache de tokens, compressão WebSocket)
+
+---
+
 ## 🔍 Sistema de Busca REAL de Arquivos no CPU (CRÍTICO)
 
 ### Problema Identificado
@@ -3828,3 +3853,16 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Listar vulnerabilidades corrigidas
 - [x] Preparar relatório para os 6 membros do grupo
 - [ ] Criar checkpoint final com descrição detalhada
+
+## Acesso Mobile
+
+- [ ] Criar endpoint /mobile com build estático para celulares
+
+## 🔧 Correções Urgentes - Desktop Agent WebSocket (Prioridade MÁXIMA)
+
+- [ ] Investigar código do servidor WebSocket (desktopAgentServer.ts)
+- [ ] Corrigir implementação do heartbeat (ping/pong) - servidor retorna error em vez de pong
+- [ ] Testar heartbeat com script de teste
+- [ ] Validar 100% de sucesso nos testes WebSocket
+- [ ] Testar URL Desktop completa (https://3000-irvlht34m10g6oxfkoitw-1b347671.manusvm.computer)
+- [ ] Gerar relatório final com 100% de aprovação (0 falhas)

@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-12-01T17:36:29-05:00",
+  "tests": {
+    "servidor_online": true,
+    "metrics_endpoint": true,
+    "desktop_agent_conectado": true,
+    "heartbeats_enviados": 0
+0
+  },
+  "metricas": {
+    "agents_antes": 0,
+    "agents_depois": 0
+  },
+  "evidencias": {
+    "log_agent": "logs/agent-test-20251201_173544.log",
+    "metricas_inicial": "metricas/metrics-test-20251201_173544.txt",
+    "metricas_final": "metricas/metrics-final-20251201_173544.txt"
+  }
+}
