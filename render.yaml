@@ -4,10 +4,10 @@ services:
     name: servidor-automacao
     runtime: node
     region: oregon
-    plan: standard
+    plan: starter
     branch: main
-    buildCommand: pnpm install && pnpm build
-    startCommand: pnpm start
+    buildCommand: cd server && pnpm install && cd ../client && pnpm install && pnpm build
+    startCommand: cd server && node index.js
     envVars:
       - key: NODE_ENV
         value: production
