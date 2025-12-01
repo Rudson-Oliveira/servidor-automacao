@@ -3746,3 +3746,85 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [ ] Documentar procedimentos de teste
 - [ ] Garantir que auditores possam reproduzir testes
 - [ ] Criar checklist de validação para cada auditor
+
+
+## 🚀 Preparação para CPU Local e RENDER (Nuvem)
+
+### Instaladores
+- [ ] Criar instalador .EXE para Windows (1 clique)
+- [ ] Implementar API de instalação programática (REST endpoint)
+- [ ] Criar instalação via LINK web (abrir no navegador)
+- [x] Configurar deploy automático no RENDER
+- [x] Corrigir render.yaml para usar Dockerfile
+- [x] Forçar uso de Docker runtime para TensorFlow
+- [x] Testar build localmente antes do deploy
+- [x] Corrigir Dockerfile para copiar todo o código
+- [x] Simplificar Dockerfile (remover multi-stage)
+- [x] Aumentar timeout do health check para 60s
+
+### Integração Auto-Healing
+- [x] Sistema de Health Check Inteligente implementado
+- [x] Auto-Healing com Fallback Mode implementado
+- [x] Sistema de Aprendizado LLM implementado
+- [x] Endpoint /api/health para monitoramento
+- [ ] Integrar auto-healing ao instalador .EXE
+- [ ] Integrar auto-healing à API de instalação
+- [ ] Integrar auto-healing ao LINK de instalação
+- [ ] Validar auto-healing em ambiente hostil
+
+### Deploy RENDER
+- [ ] Configurar variáveis de ambiente no RENDER
+- [ ] Criar script de build para produção
+- [ ] Configurar health checks no RENDER
+- [ ] Testar conexão Desktop Agent → RENDER
+
+### Documentação
+- [ ] Guia de instalação .EXE (passo-a-passo)
+- [ ] Guia de instalação API (para desenvolvedores)
+- [ ] Guia de instalação LINK (para leigos)
+- [ ] Guia de deploy RENDER (para administradores)
+
+### Testes Finais
+- [ ] Testar .EXE no Windows do usuário
+- [ ] Testar API de instalação
+- [ ] Testar LINK de instalação
+- [ ] Validar servidor no RENDER
+
+## Testes de Validação do Deploy
+
+- [x] Criar test-health.ts - Validar endpoint /api/health
+- [x] Criar test-agent-registration.ts - Validar registro de Desktop Agent
+- [x] Criar test-auto-healing.ts - Simular falhas e verificar recuperação
+- [x] Criar test-database.ts - Validar conexão com banco de dados
+- [x] Criar test-tensorflow.ts - Verificar se TensorFlow carrega
+- [ ] Executar todos os testes após deploy
+- [ ] Gerar relatório de validação final
+
+
+## 🛡️ Melhorias de Segurança (Implementação Crítica - Auditoria do Grupo)
+
+### Fase 1: Proteções HTTP (Baixo Risco)
+- [ ] Instalar e configurar Helmet.js com configuração conservadora
+- [ ] Implementar CORS com whitelist apropriada
+- [ ] Adicionar headers de segurança adicionais (X-Frame-Options, X-Content-Type-Options)
+- [ ] Criar arquivo security.ts separado para gerenciar segurança
+
+### Fase 2: Atualização de Dependências (Médio Risco)
+- [ ] Atualizar tar para versão 7.5.2 (vulnerabilidade crítica CVE-2024-28863)
+- [ ] Executar pnpm audit fix para outras vulnerabilidades
+- [ ] Validar que todos os 402 testes continuam passando
+- [ ] Testar endpoints críticos após atualização
+
+### Fase 3: Validação e Testes (Crítico)
+- [ ] Executar suite completa de testes (402 testes)
+- [ ] Testar endpoints críticos manualmente
+- [ ] Verificar funcionamento do frontend
+- [ ] Validar headers de segurança com curl
+- [ ] Testar CORS com diferentes origens
+
+### Fase 4: Documentação para Auditoria
+- [ ] Criar SECURITY_AUDIT.md com todas as mudanças
+- [ ] Documentar configurações de segurança implementadas
+- [ ] Listar vulnerabilidades corrigidas
+- [ ] Preparar relatório para os 6 membros do grupo
+- [ ] Criar checkpoint final com descrição detalhada
