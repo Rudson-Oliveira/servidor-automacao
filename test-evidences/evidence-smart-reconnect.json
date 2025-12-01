@@ -9,7 +9,7 @@
     "Sucesso na tentativa 3"
   ],
   "delays": [
-    1000,
+    1001,
     2001
   ],
   "backoffPattern": "Exponencial",

@@ -35,6 +35,7 @@ import { startDesktopAgentServer } from "../services/desktopAgentServer";
 import { startHealthMonitoring } from "../health-monitor";
 import { startAutoHealing } from "../auto-healing";
 import { initializeLearningSystem } from "../llm-learning";
+import { setupSecurity } from "./security";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -58,6 +59,11 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
+  
+  // ⚠️ SEGURANÇA: Configurar proteções HTTP ANTES de qualquer outra coisa
+  // Ordem é crítica: Security → Body Parser → Anti-Hallucination → Rotas
+  setupSecurity(app);
+  
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));

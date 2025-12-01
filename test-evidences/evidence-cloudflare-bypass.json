@@ -10,17 +10,17 @@
   "results": [
     {
       "url": "http://localhost:3000/test",
-      "duration": 44,
+      "duration": 92,
       "applied": true,
       "result": "Bypass bem-sucedido",
-      "timestamp": "2025-12-01T18:23:25.494Z"
+      "timestamp": "2025-12-01T20:01:38.257Z"
     },
     {
       "url": "http://httpbin.org/headers",
-      "duration": 21988,
+      "duration": 8605,
       "applied": true,
       "result": "Bypass bem-sucedido",
-      "timestamp": "2025-12-01T18:23:25.538Z"
+      "timestamp": "2025-12-01T20:01:38.350Z"
     }
   ]
 }
