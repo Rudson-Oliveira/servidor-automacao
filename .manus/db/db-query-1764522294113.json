@@ -1,0 +1,13 @@
+{
+  "query": "SELECT token FROM desktop_agents WHERE device_name = 'PC-Rudson' LIMIT 1",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute SELECT token FROM desktop_agents WHERE device_name = 'PC-Rudson' LIMIT 1",
+  "rows": [
+    {
+      "token": "8fd1d07ddb902715a5be138df4893a7ae383c223df8964461db7c2d52b3dbdc6"
+    }
+  ],
+  "messages": [],
+  "stdout": "token\n8fd1d07ddb902715a5be138df4893a7ae383c223df8964461db7c2d52b3dbdc6\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

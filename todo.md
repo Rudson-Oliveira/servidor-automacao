@@ -3474,3 +3474,31 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Validar endpoint de registro via curl (200 OK)
 - [x] Confirmar geração automática de token (agentId: 90003)
 - [x] Preparar documentação da solução final
+
+## 🔴 CORREÇÃO CRÍTICA - Autenticação WebSocket Desktop Agent
+
+### Problema Identificado
+- [ ] Servidor WebSocket rejeitando autenticação do Desktop Agent
+- [ ] Loop infinito de reconexão (opcode=8 - close frame)
+- [ ] Mensagem de erro: "Tipo de mensagem desconhecido: error"
+- [ ] Conexão fechada imediatamente após tentativa de auth
+
+### Diagnóstico Necessário
+- [ ] Verificar formato da mensagem de auth enviada pelo agent.py
+- [ ] Verificar formato esperado pelo servidor WebSocket
+- [ ] Analisar logs do servidor para identificar erro exato
+- [ ] Validar token no backend (esperado vs recebido)
+- [ ] Verificar headers e protocolo WebSocket
+
+### Correções a Aplicar
+- [ ] Corrigir formato de mensagem de autenticação
+- [ ] Adicionar validação de token no servidor
+- [ ] Implementar tratamento de erro adequado
+- [ ] Adicionar logs detalhados de autenticação
+- [ ] Testar autenticação com token válido
+
+### Validação
+- [ ] Testar conexão WebSocket do Windows
+- [ ] Confirmar autenticação bem-sucedida
+- [ ] Validar envio/recebimento de comandos
+- [ ] Atualizar documentação com formato correto

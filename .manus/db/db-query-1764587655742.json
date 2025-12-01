@@ -1,0 +1,24 @@
+{
+  "query": "SELECT id, token, device_name, status, createdAt FROM desktop_agents WHERE device_name LIKE '%Rudson%' OR device_name LIKE '%PC%' ORDER BY createdAt DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute SELECT id, token, device_name, status, createdAt FROM desktop_agents WHERE device_name LIKE '%Rudson%' OR device_name LIKE '%PC%' ORDER BY createdAt DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "90001",
+      "token": "16dfd7560653928eb44366efcfcd66ab623b87849773d127349d2950f8f67a1f",
+      "device_name": "PC-Rudson",
+      "status": "offline",
+      "createdAt": "2025-11-30 15:10:24"
+    },
+    {
+      "id": "60038",
+      "token": "8fd1d07ddb902715a5be138df4893a7ae383c223df8964461db7c2d52b3dbdc6",
+      "device_name": "PC-Rudson",
+      "status": "offline",
+      "createdAt": "2025-11-29 07:15:10"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttoken\tdevice_name\tstatus\tcreatedAt\n90001\t16dfd7560653928eb44366efcfcd66ab623b87849773d127349d2950f8f67a1f\tPC-Rudson\toffline\t2025-11-30 15:10:24\n60038\t8fd1d07ddb902715a5be138df4893a7ae383c223df8964461db7c2d52b3dbdc6\tPC-Rudson\toffline\t2025-11-29 07:15:10\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}

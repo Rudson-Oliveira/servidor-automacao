@@ -1,0 +1,23 @@
+{
+  "query": "SELECT * FROM desktop_agents WHERE token = '8fd1d07ddb902715a5be138df4893a7ae383c223df8964461db7c2d52b3dbdc6' LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute SELECT * FROM desktop_agents WHERE token = '8fd1d07ddb902715a5be138df4893a7ae383c223df8964461db7c2d52b3dbdc6' LIMIT 1;",
+  "rows": [
+    {
+      "id": "60038",
+      "user_id": "1",
+      "token": "8fd1d07ddb902715a5be138df4893a7ae383c223df8964461db7c2d52b3dbdc6",
+      "device_name": "PC-Rudson",
+      "platform": "Unknown",
+      "version": "1.0.0",
+      "status": "offline",
+      "last_ping": "2025-12-01 09:57:31",
+      "ip_address": "::1",
+      "createdAt": "2025-11-29 07:15:10",
+      "updatedAt": "2025-12-01 09:57:31"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tuser_id\ttoken\tdevice_name\tplatform\tversion\tstatus\tlast_ping\tip_address\tcreatedAt\tupdatedAt\n60038\t1\t8fd1d07ddb902715a5be138df4893a7ae383c223df8964461db7c2d52b3dbdc6\tPC-Rudson\tUnknown\t1.0.0\toffline\t2025-12-01 09:57:31\t::1\t2025-11-29 07:15:10\t2025-12-01 09:57:31\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}

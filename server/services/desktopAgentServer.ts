@@ -157,22 +157,46 @@ export class DesktopAgentServer {
     message: AuthMessage,
     req: IncomingMessage
   ): Promise<void> {
+    console.log("[DesktopAgent] [DEBUG] handleAuth iniciado");
+    console.log("[DesktopAgent] [DEBUG] Mensagem recebida:", JSON.stringify(message));
+    
     const { token } = message;
 
     if (!token) {
+      console.log("[DesktopAgent] [ERROR] Token não fornecido na mensagem");
       this.sendError(ws, "Token não fornecido");
       ws.close();
       return;
     }
 
+    console.log("[DesktopAgent] [DEBUG] Token recebido (primeiros 16 chars):", token.substring(0, 16) + "...");
+    console.log("[DesktopAgent] [DEBUG] Buscando agent no banco de dados...");
+    
     // Buscar agent pelo token
-    const agent = await getAgentByToken(token);
+    let agent;
+    try {
+      agent = await getAgentByToken(token);
+      console.log("[DesktopAgent] [DEBUG] Resultado da busca:", agent ? `Agent ID ${agent.id} encontrado` : "Agent não encontrado");
+    } catch (error) {
+      console.error("[DesktopAgent] [ERROR] Erro ao buscar agent:", error);
+      this.sendError(ws, "Erro interno ao validar token");
+      ws.close();
+      return;
+    }
 
     if (!agent) {
+      console.log("[DesktopAgent] [ERROR] Token inválido - agent não encontrado no banco");
       this.sendError(ws, "Token inválido");
       ws.close();
       return;
     }
+
+    console.log("[DesktopAgent] [DEBUG] Agent validado:", {
+      id: agent.id,
+      deviceName: agent.deviceName,
+      platform: agent.platform,
+      status: agent.status
+    });
 
     // Autenticar WebSocket
     ws.agentId = agent.id;

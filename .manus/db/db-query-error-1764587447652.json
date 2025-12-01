@@ -1,0 +1,8 @@
+{
+  "query": "SELECT id, userId, deviceName, platform, version, status, token, createdAt, lastPing FROM desktop_agents WHERE token = '8fd1d07ddb902715a5be138df4893a7ae383c223df8964461db7c2d52b3dbdc6' LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 46yA7HaDwBP5MYq.c5fbe4e16cff --database ALEjofy2PjgFnShwZRqCD7 --execute SELECT id, userId, deviceName, platform, version, status, token, createdAt, lastPing FROM desktop_agents WHERE token = '8fd1d07ddb902715a5be138df4893a7ae383c223df8964461db7c2d52b3dbdc6' LIMIT 1;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'userid' in 'field list'"
+  ]
+}

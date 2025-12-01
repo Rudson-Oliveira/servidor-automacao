@@ -515,6 +515,40 @@ export const desktopControlRouter = router({
     }),
 
   /**
+   * [DEBUG TEMPORÁRIO] Busca token de um agente pelo nome do dispositivo
+   */
+  getAgentToken: publicProcedure
+    .input(z.object({ deviceName: z.string() }))
+    .query(async ({ input }) => {
+      const db = await import("../db").then(m => m.getDb());
+      if (!db) {
+        throw new Error("Database not available");
+      }
+      
+      const { desktopAgents } = await import("../../drizzle/schema");
+      const { eq } = await import("drizzle-orm");
+      
+      const agents = await db
+        .select()
+        .from(desktopAgents)
+        .where(eq(desktopAgents.deviceName, input.deviceName))
+        .limit(1);
+      
+      if (agents.length === 0) {
+        throw new Error(`Agent "${input.deviceName}" não encontrado`);
+      }
+      
+      return {
+        id: agents[0].id,
+        deviceName: agents[0].deviceName,
+        token: agents[0].token,
+        status: agents[0].status,
+        platform: agents[0].platform,
+        version: agents[0].version,
+      };
+    }),
+
+  /**
    * Remove regra de segurança
    */
   deleteSecurityRule: protectedProcedure

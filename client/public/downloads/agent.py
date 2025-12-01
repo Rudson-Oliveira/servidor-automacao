@@ -79,7 +79,7 @@ class DesktopAgent:
         self.logger.info("=" * 60)
     
     def _load_config(self, config_path: str) -> Dict[str, Any]:
-        """Carrega configuração do arquivo JSON com detecção robusta de encoding"""
+        """Carrega configuração do arquivo JSON"""
         config_file = Path(config_path)
         
         if not config_file.exists():
@@ -89,43 +89,9 @@ class DesktopAgent:
             input("Pressione ENTER para sair...")
             sys.exit(1)
         
-        # Lista de encodings para tentar (ordem de prioridade)
-        encodings_to_try = [
-            'utf-8-sig',  # UTF-8 com BOM (Windows PowerShell)
-            'utf-8',      # UTF-8 sem BOM (padrão)
-            'cp1252',     # Windows Latin-1
-            'latin-1',    # ISO-8859-1
-        ]
-        
-        config = None
-        last_error = None
-        
-        for encoding in encodings_to_try:
-            try:
-                with open(config_file, 'r', encoding=encoding) as f:
-                    content = f.read()
-                    
-                    # Remover BOM manualmente se presente (segurança extra)
-                    if content.startswith('\ufeff'):
-                        content = content[1:]
-                    
-                    config = json.loads(content)
-                    break  # Sucesso! Sair do loop
-                    
-            except (UnicodeDecodeError, json.JSONDecodeError) as e:
-                last_error = e
-                continue  # Tentar próximo encoding
-        
-        if config is None:
-            print(f"[ERRO] Erro ao ler configuração: {last_error}")
-            print(f"[INFO] Tentou encodings: {', '.join(encodings_to_try)}")
-            print(f"[INFO] Verifique se o arquivo config.json está correto")
-            print("")
-            input("Pressione ENTER para sair...")
-            sys.exit(1)
-        
         try:
-            # Continuar com validação...
+            with open(config_file, 'r', encoding='utf-8') as f:
+                config = json.load(f)
             
             # Normalizar configuração para formato esperado
             # Se config tem formato simplificado (token, server, device_name no root)
@@ -164,11 +130,11 @@ class DesktopAgent:
             
             return config
             
+        except json.JSONDecodeError as e:
+            print(f"[ERRO] Erro ao ler configuração: {e}")
+            sys.exit(1)
         except Exception as e:
-            print(f"[ERRO] Erro ao validar configuração: {e}")
-            print(f"[INFO] Verifique se todos os campos obrigatórios estão presentes")
-            print("")
-            input("Pressione ENTER para sair...")
+            print(f"[ERRO] Erro ao carregar configuração: {e}")
             sys.exit(1)
     
     def _setup_logging(self):
