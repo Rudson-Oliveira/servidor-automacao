@@ -29,14 +29,8 @@ import downloadFilesRouter from "../routes/download-files";
 import downloadAgentSecureRouter from "../routes/download-agent-secure";
 import downloadRouter from "../routes/download";
 import desktopAgentRegisterRouter from "../routes/desktop-agent-register";
-import healthRouter from "../routes/health";
-import metricsRouter from "../routes/metrics";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
 import { startDesktopAgentServer } from "../services/desktopAgentServer";
-import { startHealthMonitoring } from "../health-monitor";
-import { startAutoHealing } from "../auto-healing";
-import { initializeLearningSystem } from "../llm-learning";
-import { setupSecurity } from "./security";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -60,11 +54,6 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
-  
-  // ⚠️ SEGURANÇA: Configurar proteções HTTP ANTES de qualquer outra coisa
-  // Ordem é crítica: Security → Body Parser → Anti-Hallucination → Rotas
-  setupSecurity(app);
-  
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
@@ -98,8 +87,6 @@ async function startServer() {
   app.use("/api/download-secure", downloadAgentSecureRouter);
   app.use("/api/download", downloadRouter);
   app.use("/api/desktop-agent", desktopAgentRegisterRouter);
-  app.use("/api/health", healthRouter);
-  app.use("/api", metricsRouter); // Endpoint /api/metrics para Prometheus
   // tRPC API
   app.use(
     "/api/trpc",
@@ -130,30 +117,8 @@ async function startServer() {
     console.error(`[DesktopAgent] Failed to start WebSocket server:`, error);
   }
 
-  server.listen(port, async () => {
+  server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
-    
-    // Inicializar sistemas de monitoramento e auto-healing
-    console.log('[Startup] Initializing health monitoring and auto-healing...');
-    
-    try {
-      // Sistema de aprendizado LLM
-      await initializeLearningSystem();
-      console.log('[Startup] LLM Learning system initialized');
-      
-      // Health monitoring (verifica a cada 30s)
-      startHealthMonitoring(30000);
-      console.log('[Startup] Health monitoring started');
-      
-      // Auto-healing (verifica a cada 1min)
-      await startAutoHealing();
-      console.log('[Startup] Auto-healing system started');
-      
-      console.log('[Startup] All systems operational ✓');
-    } catch (error) {
-      console.error('[Startup] Failed to initialize monitoring systems:', error);
-      console.warn('[Startup] Server will continue without monitoring');
-    }
   });
 }
 

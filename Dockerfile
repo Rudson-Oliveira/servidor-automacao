@@ -1,7 +1,7 @@
-# Dockerfile otimizado para Render com TensorFlow
-FROM node:22-alpine
+# Multi-stage build para otimizar tamanho da imagem
+FROM node:22-alpine AS base
 
-# Instalar dependências do sistema necessárias para TensorFlow e build
+# Instalar dependências do sistema
 RUN apk add --no-cache \
     python3 \
     make \
@@ -9,41 +9,61 @@ RUN apk add --no-cache \
     cairo-dev \
     jpeg-dev \
     pango-dev \
-    giflib-dev \
-    libc6-compat \
-    gcompat
+    giflib-dev
 
-# Instalar pnpm globalmente
-RUN npm install -g pnpm@10.4.1
+# Instalar pnpm
+RUN npm install -g pnpm
 
-# Definir diretório de trabalho
 WORKDIR /app
 
-# Copiar arquivos de configuração de dependências
+# Copiar arquivos de dependências
 COPY package.json pnpm-lock.yaml ./
 COPY patches ./patches
 
-# Instalar dependências (incluindo TensorFlow com build nativo)
+# Stage 2: Instalar dependências
+FROM base AS dependencies
 RUN pnpm install --frozen-lockfile
 
-# Copiar TODO o código fonte (server + client + shared + drizzle)
+# Stage 3: Build
+FROM base AS build
+COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
-# Build do frontend (Vite) e backend (esbuild)
-# Vite vai buildar o client e colocar em dist/
-# esbuild vai compilar o server e colocar em dist/index.js
+# Build do frontend e backend
 RUN pnpm build
 
-# Criar diretórios necessários para runtime
+# Stage 4: Production
+FROM node:22-alpine AS production
+
+# Instalar apenas dependências de runtime
+RUN apk add --no-cache \
+    python3 \
+    cairo \
+    jpeg \
+    pango \
+    giflib
+
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+# Copiar apenas o necessário para produção
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./
+COPY --from=build /app/drizzle ./drizzle
+COPY --from=build /app/server ./server
+COPY --from=build /app/shared ./shared
+
+# Criar diretórios necessários
 RUN mkdir -p logs screenshots downloads
 
-# Expor porta 3000 (padrão do Render)
+# Expor porta
 EXPOSE 3000
 
-# Health check para o Render saber quando o serviço está pronto
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/api/status', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
 # Comando de inicialização
-# Usa o script "start" do package.json que roda: node dist/index.js
 CMD ["pnpm", "start"]
