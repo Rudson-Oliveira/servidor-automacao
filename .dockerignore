@@ -1,0 +1,80 @@
+# Dependências
+node_modules
+.pnpm-store
+
+# Build artifacts
+dist
+.next
+.nuxt
+.cache
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Testes
+coverage
+.nyc_output
+test-results
+playwright-report
+e2e
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env files (não copiar para imagem)
+.env
+.env.local
+.env.*.local
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentação
+README.md
+docs
+*.md
+
+# Temp files
+tmp
+temp
+screenshots
+downloads
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+.Python
+venv
+env
+
+# Monitoring
+monitoring
+observability
+
+# Desktop agent (não necessário no container web)
+desktop-agent
+installer

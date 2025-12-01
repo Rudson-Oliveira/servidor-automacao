@@ -1,0 +1,51 @@
+services:
+  # Web Service - Node.js Backend + Frontend
+  - type: web
+    name: servidor-automacao
+    runtime: node
+    region: oregon
+    plan: standard
+    branch: main
+    buildCommand: pnpm install && pnpm build
+    startCommand: pnpm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: VITE_APP_ID
+        sync: false
+      - key: OAUTH_SERVER_URL
+        value: https://api.manus.im
+      - key: OWNER_OPEN_ID
+        sync: false
+      - key: BUILT_IN_FORGE_API_URL
+        value: https://api.manus.im
+      - key: BUILT_IN_FORGE_API_KEY
+        sync: false
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+      - key: DESKTOP_AGENT_REGISTER_TOKEN
+        generateValue: true
+    healthCheckPath: /api/status
+    autoDeploy: true
+
+  # Database - PostgreSQL (opcional, se quiser usar Render DB)
+  # - type: pgsql
+  #   name: automacao-db
+  #   region: oregon
+  #   plan: starter
+  #   databaseName: automacao_prod
+  #   databaseUser: automacao
