@@ -2,12 +2,12 @@ services:
   # Web Service - Node.js Backend + Frontend
   - type: web
     name: servidor-automacao
-    runtime: node
+    runtime: docker
     region: oregon
     plan: starter
     branch: main
-    buildCommand: cd server && pnpm install && cd ../client && pnpm install && pnpm build
-    startCommand: cd server && node index.js
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     envVars:
       - key: NODE_ENV
         value: production
