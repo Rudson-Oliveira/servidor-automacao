@@ -206,7 +206,7 @@ const requestCounts = new Map<string, { count: number; resetTime: number }>();
 
 function setupBasicRateLimiting(app: Express): void {
   const WINDOW_MS = 60 * 1000; // 1 minuto
-  const MAX_REQUESTS = 1000; // 1000 requisições por minuto (muito permissivo)
+  const MAX_REQUESTS = 10000; // 10000 requisições por minuto (extremamente permissivo)
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     const ip = req.ip || req.socket.remoteAddress || 'unknown';
@@ -251,7 +251,7 @@ function setupBasicRateLimiting(app: Express): void {
     }
   }, 5 * 60 * 1000);
 
-  console.log('[Security] Rate limiting básico configurado (1000 req/min por IP)');
+  console.log('[Security] Rate limiting básico configurado (10000 req/min por IP)');
 }
 
 /**
@@ -279,8 +279,8 @@ export function setupSecurity(app: Express): void {
   console.log('[Security] Proteções ativas:');
   console.log('[Security]   - Helmet.js (XSS, Clickjacking, MIME Sniffing)');
   console.log('[Security]   - CORS (Cross-Origin Resource Sharing)');
-  console.log('[Security]   - Rate Limiting (1000 req/min por IP)');
-  console.log('[Security]   - Headers Customizados (Request ID, Response Time)');
+  console.log('[Security]   - Rate Limiting (10000 req/min por IP)');
+  console.log('[Security]   - Headers Customizados (Request ID)');
 }
 
 /**
