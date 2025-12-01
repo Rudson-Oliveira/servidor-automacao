@@ -47,6 +47,7 @@ const MLDashboard = lazy(() => import("./pages/MLDashboard"));
 const SelfAwareness = lazy(() => import("./pages/SelfAwareness"));
 const DownloadAgent = lazy(() => import("./pages/DownloadAgent"));
 const DesktopAgents = lazy(() => import("./pages/DesktopAgents"));
+const DashboardDesktopAgents = lazy(() => import("./pages/DashboardDesktopAgents"));
 const AutomacoesSimples = lazy(() => import("./pages/AutomacoesSimples"));
 const ObsidianInteligente = lazy(() => import("./pages/ObsidianInteligente"));
 const TelefoniaGenspark = lazy(() => import("./pages/TelefoniaGenspark"));
@@ -95,6 +96,7 @@ function Router() {
         <Route path={"/desktop/pro"} component={DesktopControlPro} />
         <Route path="/desktop/security" component={DesktopSecurity} />
         <Route path="/desktop/agents" component={DesktopAgents} />
+        <Route path="/dashboard/desktop-agents" component={DashboardDesktopAgents} />
         <Route path="/desktop/history" component={DesktopHistory} />
         <Route path="/desktop/scheduler" component={DesktopScheduler} />
           <Route path="/desktop/vy-capture" component={VyLikeCapture} />

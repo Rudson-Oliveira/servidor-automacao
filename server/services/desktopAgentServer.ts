@@ -21,11 +21,15 @@ interface AuthenticatedWebSocket extends WebSocket {
 
 interface WebSocketMessage {
   type: string;
+  timestamp?: string; // ISO8601 timestamp
+  device_id?: string; // Identificador do dispositivo
   data?: any;
 }
 
 interface CommandMessage {
   type: "command";
+  timestamp: string; // ISO8601 timestamp
+  device_id?: string; // Identificador do dispositivo
   commandId: number;
   commandType: string;
   commandData?: any;
@@ -33,6 +37,8 @@ interface CommandMessage {
 
 interface CommandResultMessage {
   type: "command_result";
+  timestamp: string; // ISO8601 timestamp
+  device_id?: string; // Identificador do dispositivo
   commandId: number;
   success: boolean;
   result?: any;
@@ -42,16 +48,21 @@ interface CommandResultMessage {
 
 interface HeartbeatMessage {
   type: "heartbeat";
-  timestamp: number;
+  timestamp: string; // ISO8601 timestamp (padronizado)
+  device_id?: string; // Identificador do dispositivo
 }
 
 interface AuthMessage {
   type: "auth";
+  timestamp: string; // ISO8601 timestamp
+  device_id?: string; // Identificador do dispositivo
   token: string;
 }
 
 interface LogMessage {
   type: "log";
+  timestamp: string; // ISO8601 timestamp
+  device_id?: string; // Identificador do dispositivo
   level: "debug" | "info" | "warning" | "error";
   message: string;
   metadata?: any;
@@ -64,7 +75,10 @@ export class DesktopAgentServer {
   private orchestratorEnabled: boolean = true; // Habilitar orquestração automática
 
   constructor(port: number = 3001) {
-    this.wss = new WebSocketServer({ port });
+    this.wss = new WebSocketServer({ 
+      port,
+      path: '/desktop-agent' // Path específico para Desktop Agents
+    });
 
     this.wss.on("connection", (ws: AuthenticatedWebSocket, req: IncomingMessage) => {
       console.log(`[DesktopAgent] Nova conexão de ${req.socket.remoteAddress}`);
@@ -275,7 +289,7 @@ export class DesktopAgentServer {
     // Responder com pong
     this.send(ws, {
       type: "heartbeat_ack",
-      timestamp: Date.now(),
+      timestamp: new Date().toISOString(), // ISO8601 timestamp
     });
   }
 
@@ -572,6 +586,7 @@ export class DesktopAgentServer {
 
     const commandMessage: CommandMessage = {
       type: "command",
+      timestamp: new Date().toISOString(), // ISO8601 timestamp
       commandId,
       commandType,
       commandData,

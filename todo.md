@@ -3502,3 +3502,90 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [ ] Confirmar autenticação bem-sucedida
 - [ ] Validar envio/recebimento de comandos
 - [ ] Atualizar documentação com formato correto
+
+## 🔴 CORREÇÕES URGENTES WEBSOCKET - Desktop Agent (DIRETIVA WS-DESKTOP-20251201-0930)
+
+### Prioridade CRÍTICA
+- [ ] Adicionar path `/desktop-agent` ao WebSocket Server
+- [ ] Integrar WebSocket com servidor HTTP principal (upgrade handler)
+- [ ] Melhorar protocolo JSON (adicionar timestamp e device_id padronizados)
+- [ ] Validar handshake WebSocket (HTTP 101 Switching Protocols)
+- [ ] Testar conexão com Desktop Agent usando token: 16dfd7560653928eb44366efcfcd66ab623b87849773d127349d2950f8f67a1f
+
+### Funcionalidades Já Implementadas (Verificadas)
+- [x] WebSocket Server básico (porta 3001)
+- [x] Heartbeat (ping/pong a cada 30 segundos)
+- [x] Audit Logs (função addLog)
+- [x] Autenticação por token
+- [x] Protocolo JSON básico
+
+### Validação Final
+- [ ] Desktop Agent conecta com sucesso (HTTP 101)
+- [ ] Mensagens JSON trafegam corretamente
+- [ ] Heartbeat mantém conexão estável
+- [ ] Logs registram todos os eventos
+- [ ] Reconexão automática funciona
+
+## ✅ FASE 2 - WebSocket e Protocolo JSON (CONCLUÍDA)
+
+### Implementações
+- [x] Adicionar path `/desktop-agent` ao WebSocket Server
+- [x] Padronizar protocolo JSON com timestamp ISO8601
+- [x] Adicionar campo `device_id` opcional em todas as mensagens
+- [x] Atualizar interfaces TypeScript (CommandMessage, HeartbeatMessage, etc.)
+- [x] Modificar método sendCommand para incluir timestamp
+- [x] Modificar método handleHeartbeat para responder com timestamp ISO8601
+
+### Testes Automatizados
+- [x] Criar arquivo websocket.connection.test.ts
+- [x] Teste: HTTP 101 Switching Protocols handshake
+- [x] Teste: Mensagem de boas-vindas após conexão
+- [x] Teste: Autenticação com token válido
+- [x] Teste: Rejeição de token inválido
+- [x] Teste: Heartbeat bidirecional
+- [x] Teste: Validação de formato ISO8601 dos timestamps
+- [x] Executar todos os testes (6/6 passando)
+
+### Bugs Detectados
+- [ ] Corrigir erro: orchestrator.markAgentOffline is not a function
+
+## ✅ FASE 3 - Dashboard UI e Monitoramento (CONCLUÍDA)
+
+### Dashboard Principal
+- [x] Criar página /dashboard/desktop-agents
+- [x] Implementar layout responsivo com DashboardLayout
+- [x] Criar Stats Cards (Total, Online, Comandos, Screenshots)
+- [x] Criar Agent Cards Grid com informações detalhadas
+- [x] Implementar auto-refresh a cada 5 segundos
+- [x] Adicionar seleção de agent para visualizar detalhes
+- [x] Instalar e configurar date-fns para formatação de datas
+
+### Componentes de Visualização
+- [x] Criar componente AgentLogs (/components/AgentLogs.tsx)
+- [x] Implementar timeline de eventos com filtro por nível
+- [x] Criar componente AgentCommands (/components/AgentCommands.tsx)
+- [x] Implementar histórico de comandos com filtro por status
+- [x] Adicionar visualização expandível de comandos e resultados
+- [x] Implementar visualização de tempo de execução
+- [x] Integrar componentes no Dashboard principal
+
+### Testes de Integração
+- [x] Criar arquivo desktop-control.integration.test.ts
+- [x] Implementar 13 testes de integração completos
+- [x] Validar Agent Management (3 testes)
+- [x] Validar Command Management (4 testes)
+- [x] Validar Logs Management (2 testes)
+- [x] Validar Statistics (1 teste)
+- [x] Validar Security & Validation (3 testes)
+- [x] Executar e validar todos os testes (13/13 passando)
+
+### Documentação
+- [x] Criar DESKTOP_AGENTS_DOCUMENTATION.md completo
+- [x] Documentar arquitetura do sistema
+- [x] Documentar protocolo WebSocket com exemplos
+- [x] Documentar schema do banco de dados
+- [x] Documentar API tRPC completa
+- [x] Documentar componentes do Dashboard
+- [x] Documentar testes automatizados
+- [x] Documentar segurança e validações
+- [x] Adicionar roadmap de funcionalidades futuras
