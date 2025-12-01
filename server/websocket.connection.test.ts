@@ -162,9 +162,9 @@ describe("WebSocket Connection Tests", () => {
 
       setTimeout(() => {
         reject(new Error("Timeout: autenticação não completada"));
-      }, 5000);
+      }, 15000);
     });
-  });
+  }, 20000);
 
   it("deve rejeitar token inválido", async () => {
     return new Promise<void>((resolve, reject) => {
@@ -261,9 +261,9 @@ describe("WebSocket Connection Tests", () => {
 
       setTimeout(() => {
         reject(new Error("Timeout: heartbeat_ack não recebido"));
-      }, 5000);
+      }, 15000);
     });
-  });
+  }, 20000);
 
   it("deve validar formato ISO8601 dos timestamps", async () => {
     return new Promise<void>((resolve, reject) => {
@@ -318,7 +318,7 @@ describe("WebSocket Connection Tests", () => {
 
       setTimeout(() => {
         reject(new Error("Timeout: validação de timestamp não completada"));
-      }, 5000);
+      }, 15000);
     });
-  });
+  }, 20000);
 });

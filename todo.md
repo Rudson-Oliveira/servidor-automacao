@@ -3630,3 +3630,85 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Rate limiting validado e ativo
 - [x] Validação Zod funcionando
 - [x] Proteção DoS implementada
+
+
+## 🔮 MELHORIAS FUTURAS (Para uso multi-usuário)
+
+### Sistema Robusto de Tokens
+- [ ] Implementar validação avançada de tokens para Desktop Agents
+- [ ] Adicionar testes completos de segurança de tokens
+- [ ] Implementar rotação automática de tokens
+- [ ] Adicionar expiração de tokens com renovação
+- [ ] Implementar revogação de tokens comprometidos
+- [ ] Adicionar rate limiting por usuário/device
+- [ ] Implementar auditoria completa de acessos por token
+- [ ] Criar dashboard de gerenciamento de tokens
+- [ ] Adicionar alertas de uso suspeito de tokens
+- [ ] Implementar tokens com escopo limitado (permissões granulares)
+
+**Nota**: Atualmente usando tokens simbólicos para uso pessoal. Estas melhorias são necessárias antes de disponibilizar para outros usuários.
+
+
+## 🔥 Testes de Ambiente Hostil - Desktop Agent (CRÍTICO - 01/12/2025)
+
+### Problemas Históricos Documentados (BASE_CONHECIMENTO_ERROS_DESKTOP_AGENT.md)
+- [ ] HTTP 403 Forbidden (Cloudflare WAF) - O PIOR ERRO (3+ dias de debugging)
+- [ ] UTF-8 BOM em config.json (Windows PowerShell) - 45% dos erros
+- [ ] Token inválido/expirado - 20% dos erros
+- [ ] WebSocket timeout e reconexão - 15% dos erros
+- [ ] Rate limiting extremo - 10% dos erros
+
+### Suite de Testes de Stress (websocket.stress.test.ts)
+- [ ] Firewall Agressivo - Rate limiting 100 msg/s
+- [ ] Antivírus/EDR - Inspeção de pacotes grandes (500 KB)
+- [ ] Proxy Corporativo - Headers modificados, latência 500ms
+- [ ] Rede Instável - 5 reconexões, packet loss 30%
+- [ ] Carga Extrema - 50 agents simultâneos, 1000 mensagens/10s
+- [ ] Ataques Maliciosos - JSON inválido, SQL injection, DoS
+- [ ] Compatibilidade Windows - User-Agent, encoding Windows-1252
+
+### Executar Testes
+- [ ] Rodar suite completa: `pnpm test websocket.stress.test.ts`
+- [ ] Validar 100% dos testes passando
+- [ ] Gerar relatório de resultados
+- [ ] Documentar falhas encontradas
+- [ ] Criar plano de correção para problemas críticos
+
+### Validação Final
+- [ ] Sistema sobrevive a ambiente hostil
+- [ ] Pronto para instalação no CPU do usuário
+- [ ] Instalações futuras não terão problemas
+- [ ] Documentação completa de troubleshooting
+
+
+## 🧠 Integração Auto-Healing + Desktop Agent (CRÍTICO - Sistema Imparável)
+
+### Sistema Existente a Integrar
+- [x] Auto-Healing Core (`_core/auto-healing.ts`) - Diagnóstico com LLM
+- [x] Predictive Healing (`routers/predictive-healing.ts`) - Predição com ML
+- [x] Retry Manager com backoff exponencial
+- [x] Health Checks automáticos
+
+### Adaptações para Desktop Agent
+- [ ] Criar `desktop-agent-healing.ts` - Auto-healing específico para Desktop Agent
+- [ ] Detectar e corrigir UTF-8 BOM automaticamente
+- [ ] Validar tokens antes de conectar (64 caracteres hex)
+- [ ] Testar conectividade WebSocket antes de instalar
+- [ ] Implementar bypass automático de Cloudflare WAF
+- [ ] Reconexão inteligente com aprendizado de padrões
+- [ ] Detectar ambiente hostil (firewall, antivírus, proxy)
+- [ ] Escolher estratégia de bypass adequada automaticamente
+
+### Aprendizado com Falhas (ML)
+- [ ] Registrar todos os erros em `telemetry_learnings`
+- [ ] Analisar padrões de falha com LLM
+- [ ] Criar base de conhecimento de soluções
+- [ ] Aplicar soluções aprendidas automaticamente
+- [ ] Taxa de sucesso > 95% em instalações futuras
+
+### Testes de Validação
+- [ ] Simular todos os 5 erros históricos
+- [ ] Validar que sistema detecta e corrige automaticamente
+- [ ] Testar em ambiente hostil real
+- [ ] Confirmar taxa de sucesso > 95%
+- [ ] Documentar casos de sucesso

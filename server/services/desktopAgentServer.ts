@@ -24,7 +24,7 @@ const MessageSchema = z.object({
   device_id: z.string().optional(),
   payload: z.any().optional(),
   correlationId: z.string().optional(),
-});
+}).passthrough(); // Permite campos adicionais como 'token'
 
 const AuthMessageSchema = MessageSchema.extend({
   type: z.literal('auth'),
