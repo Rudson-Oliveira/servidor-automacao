@@ -31,6 +31,7 @@ import downloadRouter from "../routes/download";
 import desktopAgentRegisterRouter from "../routes/desktop-agent-register";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
 import { startDesktopAgentServer } from "../services/desktopAgentServer";
+import metricsRouter, { metricsMiddleware } from "../routes/metrics";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -57,6 +58,9 @@ async function startServer() {
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  
+  // Metrics middleware (coletar métricas de todas as requisições)
+  app.use(metricsMiddleware);
   
   // Anti-hallucination middleware (detect and prevent fake data)
   app.use(antiHallucinationMiddleware);
@@ -87,6 +91,7 @@ async function startServer() {
   app.use("/api/download-secure", downloadAgentSecureRouter);
   app.use("/api/download", downloadRouter);
   app.use("/api/desktop-agent", desktopAgentRegisterRouter);
+  app.use("/api/metrics", metricsRouter);
   // tRPC API
   app.use(
     "/api/trpc",

@@ -753,6 +753,13 @@ export class DesktopAgentServer {
   }
 
   /**
+   * Retorna número de conexões ativas (incluindo não autenticadas)
+   */
+  public getActiveConnectionsCount(): number {
+    return this.activeConnections.size;
+  }
+
+  /**
    * Fecha o servidor
    */
   public close(): void {

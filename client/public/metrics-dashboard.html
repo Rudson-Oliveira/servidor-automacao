@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Métricas - Servidor de Automação</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            color: #60a5fa;
+            margin-bottom: 10px;
+        }
+        
+        .header .status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .status.online {
+            background: #10b981;
+            color: white;
+        }
+        
+        .status.offline {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-title {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        
+        .card-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #60a5fa;
+            margin-bottom: 5px;
+        }
+        
+        .card-label {
+            font-size: 0.875rem;
+            color: #cbd5e1;
+        }
+        
+        .card.warning .card-value {
+            color: #fbbf24;
+        }
+        
+        .card.danger .card-value {
+            color: #ef4444;
+        }
+        
+        .card.success .card-value {
+            color: #10b981;
+        }
+        
+        .chart-container {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .chart-title {
+            font-size: 1.25rem;
+            color: #e2e8f0;
+            margin-bottom: 15px;
+        }
+        
+        canvas {
+            max-width: 100%;
+        }
+        
+        .alerts {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .alert-item {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+        }
+        
+        .alert-item.warning {
+            background: rgba(251, 191, 36, 0.1);
+            border-color: #fbbf24;
+        }
+        
+        .alert-item.critical {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+        }
+        
+        .alert-time {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+        
+        .alert-message {
+            font-size: 0.875rem;
+            color: #e2e8f0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Dashboard de Métricas</h1>
+        <span class="status online" id="serverStatus">● ONLINE</span>
+    </div>
+    
+    <div class="grid">
+        <div class="card">
+            <div class="card-title">Requisições/Segundo</div>
+            <div class="card-value" id="requestsPerSecond">0</div>
+            <div class="card-label">req/s</div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Latência Média</div>
+            <div class="card-value" id="avgLatency">0</div>
+            <div class="card-label">ms</div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Taxa de Sucesso</div>
+            <div class="card-value success" id="successRate">100</div>
+            <div class="card-label">%</div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Agents Conectados</div>
+            <div class="card-value" id="agentsConnected">0</div>
+            <div class="card-label">agents</div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Uso de CPU</div>
+            <div class="card-value" id="cpuUsage">0</div>
+            <div class="card-label">%</div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Uso de Memória</div>
+            <div class="card-value" id="memoryUsage">0</div>
+            <div class="card-label">MB</div>
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <div class="chart-title">Requisições por Segundo (últimos 60s)</div>
+        <canvas id="requestsChart" width="800" height="200"></canvas>
+    </div>
+    
+    <div class="chart-container">
+        <div class="chart-title">Latência P95 (últimos 60s)</div>
+        <canvas id="latencyChart" width="800" height="200"></canvas>
+    </div>
+    
+    <div class="alerts">
+        <div class="chart-title">⚠️  Alertas Recentes</div>
+        <div id="alertsList">
+            <p style="color: #64748b; text-align: center; padding: 20px;">Nenhum alerta no momento</p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        Atualizado a cada 5 segundos | Servidor de Automação v1.0.0
+    </div>
+    
+    <script>
+        // ==================== CONFIGURAÇÃO ====================
+        
+        const METRICS_ENDPOINT = '/api/metrics';
+        const AGENTS_ENDPOINT = '/api/metrics/agents';
+        const HEALTH_ENDPOINT = '/api/metrics/health';
+        const UPDATE_INTERVAL = 5000; // 5 segundos
+        
+        // ==================== DADOS ====================
+        
+        let requestsHistory = [];
+        let latencyHistory = [];
+        let alerts = [];
+        
+        // ==================== CHARTS ====================
+        
+        const requestsCanvas = document.getElementById('requestsChart');
+        const requestsCtx = requestsCanvas.getContext('2d');
+        
+        const latencyCanvas = document.getElementById('latencyChart');
+        const latencyCtx = latencyCanvas.getContext('2d');
+        
+        function drawChart(ctx, data, color, label, maxValue = null) {
+            const width = ctx.canvas.width;
+            const height = ctx.canvas.height;
+            const padding = 40;
+            const chartWidth = width - padding * 2;
+            const chartHeight = height - padding * 2;
+            
+            // Limpar canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Background
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, width, height);
+            
+            if (data.length === 0) {
+                ctx.fillStyle = '#64748b';
+                ctx.font = '14px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Aguardando dados...', width / 2, height / 2);
+                return;
+            }
+            
+            // Calcular escala
+            const max = maxValue || Math.max(...data, 1);
+            const min = 0;
+            const range = max - min;
+            
+            // Desenhar grid
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i <= 5; i++) {
+                const y = padding + (chartHeight / 5) * i;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(width - padding, y);
+                ctx.stroke();
+                
+                // Labels do eixo Y
+                const value = max - (range / 5) * i;
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '12px sans-serif';
+                ctx.textAlign = 'right';
+                ctx.fillText(value.toFixed(1), padding - 10, y + 4);
+            }
+            
+            // Desenhar linha
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            const step = chartWidth / (data.length - 1 || 1);
+            
+            data.forEach((value, index) => {
+                const x = padding + index * step;
+                const y = padding + chartHeight - ((value - min) / range) * chartHeight;
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            
+            ctx.stroke();
+            
+            // Preencher área sob a linha
+            ctx.lineTo(width - padding, padding + chartHeight);
+            ctx.lineTo(padding, padding + chartHeight);
+            ctx.closePath();
+            
+            const gradient = ctx.createLinearGradient(0, padding, 0, padding + chartHeight);
+            gradient.addColorStop(0, color + '40');
+            gradient.addColorStop(1, color + '00');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        }
+        
+        // ==================== FUNÇÕES DE ATUALIZAÇÃO ====================
+        
+        async function fetchMetrics() {
+            try {
+                const response = await fetch(METRICS_ENDPOINT);
+                const text = await response.text();
+                return parsePrometheusMetrics(text);
+            } catch (error) {
+                console.error('Erro ao buscar métricas:', error);
+                return null;
+            }
+        }
+        
+        async function fetchAgentsMetrics() {
+            try {
+                const response = await fetch(AGENTS_ENDPOINT);
+                return await response.json();
+            } catch (error) {
+                console.error('Erro ao buscar métricas de agents:', error);
+                return null;
+            }
+        }
+        
+        async function checkHealth() {
+            try {
+                const response = await fetch(HEALTH_ENDPOINT);
+                const data = await response.json();
+                return data.status === 'healthy';
+            } catch (error) {
+                return false;
+            }
+        }
+        
+        function parsePrometheusMetrics(text) {
+            const metrics = {};
+            const lines = text.split('\n');
+            
+            for (const line of lines) {
+                if (line.startsWith('#') || line.trim() === '') continue;
+                
+                const match = line.match(/^([a-zA-Z_:][a-zA-Z0-9_:]*)\{?([^}]*)\}?\s+([0-9.e+-]+)/);
+                if (match) {
+                    const [, name, labels, value] = match;
+                    if (!metrics[name]) {
+                        metrics[name] = [];
+                    }
+                    metrics[name].push({
+                        labels: labels,
+                        value: parseFloat(value)
+                    });
+                }
+            }
+            
+            return metrics;
+        }
+        
+        function calculateRequestsPerSecond(metrics) {
+            if (!metrics['http_requests_total']) return 0;
+            
+            const total = metrics['http_requests_total'].reduce((sum, m) => sum + m.value, 0);
+            
+            // Estimativa simples (assumindo uptime)
+            if (metrics['nodejs_process_uptime_seconds']) {
+                const uptime = metrics['nodejs_process_uptime_seconds'][0].value;
+                return (total / uptime).toFixed(2);
+            }
+            
+            return total;
+        }
+        
+        function calculateAvgLatency(metrics) {
+            if (!metrics['http_request_duration_seconds_sum'] || !metrics['http_request_duration_seconds_count']) {
+                return 0;
+            }
+            
+            const sum = metrics['http_request_duration_seconds_sum'].reduce((s, m) => s + m.value, 0);
+            const count = metrics['http_request_duration_seconds_count'].reduce((s, m) => s + m.value, 0);
+            
+            if (count === 0) return 0;
+            
+            return ((sum / count) * 1000).toFixed(1); // Converter para ms
+        }
+        
+        function calculateSuccessRate(metrics) {
+            if (!metrics['http_requests_total']) return 100;
+            
+            let total = 0;
+            let success = 0;
+            
+            metrics['http_requests_total'].forEach(m => {
+                total += m.value;
+                if (m.labels.includes('status="2')) {
+                    success += m.value;
+                }
+            });
+            
+            if (total === 0) return 100;
+            
+            return ((success / total) * 100).toFixed(1);
+        }
+        
+        function getCPUUsage(metrics) {
+            if (!metrics['nodejs_process_cpu_usage_percentage']) return 0;
+            return (metrics['nodejs_process_cpu_usage_percentage'][0].value * 100).toFixed(1);
+        }
+        
+        function getMemoryUsage(metrics) {
+            if (!metrics['nodejs_process_resident_memory_bytes']) return 0;
+            return (metrics['nodejs_process_resident_memory_bytes'][0].value / 1024 / 1024).toFixed(1);
+        }
+        
+        function checkAlerts(metrics) {
+            const newAlerts = [];
+            
+            // CPU alta
+            const cpu = parseFloat(getCPUUsage(metrics));
+            if (cpu > 80) {
+                newAlerts.push({
+                    severity: cpu > 95 ? 'critical' : 'warning',
+                    message: `Uso de CPU alto: ${cpu}%`,
+                    time: new Date().toLocaleTimeString()
+                });
+            }
+            
+            // Memória alta
+            const memory = parseFloat(getMemoryUsage(metrics));
+            if (memory > 500) {
+                newAlerts.push({
+                    severity: memory > 900 ? 'critical' : 'warning',
+                    message: `Uso de memória alto: ${memory}MB`,
+                    time: new Date().toLocaleTimeString()
+                });
+            }
+            
+            // Taxa de sucesso baixa
+            const successRate = parseFloat(calculateSuccessRate(metrics));
+            if (successRate < 95) {
+                newAlerts.push({
+                    severity: successRate < 80 ? 'critical' : 'warning',
+                    message: `Taxa de sucesso baixa: ${successRate}%`,
+                    time: new Date().toLocaleTimeString()
+                });
+            }
+            
+            return newAlerts;
+        }
+        
+        function updateAlertsList() {
+            const alertsList = document.getElementById('alertsList');
+            
+            if (alerts.length === 0) {
+                alertsList.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;">Nenhum alerta no momento</p>';
+                return;
+            }
+            
+            alertsList.innerHTML = alerts.slice(0, 10).map(alert => `
+                <div class="alert-item ${alert.severity}">
+                    <div class="alert-time">${alert.time}</div>
+                    <div class="alert-message">${alert.message}</div>
+                </div>
+            `).join('');
+        }
+        
+        async function updateDashboard() {
+            // Check health
+            const isHealthy = await checkHealth();
+            const statusEl = document.getElementById('serverStatus');
+            if (isHealthy) {
+                statusEl.className = 'status online';
+                statusEl.textContent = '● ONLINE';
+            } else {
+                statusEl.className = 'status offline';
+                statusEl.textContent = '● OFFLINE';
+                return;
+            }
+            
+            // Fetch metrics
+            const metrics = await fetchMetrics();
+            if (!metrics) return;
+            
+            const agentsData = await fetchAgentsMetrics();
+            
+            // Update cards
+            const reqPerSec = calculateRequestsPerSecond(metrics);
+            document.getElementById('requestsPerSecond').textContent = reqPerSec;
+            
+            const avgLatency = calculateAvgLatency(metrics);
+            document.getElementById('avgLatency').textContent = avgLatency;
+            
+            const successRate = calculateSuccessRate(metrics);
+            document.getElementById('successRate').textContent = successRate;
+            
+            const agentsConnected = agentsData?.active_connections || 0;
+            document.getElementById('agentsConnected').textContent = agentsConnected;
+            
+            const cpuUsage = getCPUUsage(metrics);
+            document.getElementById('cpuUsage').textContent = cpuUsage;
+            
+            const memoryUsage = getMemoryUsage(metrics);
+            document.getElementById('memoryUsage').textContent = memoryUsage;
+            
+            // Update history
+            requestsHistory.push(parseFloat(reqPerSec));
+            if (requestsHistory.length > 60) requestsHistory.shift();
+            
+            latencyHistory.push(parseFloat(avgLatency));
+            if (latencyHistory.length > 60) latencyHistory.shift();
+            
+            // Update charts
+            drawChart(requestsCtx, requestsHistory, '#60a5fa', 'Requisições/s');
+            drawChart(latencyCtx, latencyHistory, '#10b981', 'Latência (ms)');
+            
+            // Check alerts
+            const newAlerts = checkAlerts(metrics);
+            alerts = [...newAlerts, ...alerts].slice(0, 50);
+            updateAlertsList();
+        }
+        
+        // ==================== INICIALIZAÇÃO ====================
+        
+        updateDashboard();
+        setInterval(updateDashboard, UPDATE_INTERVAL);
+        
+        console.log('Dashboard de Métricas iniciado');
+    </script>
+</body>
+</html>

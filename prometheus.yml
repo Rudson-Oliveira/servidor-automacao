@@ -1,0 +1,63 @@
+# Prometheus Configuration
+# Monitoramento do Servidor de Automação
+
+global:
+  scrape_interval: 15s # Coletar métricas a cada 15s
+  evaluation_interval: 15s # Avaliar regras a cada 15s
+  
+  # Labels externos (identificação do servidor)
+  external_labels:
+    monitor: 'servidor-automacao'
+    environment: 'production'
+
+# Configuração de alertas (Alertmanager)
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+          # - 'localhost:9093' # Descomentar quando configurar Alertmanager
+
+# Regras de alerta
+rule_files:
+  - 'alerts.yml'
+
+# Targets de scraping (endpoints de métricas)
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+  
+  # Node Exporter (métricas do sistema: CPU, RAM, disco, rede)
+  - job_name: 'node'
+    static_configs:
+      - targets: ['localhost:9100']
+        labels:
+          instance: 'servidor-automacao'
+  
+  # Aplicação Node.js (servidor de automação)
+  - job_name: 'servidor-automacao'
+    scrape_interval: 10s # Coletar mais frequentemente
+    static_configs:
+      - targets: ['localhost:3000']
+        labels:
+          app: 'servidor-automacao'
+          service: 'api'
+    
+    # Endpoint de métricas
+    metrics_path: '/api/metrics'
+    
+    # Timeout
+    scrape_timeout: 5s
+  
+  # Desktop Agents (WebSocket)
+  - job_name: 'desktop-agents'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['localhost:3000']
+        labels:
+          app: 'servidor-automacao'
+          service: 'websocket'
+    
+    metrics_path: '/api/metrics/agents'
+    scrape_timeout: 10s

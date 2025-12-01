@@ -1,0 +1,189 @@
+{
+  "test_config": {
+    "num_workers": 10,
+    "requests_per_minute": 100,
+    "test_duration": 60
+  },
+  "results": {
+    "total_duration": 60.62265658378601,
+    "total_requests_sent": 970,
+    "total_requests_success": 970,
+    "total_requests_failed": 0,
+    "success_rate": 100.0,
+    "total_errors": 0,
+    "throughput": 16.00061849251644,
+    "status_codes": {
+      "200": 970
+    }
+  },
+  "latency": {
+    "avg": 23.796273998378478,
+    "median": 18.115520477294922,
+    "min": 10.681867599487305,
+    "max": 291.60094261169434,
+    "p95": 41.60618782043457,
+    "p99": 139.84370231628418
+  },
+  "workers": [
+    {
+      "worker_id": 1,
+      "requests_sent": 97,
+      "requests_success": 97,
+      "requests_failed": 0,
+      "avg_response_time": 0.023488610061173587,
+      "min_response_time": 0.011223316192626953,
+      "max_response_time": 0.13984370231628418,
+      "p95_response_time": 0.04699897766113281,
+      "p99_response_time": 0.13984370231628418,
+      "errors": 0,
+      "status_codes": {
+        "200": 97
+      },
+      "duration": 60.58189296722412
+    },
+    {
+      "worker_id": 2,
+      "requests_sent": 97,
+      "requests_success": 97,
+      "requests_failed": 0,
+      "avg_response_time": 0.024181012025813468,
+      "min_response_time": 0.011125326156616211,
+      "max_response_time": 0.2711677551269531,
+      "p95_response_time": 0.0463557243347168,
+      "p99_response_time": 0.2711677551269531,
+      "errors": 0,
+      "status_codes": {
+        "200": 97
+      },
+      "duration": 60.62146019935608
+    },
+    {
+      "worker_id": 3,
+      "requests_sent": 97,
+      "requests_success": 97,
+      "requests_failed": 0,
+      "avg_response_time": 0.02374126984901035,
+      "min_response_time": 0.01146078109741211,
+      "max_response_time": 0.2619445323944092,
+      "p95_response_time": 0.040642499923706055,
+      "p99_response_time": 0.2619445323944092,
+      "errors": 0,
+      "status_codes": {
+        "200": 97
+      },
+      "duration": 60.577911138534546
+    },
+    {
+      "worker_id": 4,
+      "requests_sent": 97,
+      "requests_success": 97,
+      "requests_failed": 0,
+      "avg_response_time": 0.024036778617151006,
+      "min_response_time": 0.011109113693237305,
+      "max_response_time": 0.26200413703918457,
+      "p95_response_time": 0.03670811653137207,
+      "p99_response_time": 0.26200413703918457,
+      "errors": 0,
+      "status_codes": {
+        "200": 97
+      },
+      "duration": 60.60663914680481
+    },
+    {
+      "worker_id": 5,
+      "requests_sent": 97,
+      "requests_success": 97,
+      "requests_failed": 0,
+      "avg_response_time": 0.02387688823581971,
+      "min_response_time": 0.011272668838500977,
+      "max_response_time": 0.19690895080566406,
+      "p95_response_time": 0.052591800689697266,
+      "p99_response_time": 0.19690895080566406,
+      "errors": 0,
+      "status_codes": {
+        "200": 97
+      },
+      "duration": 60.598973751068115
+    },
+    {
+      "worker_id": 6,
+      "requests_sent": 97,
+      "requests_success": 97,
+      "requests_failed": 0,
+      "avg_response_time": 0.024030171718794045,
+      "min_response_time": 0.010681867599487305,
+      "max_response_time": 0.279085636138916,
+      "p95_response_time": 0.048371076583862305,
+      "p99_response_time": 0.279085636138916,
+      "errors": 0,
+      "status_codes": {
+        "200": 97
+      },
+      "duration": 60.591317892074585
+    },
+    {
+      "worker_id": 7,
+      "requests_sent": 97,
+      "requests_success": 97,
+      "requests_failed": 0,
+      "avg_response_time": 0.023702100380179808,
+      "min_response_time": 0.011105775833129883,
+      "max_response_time": 0.29160094261169434,
+      "p95_response_time": 0.04104447364807129,
+      "p99_response_time": 0.29160094261169434,
+      "errors": 0,
+      "status_codes": {
+        "200": 97
+      },
+      "duration": 60.577863693237305
+    },
+    {
+      "worker_id": 8,
+      "requests_sent": 97,
+      "requests_success": 97,
+      "requests_failed": 0,
+      "avg_response_time": 0.023526847976999183,
+      "min_response_time": 0.011538267135620117,
+      "max_response_time": 0.23660778999328613,
+      "p95_response_time": 0.03993391990661621,
+      "p99_response_time": 0.23660778999328613,
+      "errors": 0,
+      "status_codes": {
+        "200": 97
+      },
+      "duration": 60.57781958580017
+    },
+    {
+      "worker_id": 9,
+      "requests_sent": 97,
+      "requests_success": 97,
+      "requests_failed": 0,
+      "avg_response_time": 0.023628436413007912,
+      "min_response_time": 0.011241912841796875,
+      "max_response_time": 0.27002453804016113,
+      "p95_response_time": 0.041815996170043945,
+      "p99_response_time": 0.27002453804016113,
+      "errors": 0,
+      "status_codes": {
+        "200": 97
+      },
+      "duration": 60.576701164245605
+    },
+    {
+      "worker_id": 10,
+      "requests_sent": 97,
+      "requests_success": 97,
+      "requests_failed": 0,
+      "avg_response_time": 0.023750624705835718,
+      "min_response_time": 0.010768890380859375,
+      "max_response_time": 0.285442590713501,
+      "p95_response_time": 0.03660392761230469,
+      "p99_response_time": 0.285442590713501,
+      "errors": 0,
+      "status_codes": {
+        "200": 97
+      },
+      "duration": 60.57634091377258
+    }
+  ]
+}

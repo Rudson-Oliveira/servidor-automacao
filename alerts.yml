@@ -1,0 +1,182 @@
+# Prometheus Alert Rules
+# Alertas automáticos para métricas críticas
+
+groups:
+  - name: servidor_automacao_alerts
+    interval: 30s
+    rules:
+      # ==================== CPU ====================
+      
+      - alert: HighCPUUsage
+        expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 2m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "CPU alta em {{ $labels.instance }}"
+          description: "Uso de CPU está em {{ $value | humanizePercentage }} (> 80%) por mais de 2 minutos."
+      
+      - alert: CriticalCPUUsage
+        expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 95
+        for: 1m
+        labels:
+          severity: critical
+          component: system
+        annotations:
+          summary: "CPU CRÍTICA em {{ $labels.instance }}"
+          description: "Uso de CPU está em {{ $value | humanizePercentage }} (> 95%) por mais de 1 minuto. AÇÃO IMEDIATA NECESSÁRIA!"
+      
+      # ==================== MEMÓRIA ====================
+      
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+        for: 2m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "Memória alta em {{ $labels.instance }}"
+          description: "Uso de memória está em {{ $value | humanizePercentage }} (> 90%) por mais de 2 minutos."
+      
+      - alert: CriticalMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 95
+        for: 1m
+        labels:
+          severity: critical
+          component: system
+        annotations:
+          summary: "Memória CRÍTICA em {{ $labels.instance }}"
+          description: "Uso de memória está em {{ $value | humanizePercentage }} (> 95%) por mais de 1 minuto. RISCO DE OOM KILLER!"
+      
+      # ==================== DISCO ====================
+      
+      - alert: HighDiskUsage
+        expr: (1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|fuse.lxcfs"} / node_filesystem_size_bytes{fstype!~"tmpfs|fuse.lxcfs"})) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "Disco cheio em {{ $labels.instance }}"
+          description: "Uso de disco em {{ $labels.mountpoint }} está em {{ $value | humanizePercentage }} (> 80%)."
+      
+      - alert: CriticalDiskUsage
+        expr: (1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|fuse.lxcfs"} / node_filesystem_size_bytes{fstype!~"tmpfs|fuse.lxcfs"})) * 100 > 95
+        for: 2m
+        labels:
+          severity: critical
+          component: system
+        annotations:
+          summary: "Disco CRÍTICO em {{ $labels.instance }}"
+          description: "Uso de disco em {{ $labels.mountpoint }} está em {{ $value | humanizePercentage }} (> 95%). ESPAÇO QUASE ESGOTADO!"
+      
+      # ==================== LATÊNCIA ====================
+      
+      - alert: HighAPILatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 1
+        for: 3m
+        labels:
+          severity: warning
+          component: api
+        annotations:
+          summary: "Latência alta na API"
+          description: "P95 da latência está em {{ $value }}s (> 1s) por mais de 3 minutos."
+      
+      - alert: CriticalAPILatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 5
+        for: 1m
+        labels:
+          severity: critical
+          component: api
+        annotations:
+          summary: "Latência CRÍTICA na API"
+          description: "P95 da latência está em {{ $value }}s (> 5s). USUÁRIOS AFETADOS!"
+      
+      # ==================== TAXA DE ERRO ====================
+      
+      - alert: HighErrorRate
+        expr: (sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))) * 100 > 5
+        for: 2m
+        labels:
+          severity: warning
+          component: api
+        annotations:
+          summary: "Taxa de erro alta"
+          description: "{{ $value | humanizePercentage }} das requisições estão falhando (> 5%)."
+      
+      - alert: CriticalErrorRate
+        expr: (sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))) * 100 > 20
+        for: 1m
+        labels:
+          severity: critical
+          component: api
+        annotations:
+          summary: "Taxa de erro CRÍTICA"
+          description: "{{ $value | humanizePercentage }} das requisições estão falhando (> 20%). SISTEMA INSTÁVEL!"
+      
+      # ==================== WEBSOCKET ====================
+      
+      - alert: HighWebSocketDisconnections
+        expr: rate(websocket_disconnections_total[5m]) > 10
+        for: 2m
+        labels:
+          severity: warning
+          component: websocket
+        annotations:
+          summary: "Muitas desconexões WebSocket"
+          description: "{{ $value }} desconexões/segundo (> 10). Possível problema de rede ou servidor."
+      
+      - alert: NoActiveAgents
+        expr: websocket_active_connections == 0
+        for: 5m
+        labels:
+          severity: warning
+          component: websocket
+        annotations:
+          summary: "Nenhum Desktop Agent conectado"
+          description: "Não há Desktop Agents conectados por mais de 5 minutos."
+      
+      # ==================== BANCO DE DADOS ====================
+      
+      - alert: DatabaseConnectionPoolExhausted
+        expr: db_connection_pool_active / db_connection_pool_max > 0.9
+        for: 2m
+        labels:
+          severity: warning
+          component: database
+        annotations:
+          summary: "Pool de conexões quase esgotado"
+          description: "{{ $value | humanizePercentage }} das conexões estão em uso (> 90%)."
+      
+      - alert: SlowDatabaseQueries
+        expr: histogram_quantile(0.95, rate(db_query_duration_seconds_bucket[5m])) > 1
+        for: 3m
+        labels:
+          severity: warning
+          component: database
+        annotations:
+          summary: "Queries lentas no banco"
+          description: "P95 das queries está em {{ $value }}s (> 1s)."
+      
+      # ==================== SERVIDOR ====================
+      
+      - alert: ServerDown
+        expr: up{job="servidor-automacao"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: server
+        annotations:
+          summary: "Servidor de Automação OFFLINE"
+          description: "O servidor não está respondendo por mais de 1 minuto. VERIFICAR IMEDIATAMENTE!"
+      
+      - alert: HighRequestRate
+        expr: rate(http_requests_total[1m]) > 1000
+        for: 2m
+        labels:
+          severity: warning
+          component: api
+        annotations:
+          summary: "Taxa de requisições muito alta"
+          description: "{{ $value }} req/s (> 1000). Possível ataque DDoS ou pico de tráfego."
