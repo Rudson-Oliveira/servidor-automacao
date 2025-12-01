@@ -1,0 +1,1960 @@
+
+> servidor-automacao@1.0.0 test /home/ubuntu/servidor-automacao
+> vitest run
+
+
+ RUN  v2.1.9 /home/ubuntu/servidor-automacao
+
+ ✓ server/routers/obsidian-ai.test.ts (14 tests) 19ms
+ ✓ server/_core/whatsapp-rate-limiter.test.ts (12 tests) 9ms
+ ❯ server/desktop-shell-screenshot.test.ts (16 tests | 16 skipped) 124ms
+Sourcemap for "/home/ubuntu/servidor-automacao/node_modules/.pnpm/node-cron@4.2.1/node_modules/node-cron/dist/esm/node-cron.js" points to missing source files
+stdout | server/obsidian-critical-features.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stdout | server/telemetry.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stderr | server/obsidian-critical-features.test.ts
+[Health Checks] Sistema degraded: database, cpu
+
+stderr | server/telemetry.test.ts
+[Health Checks] Sistema degraded: database, cpu
+
+stdout | server/obsidian-critical-features.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/telemetry.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/obsidian-improvements.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stderr | server/obsidian-improvements.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/obsidian-improvements.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/telemetry.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+stdout | server/obsidian-critical-features.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+ ❯ server/db-desktop-control.test.ts (39 tests | 24 failed) 1009ms
+   × Desktop Control - Helpers CRUD > createAgent > deve criar um novo Desktop Agent 129ms
+     → Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 0abf4403f691b8a19fd05d0e0b6cad5da8cd1ea03438d65baddeb16e9ef20faa,offline,2025-12-01 23:35:39.874
+   × Desktop Control - Helpers CRUD > createAgent > deve gerar tokens únicos para cada agent 6ms
+     → Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: a7ef6365d6c0081774bedfc927170d694d49e8be7fb7ad035231b78cbf04df43,offline,2025-12-01 23:35:39.999
+   × Desktop Control - Helpers CRUD > getAgentById > deve buscar agent pelo ID 8ms
+     → expected undefined to be 'Test Device' // Object.is equality
+   × Desktop Control - Helpers CRUD > updateAgentStatus > deve atualizar status do agent 13ms
+     → expected undefined to be 'online' // Object.is equality
+   × Desktop Control - Helpers CRUD > updateAgentStatus > deve aceitar todos os status válidos 11ms
+     → expected undefined to be 'online' // Object.is equality
+   × Desktop Control - Helpers CRUD > updateAgentPing > deve atualizar lastPing do agent 518ms
+     → expected undefined to be defined
+   × Desktop Control - Helpers CRUD > updateAgentPing > deve atualizar IP address quando fornecido 12ms
+     → expected undefined to be '192.168.1.100' // Object.is equality
+   × Desktop Control - Helpers CRUD > listUserAgents > deve listar agents do usuário 20ms
+     → expected false to be true // Object.is equality
+   × Desktop Control - Helpers CRUD > createCommand > deve criar comando simples 6ms
+     → Failed query: insert into `desktop_commands` (`id`, `agent_id`, `user_id`, `command_type`, `command_data`, `status`, `result`, `error_message`, `sent_at`, `completed_at`, `execution_time_ms`, `createdAt`) values (default, default, ?, ?, ?, ?, default, default, ?, default, default, default)
+params: 1,screenshot,,pending,2025-12-01 23:35:40.657
+   × Desktop Control - Helpers CRUD > createCommand > deve criar comando com dados 5ms
+     → Failed query: insert into `desktop_commands` (`id`, `agent_id`, `user_id`, `command_type`, `command_data`, `status`, `result`, `error_message`, `sent_at`, `completed_at`, `execution_time_ms`, `createdAt`) values (default, default, ?, ?, ?, ?, default, default, ?, default, default, default)
+params: 1,mouse_click,{"x":100,"y":200,"button":"left"},pending,2025-12-01 23:35:40.663
+   × Desktop Control - Helpers CRUD > updateCommandStatus > deve atualizar status para completed com resultado 25ms
+     → expected undefined to be 'completed' // Object.is equality
+   × Desktop Control - Helpers CRUD > updateCommandStatus > deve atualizar status para failed com erro 12ms
+     → Failed query: insert into `desktop_commands` (`id`, `agent_id`, `user_id`, `command_type`, `command_data`, `status`, `result`, `error_message`, `sent_at`, `completed_at`, `execution_time_ms`, `createdAt`) values (default, default, ?, ?, ?, ?, default, default, ?, default, default, default)
+params: 1,test_fail,,pending,2025-12-01 23:35:40.693
+   × Desktop Control - Helpers CRUD > getPendingCommands > deve listar comandos pendentes do agent 5ms
+     → Failed query: insert into `desktop_commands` (`id`, `agent_id`, `user_id`, `command_type`, `command_data`, `status`, `result`, `error_message`, `sent_at`, `completed_at`, `execution_time_ms`, `createdAt`) values (default, default, ?, ?, ?, ?, default, default, ?, default, default, default)
+params: 1,pending_1,,pending,2025-12-01 23:35:40.717
+   × Desktop Control - Helpers CRUD > getPendingCommands > deve retornar array vazio se não houver comandos pendentes 5ms
+     → Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 46cf3c6554a73bbfd95caf168ee8c9f9382d5f703ac276643d53400b22bac7bb,offline,2025-12-01 23:35:40.722
+   × Desktop Control - Helpers CRUD > listUserCommands > deve filtrar por agentId 15ms
+     → expected false to be true // Object.is equality
+   × Desktop Control - Helpers CRUD > saveScreenshot > deve salvar screenshot 10ms
+     → Failed query: insert into `desktop_screenshots` (`id`, `agent_id`, `user_id`, `image_url`, `image_key`, `width`, `height`, `file_size`, `format`, `createdAt`) values (default, default, ?, ?, ?, ?, ?, ?, ?, default)
+params: 1,https://s3.example.com/screenshot.png,screenshots/test-123.png,1920,1080,245678,png
+   × Desktop Control - Helpers CRUD > saveScreenshot > deve salvar screenshot com dados mínimos 7ms
+     → Failed query: insert into `desktop_screenshots` (`id`, `agent_id`, `user_id`, `image_url`, `image_key`, `width`, `height`, `file_size`, `format`, `createdAt`) values (default, default, ?, ?, ?, default, default, default, ?, default)
+params: 1,https://s3.example.com/screenshot2.png,screenshots/test-456.png,png
+   × Desktop Control - Helpers CRUD > listUserScreenshots > deve listar screenshots do usuário 8ms
+     → expected 0 to be greater than 0
+   × Desktop Control - Helpers CRUD > addLog > deve adicionar log simples 6ms
+     → Failed query: insert into `desktop_logs` (`id`, `command_id`, `agent_id`, `user_id`, `level`, `message`, `metadata`, `createdAt`) values (default, ?, default, ?, ?, ?, ?, default)
+params: ,1,info,Agent conectado com sucesso,
+   × Desktop Control - Helpers CRUD > addLog > deve adicionar log com metadata 6ms
+     → Failed query: insert into `desktop_logs` (`id`, `command_id`, `agent_id`, `user_id`, `level`, `message`, `metadata`, `createdAt`) values (default, ?, default, ?, ?, ?, ?, default)
+params: ,1,error,Falha ao executar comando,{"errorCode":"TIMEOUT","duration":5000}
+   × Desktop Control - Helpers CRUD > addLog > deve aceitar todos os níveis de log 5ms
+     → Failed query: insert into `desktop_logs` (`id`, `command_id`, `agent_id`, `user_id`, `level`, `message`, `metadata`, `createdAt`) values (default, ?, default, ?, ?, ?, ?, default)
+params: ,1,debug,Mensagem de teste debug,
+   × Desktop Control - Helpers CRUD > listUserLogs > deve filtrar por agentId 12ms
+     → expected false to be true // Object.is equality
+   × Desktop Control - Helpers CRUD > deleteAgent > deve deletar agent do usuário 6ms
+     → Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: d536b468440ece0a402cc4fea1e3ce4fba8a384d7985b6b489502e6e57831a4c,offline,2025-12-01 23:35:40.859
+   × Desktop Control - Helpers CRUD > deleteAgent > não deve deletar agent de outro usuário 10ms
+     → expected true to be false // Object.is equality
+stdout | server/obsidian-improvements.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+stdout | server/websocket.handshake.test.ts
+[DesktopAgent] Servidor WebSocket configurado no path /desktop-agent
+[Test] HTTP server listening on port 3555
+
+stdout | server/websocket.handshake.test.ts > WebSocket Handshake RFC 6455 > deve retornar HTTP 101 Switching Protocols com token válido
+[DesktopAgent] Nova conexão de ::1
+
+stdout | server/websocket.handshake.test.ts > WebSocket Handshake RFC 6455 > deve retornar HTTP 101 Switching Protocols com token válido
+[Test] WebSocket connection opened successfully
+
+stdout | server/websocket.handshake.test.ts > WebSocket Handshake RFC 6455 > deve rejeitar conexão sem token (HTTP 401)
+[DesktopAgent] Upgrade rejeitado: token ausente
+[Test] Conexão fechada com código 1006: 
+
+stdout | server/websocket.handshake.test.ts > WebSocket Handshake RFC 6455 > deve rejeitar path inválido (HTTP 404)
+[Test] Conexão fechada com código 1006: 
+
+stdout | server/websocket.handshake.test.ts > WebSocket Handshake RFC 6455 > deve validar mensagens com schema Zod
+[DesktopAgent] Nova conexão de ::1
+[Test] Enviando mensagem inválida (sem type)...
+[Test] Mensagem recebida: {
+  type: 'welcome',
+  message: "Desktop Agent Server - Autentique-se enviando { type: 'auth', token: 'seu_token' }"
+}
+
+stderr | server/websocket.handshake.test.ts > WebSocket Handshake RFC 6455 > deve validar mensagens com schema Zod
+[DesktopAgent] Erro ao processar mensagem: ZodError: [
+  {
+    "code": "invalid_value",
+    "values": [
+      "auth",
+      "heartbeat",
+      "command_result",
+      "log",
+      "poll_commands",
+      "command_status",
+      "ping",
+      "pong"
+    ],
+    "path": [
+      "type"
+    ],
+    "message": "Invalid option: expected one of \"auth\"|\"heartbeat\"|\"command_result\"|\"log\"|\"poll_commands\"|\"command_status\"|\"ping\"|\"pong\""
+  }
+]
+    at WebSocket.<anonymous> (/home/ubuntu/servidor-automacao/server/services/desktopAgentServer.ts:241:43)
+    at WebSocket.emit (node:events:524:28)
+    at Receiver.receiverOnMessage (/home/ubuntu/servidor-automacao/node_modules/.pnpm/ws@8.18.3/node_modules/ws/lib/websocket.js:1220:20)
+    at Receiver.emit (node:events:524:28)
+    at Receiver.dataMessage (/home/ubuntu/servidor-automacao/node_modules/.pnpm/ws@8.18.3/node_modules/ws/lib/receiver.js:596:14)
+    at Receiver.getData (/home/ubuntu/servidor-automacao/node_modules/.pnpm/ws@8.18.3/node_modules/ws/lib/receiver.js:496:10)
+    at Receiver.startLoop (/home/ubuntu/servidor-automacao/node_modules/.pnpm/ws@8.18.3/node_modules/ws/lib/receiver.js:167:16)
+    at Receiver._write (/home/ubuntu/servidor-automacao/node_modules/.pnpm/ws@8.18.3/node_modules/ws/lib/receiver.js:94:10)
+    at writeOrBuffer (node:internal/streams/writable:572:12)
+    at _write (node:internal/streams/writable:501:10)
+
+stdout | server/websocket.handshake.test.ts > WebSocket Handshake RFC 6455 > deve validar mensagens com schema Zod
+[Test] Mensagem recebida: { type: 'error', error: 'Invalid message format: Validation failed' }
+[Test] Validação Zod funcionando corretamente!
+
+stdout | server/websocket.handshake.test.ts > WebSocket Handshake RFC 6455 > deve aplicar rate limiting (10 msg/s)
+[DesktopAgent] Nova conexão de ::1
+[Test] Enviando 15 mensagens rápidas para testar rate limit...
+
+stdout | server/websocket.handshake.test.ts > WebSocket Handshake RFC 6455 > deve aplicar rate limiting (10 msg/s)
+[DesktopAgent] Rate limit excedido para ::1
+[DesktopAgent] Rate limit excedido para ::1
+[DesktopAgent] Rate limit excedido para ::1
+[DesktopAgent] Rate limit excedido para ::1
+[DesktopAgent] Rate limit excedido para ::1
+[Test] Rate limiting funcionando corretamente!
+[Test] Rate limiting funcionando corretamente!
+[Test] Rate limiting funcionando corretamente!
+[Test] Rate limiting funcionando corretamente!
+[Test] Rate limiting funcionando corretamente!
+
+stdout | server/websocket.handshake.test.ts > WebSocket Handshake RFC 6455 > deve rejeitar mensagens maiores que 1MB
+[DesktopAgent] Nova conexão de ::1
+[Test] Enviando mensagem grande (>1MB)...
+
+stdout | server/websocket.handshake.test.ts > WebSocket Handshake RFC 6455 > deve rejeitar mensagens maiores que 1MB
+[DesktopAgent] Mensagem rejeitada: tamanho 1049657 bytes excede 1048576
+
+stdout | server/websocket.handshake.test.ts > WebSocket Handshake RFC 6455 > deve rejeitar mensagens maiores que 1MB
+[Test] Conexão fechada com código 1009: Message too large
+[Test] Limite de tamanho funcionando corretamente!
+
+stdout | server/websocket.handshake.test.ts
+[DesktopAgent] Servidor WebSocket fechado
+[Test] HTTP server closed
+
+ ✓ server/websocket.handshake.test.ts (7 tests | 1 skipped) 236ms
+2025-12-01 18:35:41.738080: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:41.738085: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:41.738088: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+stdout | server/websocket.connection.test.ts
+[DesktopAgent] Servidor WebSocket configurado no path /desktop-agent
+[Test] HTTP server listening on port 3002
+
+stdout | server/websocket.connection.test.ts > WebSocket Connection Tests > deve aceitar conexão WebSocket com HTTP 101 handshake
+[DesktopAgent] Nova conexão de ::1
+
+stdout | server/websocket.connection.test.ts > WebSocket Connection Tests > deve aceitar conexão WebSocket com HTTP 101 handshake
+✅ Conexão WebSocket estabelecida (HTTP 101)
+
+stdout | server/websocket.connection.test.ts > WebSocket Connection Tests > deve receber mensagem de boas-vindas após conexão
+[DesktopAgent] Nova conexão de ::1
+✅ Mensagem de boas-vindas recebida
+
+stdout | server/websocket.connection.test.ts > WebSocket Connection Tests > deve autenticar com token válido
+[DesktopAgent] Nova conexão de ::1
+
+stdout | server/websocket.connection.test.ts > WebSocket Connection Tests > deve autenticar com token válido
+[DesktopAgent] [DEBUG] handleAuth iniciado
+[DesktopAgent] [DEBUG] Mensagem recebida: {"type":"auth","timestamp":"2025-12-01T23:35:41.959Z"}
+[DesktopAgent] [ERROR] Token não fornecido na mensagem
+
+stdout | server/desktop-control.integration.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stderr | server/desktop-control.integration.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/desktop-control.integration.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/desktop-control.integration.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+2025-12-01 18:35:42.214391: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-12-01 18:35:42.214392: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-12-01 18:35:42.214422: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-12-01 18:35:42.631369: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:42.666899: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+ ✓ server/telemetry.test.ts (16 tests) 253ms
+stdout | server/desktop-control.integration.test.ts > Desktop Control Integration Tests > Command Management > deve enviar comando shell para agent
+[CommandSecurity] Auditoria registrada: allowed - ls -la
+
+stdout | server/desktop-control.integration.test.ts > Desktop Control Integration Tests > Command Management > deve enviar comando shell para agent
+[DesktopControl] Comando 14 criado: shell
+[DesktopControl] Agent: 201, Data: { command: 'ls -la' }
+
+ ✓ server/_core/uri-schemes.test.ts (27 tests) 16ms
+stdout | server/desktop-control.integration.test.ts > Desktop Control Integration Tests > Command Management > deve enviar comando screenshot para agent
+[DesktopControl] Comando 15 criado: screenshot
+[DesktopControl] Agent: 201, Data: {}
+
+ ❯ server/desktop-control.integration.test.ts (13 tests | 1 failed) 330ms
+   × Desktop Control Integration Tests > Agent Management > deve criar um novo agent 20ms
+     → Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 62b8a1ba3295ee40bc9931a3f060a4d36a32efc009db1ba23027cc34ffe06713,offline,2025-12-01 23:35:42.818
+ ✓ server/_core/python-validator.test.ts (23 tests) 15ms
+stdout | server/obsidian-improvements.test.ts > 🎯 3 Melhorias Obsidian - Testes de Integração > 2️⃣ UI de Sincronização - Sync Manual e Auto-Sync > deve executar sincronização manual do vault
+[ObsidianSync] Sync concluído para vault 90068 em 42ms
+
+stdout | server/obsidian-improvements.test.ts > 🎯 3 Melhorias Obsidian - Testes de Integração > 2️⃣ UI de Sincronização - Sync Manual e Auto-Sync > deve ativar auto-sync para o vault
+[ObsidianSync] Auto-sync iniciado para vault 90068 (a cada 5 min)
+
+stdout | server/routers/perplexity.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stderr | server/routers/perplexity.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/routers/perplexity.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/routers/deepsite.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stderr | server/routers/deepsite.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/routers/perplexity.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+stdout | server/routers/deepsite.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/obsidian-improvements.test.ts > 🎯 3 Melhorias Obsidian - Testes de Integração > 2️⃣ UI de Sincronização - Sync Manual e Auto-Sync > deve desativar auto-sync para o vault
+[ObsidianSync] Auto-sync parado para vault 90068
+
+stdout | server/routers/deepsite.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+2025-12-01 18:35:44.652923: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:44.696341: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-12-01 18:35:44.781514: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+ ✓ server/routers/perplexity.test.ts (13 tests) 16ms
+2025-12-01 18:35:44.822603: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+ ✓ server/obsidian-critical-features.test.ts (10 tests) 2474ms
+   ✓ 🔴 Funcionalidades Críticas Obsidian > 2️⃣ Sincronização Real com Filesystem > deve retornar erro se vault não tiver caminho configurado 630ms
+   ✓ 🔴 Funcionalidades Críticas Obsidian > 2️⃣ Sincronização Real com Filesystem > deve retornar resultado de sync com contadores 380ms
+   ✓ 🔴 Funcionalidades Críticas Obsidian > 3️⃣ Atualização Automática de Backlinks > deve atualizar backlinks quando conteúdo é modificado 356ms
+stderr | server/routers/deepsite.test.ts > DeepSite Integration > analisarDocumento > deve analisar texto e retornar estrutura válida
+[DeepSite] Erro ao chamar modelo cardiffnlp/twitter-xlm-roberta-base-sentiment: Error: API Error: 404 - Not Found
+    at callHuggingFaceAPI (/home/ubuntu/servidor-automacao/server/_core/deepsite.ts:109:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Promise.allSettled (index 2)
+    at Module.analisarDocumento (/home/ubuntu/servidor-automacao/server/_core/deepsite.ts:237:9)
+    at /home/ubuntu/servidor-automacao/server/routers/deepsite.ts:77:14
+    at resolveMiddleware (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at procedure (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20)
+    at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+[DeepSite] Erro ao chamar modelo pierreguillou/bert-base-cased-pt-lenerbr: Error: API Error: 404 - Not Found
+    at callHuggingFaceAPI (/home/ubuntu/servidor-automacao/server/_core/deepsite.ts:109:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Promise.allSettled (index 1)
+    at Module.analisarDocumento (/home/ubuntu/servidor-automacao/server/_core/deepsite.ts:237:9)
+    at /home/ubuntu/servidor-automacao/server/routers/deepsite.ts:77:14
+    at resolveMiddleware (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at procedure (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20)
+    at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+[DeepSite] Erro ao chamar modelo papluca/xlm-roberta-base-language-detection: Error: API Error: 404 - Not Found
+    at callHuggingFaceAPI (/home/ubuntu/servidor-automacao/server/_core/deepsite.ts:109:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Promise.allSettled (index 3)
+    at Module.analisarDocumento (/home/ubuntu/servidor-automacao/server/_core/deepsite.ts:237:9)
+    at /home/ubuntu/servidor-automacao/server/routers/deepsite.ts:77:14
+    at resolveMiddleware (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at procedure (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20)
+    at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+[DeepSite] Erro ao chamar modelo facebook/bart-large-cnn: Error: API Error: 404 - Not Found
+    at callHuggingFaceAPI (/home/ubuntu/servidor-automacao/server/_core/deepsite.ts:109:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Promise.allSettled (index 0)
+    at Module.analisarDocumento (/home/ubuntu/servidor-automacao/server/_core/deepsite.ts:237:9)
+    at /home/ubuntu/servidor-automacao/server/routers/deepsite.ts:77:14
+    at resolveMiddleware (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at procedure (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20)
+    at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+
+stderr | server/routers/deepsite.test.ts > DeepSite Integration > extrairEntidades > deve retornar estrutura válida de entidades
+[DeepSite] Erro ao chamar modelo pierreguillou/bert-base-cased-pt-lenerbr: Error: API Error: 404 - Not Found
+    at callHuggingFaceAPI (/home/ubuntu/servidor-automacao/server/_core/deepsite.ts:109:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at Module.extrairEntidades (/home/ubuntu/servidor-automacao/server/_core/deepsite.ts:353:18)
+    at /home/ubuntu/servidor-automacao/server/routers/deepsite.ts:258:14
+    at resolveMiddleware (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at procedure (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20)
+    at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+    at /home/ubuntu/servidor-automacao/server/routers/deepsite.test.ts:102:25
+
+ ✓ server/routers/deepsite.test.ts (11 tests) 152ms
+ ✓ server/routers/obsidian.test.ts (15 tests) 36ms
+stdout | server/routers/desktop-control.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stderr | server/routers/desktop-control.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/routers/desktop-control.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/scheduler.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stdout | server/routers/desktop-control.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+stdout | server/obsidian-security.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stdout | server/scheduler.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stderr | server/scheduler.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stderr | server/obsidian-security.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/obsidian-security.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/scheduler.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+stdout | server/obsidian-security.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+2025-12-01 18:35:46.462957: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:46.498340: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+ ✓ server/obsidian-improvements.test.ts (11 tests) 4069ms
+   ✓ 🎯 3 Melhorias Obsidian - Testes de Integração > 2️⃣ UI de Sincronização - Sync Manual e Auto-Sync > deve executar sincronização manual do vault 556ms
+   ✓ 🎯 3 Melhorias Obsidian - Testes de Integração > 2️⃣ UI de Sincronização - Sync Manual e Auto-Sync > deve ativar auto-sync para o vault 401ms
+   ✓ 🎯 3 Melhorias Obsidian - Testes de Integração > 2️⃣ UI de Sincronização - Sync Manual e Auto-Sync > deve desativar auto-sync para o vault 329ms
+   ✓ 🎯 3 Melhorias Obsidian - Testes de Integração > 2️⃣ UI de Sincronização - Sync Manual e Auto-Sync > deve retornar status de auto-sync nos vaults listados 303ms
+   ✓ 🎯 3 Melhorias Obsidian - Testes de Integração > 3️⃣ Parser de Wikilinks - Graph View com Backlinks Reais > deve extrair wikilinks e construir grafo de notas 387ms
+   ✓ 🎯 3 Melhorias Obsidian - Testes de Integração > 3️⃣ Parser de Wikilinks - Graph View com Backlinks Reais > deve criar links bidirecionais entre notas conectadas 338ms
+   ✓ 🎯 3 Melhorias Obsidian - Testes de Integração > 3️⃣ Parser de Wikilinks - Graph View com Backlinks Reais > deve incluir tags nos nodes do grafo 361ms
+   ✓ 🎯 3 Melhorias Obsidian - Testes de Integração > 3️⃣ Parser de Wikilinks - Graph View com Backlinks Reais > deve ignorar wikilinks para notas inexistentes 510ms
+   ✓ 🎯 3 Melhorias Obsidian - Testes de Integração > 3️⃣ Parser de Wikilinks - Graph View com Backlinks Reais > deve evitar links duplicados no grafo 355ms
+2025-12-01 18:35:46.671868: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:46.717560: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-12-01 18:35:46.788328: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+ ✓ server/notification.service.test.ts (16 tests) 13ms
+2025-12-01 18:35:46.825154: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+stdout | server/scheduler.test.ts > Scheduler System > scheduler-service > should create a schedule (once)
+[Scheduler] Created schedule 90111
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler-service > should create a schedule (interval)
+[Scheduler] Registered interval schedule 90112: 60min
+[Scheduler] Created schedule 90112
+
+stdout | server/websocket.connection.test.ts > WebSocket Connection Tests > deve rejeitar token inválido
+[DesktopAgent] Upgrade rejeitado: token ausente
+
+ ✓ server/routers/desktop-control.test.ts (13 tests) 254ms
+stdout | server/websocket.connection.test.ts > WebSocket Connection Tests > deve processar heartbeat e responder com heartbeat_ack
+[DesktopAgent] Nova conexão de ::1
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler-service > should create a schedule (cron)
+[Scheduler] Registered cron schedule 90113: 0 2 * * *
+[Scheduler] Created schedule 90113
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler-service > should pause a schedule
+[Scheduler] Created schedule 90114
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler-service > should pause a schedule
+[Scheduler] Paused schedule 90114
+
+stdout | server/websocket.connection.test.ts > WebSocket Connection Tests > deve processar heartbeat e responder com heartbeat_ack
+[DesktopAgent] [DEBUG] handleAuth iniciado
+[DesktopAgent] [DEBUG] Mensagem recebida: {"type":"auth","timestamp":"2025-12-01T23:35:46.970Z"}
+[DesktopAgent] [ERROR] Token não fornecido na mensagem
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler-service > should resume a schedule
+[Scheduler] Created schedule 90115
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler-service > should resume a schedule
+[Scheduler] Paused schedule 90115
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler-service > should resume a schedule
+[Scheduler] Resumed schedule 90115
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler-service > should delete a schedule
+[Scheduler] Created schedule 90116
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler-service > should delete a schedule
+[Scheduler] Deleted schedule 90116
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler router > should create schedule via tRPC
+[Scheduler] Created schedule 90117
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler router > should pause schedule via tRPC
+[Scheduler] Created schedule 90118
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler router > should pause schedule via tRPC
+[Scheduler] Paused schedule 90118
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler router > should resume schedule via tRPC
+[Scheduler] Created schedule 90119
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler router > should resume schedule via tRPC
+[Scheduler] Paused schedule 90119
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler router > should resume schedule via tRPC
+[Scheduler] Resumed schedule 90119
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler router > should delete schedule via tRPC
+[Scheduler] Created schedule 90120
+
+stdout | server/scheduler.test.ts > Scheduler System > scheduler router > should delete schedule via tRPC
+[Scheduler] Deleted schedule 90120
+
+ ✓ server/scheduler.test.ts (12 tests) 381ms
+ ✓ server/api-validation.test.ts (17 tests) 193ms
+stdout | server/obsidian-read-permissions.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stderr | server/obsidian-read-permissions.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/obsidian-read-permissions.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/obsidian-read-permissions.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+ ✓ server/obsidian-security.test.ts (8 tests) 1003ms
+   ✓ 🔒 Funcionalidades Críticas de Segurança Obsidian > 3️⃣ Sincronização Bidirecional (Banco → Filesystem) > deve retornar erro se vault não tiver caminho configurado 489ms
+stdout | server/desktop-control-e2e.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+ ✓ server/services/cache-manager.test.ts (18 tests) 564ms
+stderr | server/desktop-control-e2e.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/desktop-control-e2e.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/_core/retry-handler.test.ts > Retry Handler > retryWithBackoff > deve fazer retry até conseguir sucesso
+[Retry] Tentativa 1/5 falhou. Aguardando 10ms antes de tentar novamente. Erro: falha 1
+
+stdout | server/_core/retry-handler.test.ts > Retry Handler > retryWithBackoff > deve fazer retry até conseguir sucesso
+[Retry] Tentativa 2/5 falhou. Aguardando 20ms antes de tentar novamente. Erro: falha 2
+
+stdout | server/_core/retry-handler.test.ts > Retry Handler > retryWithBackoff > deve falhar após esgotar tentativas
+[Retry] Tentativa 1/3 falhou. Aguardando 10ms antes de tentar novamente. Erro: sempre falha
+
+stdout | server/_core/retry-handler.test.ts > Retry Handler > retryWithBackoff > deve falhar após esgotar tentativas
+[Retry] Tentativa 2/3 falhou. Aguardando 20ms antes de tentar novamente. Erro: sempre falha
+
+stdout | server/_core/retry-handler.test.ts > Retry Handler > retryWithBackoff > deve respeitar backoff exponencial
+[Retry] Tentativa 1/3 falhou. Aguardando 10ms antes de tentar novamente. Erro: falha
+
+stdout | server/desktop-control-e2e.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+stdout | server/_core/retry-handler.test.ts > Retry Handler > retryWithBackoff > deve respeitar backoff exponencial
+[Retry] Tentativa 2/3 falhou. Aguardando 20ms antes de tentar novamente. Erro: falha
+
+stdout | server/_core/retry-handler.test.ts > Retry Handler > retryWithBackoff > deve chamar callback onRetry
+[Retry] Tentativa 1/3 falhou. Aguardando 10ms antes de tentar novamente. Erro: falha 1
+
+stdout | server/_core/retry-handler.test.ts > Retry Handler > retryWithBackoff > deve respeitar maxDelayMs
+[Retry] Tentativa 1/5 falhou. Aguardando 10ms antes de tentar novamente. Erro: falha
+
+stdout | server/_core/retry-handler.test.ts > Retry Handler > retryWithBackoff > deve respeitar maxDelayMs
+[Retry] Tentativa 2/5 falhou. Aguardando 20ms antes de tentar novamente. Erro: falha
+
+2025-12-01 18:35:48.304677: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+stdout | server/_core/retry-handler.test.ts > Retry Handler > retryWithBackoff > deve respeitar maxDelayMs
+[Retry] Tentativa 3/5 falhou. Aguardando 20ms antes de tentar novamente. Erro: falha
+
+stdout | server/_core/retry-handler.test.ts > Retry Handler > retryWithBackoff > deve respeitar maxDelayMs
+[Retry] Tentativa 4/5 falhou. Aguardando 20ms antes de tentar novamente. Erro: falha
+
+2025-12-01 18:35:48.340364: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+stdout | server/_core/retry-handler.test.ts > Retry Handler > ServiceRetryManager > deve registrar tentativas de retry
+[Retry] Tentativa 1/3 falhou. Aguardando 10ms antes de tentar novamente. Erro: falha
+
+ ✓ server/_core/retry-handler.test.ts (11 tests) 212ms
+ ✓ server/obsidian-read-permissions.test.ts (11 tests) 105ms
+ ✓ server/anti-hallucination.test.ts (11 tests) 8ms
+2025-12-01 18:35:48.655653: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:48.692902: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+ ✓ server/dangerousCommands.test.ts (17 tests) 14ms
+stdout | server/desktop-control-e2e.test.ts > Desktop Control - Integração End-to-End > deve validar fluxo completo: listar agents → enviar comando → validar segurança
+[CommandSecurity] Auditoria registrada: allowed - ls -la
+
+stdout | server/desktop-control-e2e.test.ts > Desktop Control - Integração End-to-End > deve validar fluxo completo: listar agents → enviar comando → validar segurança
+[CommandSecurity] Auditoria registrada: blocked - rm -rf /
+
+stdout | server/desktop-control-e2e.test.ts > Desktop Control - Integração End-to-End > deve validar fluxo completo: listar agents → enviar comando → validar segurança
+[CommandSecurity] Auditoria registrada: confirmed - rm -r /tmp/test
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos perigosos > deve bloquear rm -rf /
+[CommandSecurity] Auditoria registrada: blocked - rm -rf /
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos perigosos > deve bloquear format
+[CommandSecurity] Auditoria registrada: blocked - format C:
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos perigosos > deve bloquear dd if=
+[CommandSecurity] Auditoria registrada: blocked - dd if=/dev/zero of=/dev/sda
+
+ ✓ server/desktop-control-e2e.test.ts (7 tests) 275ms
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos perigosos > deve bloquear del /s /q
+[CommandSecurity] Auditoria registrada: blocked - del /s /q C:\
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos perigosos > deve bloquear fork bomb
+[CommandSecurity] Auditoria registrada: blocked - :(){ :|:& };:
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos perigosos > deve bloquear shutdown
+[CommandSecurity] Auditoria registrada: blocked - shutdown -h now
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos perigosos > deve bloquear reboot
+[CommandSecurity] Auditoria registrada: blocked - reboot
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos que requerem confirmação > deve requerer confirmação para rm -r
+[CommandSecurity] Auditoria registrada: confirmed - rm -r /home/user/folder
+
+ ✓ server/services/url-validator.test.ts (21 tests) 11ms
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos que requerem confirmação > deve requerer confirmação para del /s
+[CommandSecurity] Auditoria registrada: confirmed - del /s C:\temp
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos que requerem confirmação > deve requerer confirmação para git reset --hard
+[CommandSecurity] Auditoria registrada: confirmed - git reset --hard HEAD~5
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos que requerem confirmação > deve requerer confirmação para git clean -fd
+[CommandSecurity] Auditoria registrada: confirmed - git clean -fd
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos seguros > deve permitir ls
+[CommandSecurity] Auditoria registrada: allowed - ls -la
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos seguros > deve permitir echo
+[CommandSecurity] Auditoria registrada: allowed - echo "Hello World"
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos seguros > deve permitir pwd
+[CommandSecurity] Auditoria registrada: allowed - pwd
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos seguros > deve permitir cat
+[CommandSecurity] Auditoria registrada: allowed - cat file.txt
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos seguros > deve permitir mkdir
+[CommandSecurity] Auditoria registrada: allowed - mkdir /tmp/test
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos seguros > deve permitir cd
+[CommandSecurity] Auditoria registrada: allowed - cd /home/user
+
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos seguros > deve permitir npm install
+[CommandSecurity] Auditoria registrada: allowed - npm install express
+
+ ✓ server/routes/buscar-arquivos.test.ts (8 tests) 13ms
+stdout | server/command-security.test.ts > command-security > validateCommand - comandos seguros > deve permitir git status
+[CommandSecurity] Auditoria registrada: allowed - git status
+
+stdout | server/command-security.test.ts > command-security > validateCommand - edge cases > deve lidar com comando vazio
+[CommandSecurity] Auditoria registrada: allowed - 
+
+stdout | server/routers/install.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stdout | server/command-security.test.ts > command-security > validateCommand - edge cases > deve lidar com comando com múltiplos espaços
+[CommandSecurity] Auditoria registrada: allowed - ls    -la
+
+stdout | server/command-security.test.ts > command-security > validateCommand - edge cases > deve ser case-insensitive para comandos perigosos
+[CommandSecurity] Auditoria registrada: blocked - SHUTDOWN -h now
+
+ ✓ server/command-security.test.ts (22 tests) 540ms
+stderr | server/routers/install.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/routers/install.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/routers/install.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+stdout | server/notifications.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stderr | server/notifications.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/notifications.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/notifications.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+2025-12-01 18:35:50.161161: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:50.198021: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+ ✓ server/routes/skills.create.test.ts (4 tests) 288ms
+stderr | server/routers/install.test.ts > Install Router > install.desktopAgent > deve registrar novo agente com sucesso
+[Install] Erro ao registrar agente: DrizzleQueryError: Failed query: select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = ? limit ?
+params: test-machine-123,1
+    at MySql2PreparedQuery.queryWithCache (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at MySql2PreparedQuery.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:132:18)
+    at /home/ubuntu/servidor-automacao/server/routers/install.ts:56:31
+    at resolveMiddleware (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at procedure (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20)
+    at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+    at /home/ubuntu/servidor-automacao/server/routers/install.test.ts:31:22 {
+  query: 'select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = ? limit ?',
+  params: [ 'test-machine-123', 1 ],
+  cause: Error: You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 163 near "= 'test-machine-123' limit 1" 
+      at PromisePool.query (/home/ubuntu/servidor-automacao/node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22)
+      at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:133:24
+      at MySql2PreparedQuery.queryWithCache (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18)
+      at MySql2PreparedQuery.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:132:29)
+      at MySqlSelectBase.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/select.ts:1145:25)
+      at MySqlSelectBase.then (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15)
+      at processTicksAndRejections (node:internal/process/task_queues:105:5) {
+    code: 'ER_PARSE_ERROR',
+    errno: 1064,
+    sql: "select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = 'test-machine-123' limit 1",
+    sqlState: '42000',
+    sqlMessage: `You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 163 near "= 'test-machine-123' limit 1" `
+  }
+}
+
+stdout | server/obsidian-write-permissions.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stderr | server/routers/install.test.ts > Install Router > install.desktopAgent > deve reutilizar token de agente existente
+[Install] Erro ao registrar agente: DrizzleQueryError: Failed query: select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = ? limit ?
+params: test-machine-456,1
+    at MySql2PreparedQuery.queryWithCache (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at MySql2PreparedQuery.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:132:18)
+    at /home/ubuntu/servidor-automacao/server/routers/install.ts:56:31
+    at resolveMiddleware (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at procedure (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20)
+    at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+    at /home/ubuntu/servidor-automacao/server/routers/install.test.ts:50:21 {
+  query: 'select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = ? limit ?',
+  params: [ 'test-machine-456', 1 ],
+  cause: Error: You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 163 near "= 'test-machine-456' limit 1" 
+      at PromisePool.query (/home/ubuntu/servidor-automacao/node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22)
+      at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:133:24
+      at MySql2PreparedQuery.queryWithCache (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18)
+      at MySql2PreparedQuery.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:132:29)
+      at MySqlSelectBase.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/select.ts:1145:25)
+      at MySqlSelectBase.then (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15)
+      at processTicksAndRejections (node:internal/process/task_queues:105:5) {
+    code: 'ER_PARSE_ERROR',
+    errno: 1064,
+    sql: "select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = 'test-machine-456' limit 1",
+    sqlState: '42000',
+    sqlMessage: `You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 163 near "= 'test-machine-456' limit 1" `
+  }
+}
+
+stderr | server/routers/install.test.ts > Install Router > install.validate > deve validar agente registrado
+[Install] Erro ao registrar agente: DrizzleQueryError: Failed query: select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = ? limit ?
+params: test-machine-999,1
+    at MySql2PreparedQuery.queryWithCache (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at MySql2PreparedQuery.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:132:18)
+    at /home/ubuntu/servidor-automacao/server/routers/install.ts:56:31
+    at resolveMiddleware (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at procedure (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20)
+    at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+    at /home/ubuntu/servidor-automacao/server/routers/install.test.ts:106:26 {
+  query: 'select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = ? limit ?',
+  params: [ 'test-machine-999', 1 ],
+  cause: Error: You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 163 near "= 'test-machine-999' limit 1" 
+      at PromisePool.query (/home/ubuntu/servidor-automacao/node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22)
+      at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:133:24
+      at MySql2PreparedQuery.queryWithCache (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18)
+      at MySql2PreparedQuery.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:132:29)
+      at MySqlSelectBase.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/select.ts:1145:25)
+      at MySqlSelectBase.then (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15)
+      at processTicksAndRejections (node:internal/process/task_queues:105:5) {
+    code: 'ER_PARSE_ERROR',
+    errno: 1064,
+    sql: "select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = 'test-machine-999' limit 1",
+    sqlState: '42000',
+    sqlMessage: `You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 163 near "= 'test-machine-999' limit 1" `
+  }
+}
+
+stderr | server/routers/install.test.ts > Install Router > install.validate > deve rejeitar token inválido
+[Install] Erro ao registrar agente: DrizzleQueryError: Failed query: select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = ? limit ?
+params: test-machine-888,1
+    at MySql2PreparedQuery.queryWithCache (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at MySql2PreparedQuery.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:132:18)
+    at /home/ubuntu/servidor-automacao/server/routers/install.ts:56:31
+    at resolveMiddleware (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at procedure (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20)
+    at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+    at /home/ubuntu/servidor-automacao/server/routers/install.test.ts:129:26 {
+  query: 'select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = ? limit ?',
+  params: [ 'test-machine-888', 1 ],
+  cause: Error: You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 163 near "= 'test-machine-888' limit 1" 
+      at PromisePool.query (/home/ubuntu/servidor-automacao/node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22)
+      at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:133:24
+      at MySql2PreparedQuery.queryWithCache (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18)
+      at MySql2PreparedQuery.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:132:29)
+      at MySqlSelectBase.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/select.ts:1145:25)
+      at MySqlSelectBase.then (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15)
+      at processTicksAndRejections (node:internal/process/task_queues:105:5) {
+    code: 'ER_PARSE_ERROR',
+    errno: 1064,
+    sql: "select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = 'test-machine-888' limit 1",
+    sqlState: '42000',
+    sqlMessage: `You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 163 near "= 'test-machine-888' limit 1" `
+  }
+}
+
+stderr | server/routers/install.test.ts > Install Router > install.validate > deve rejeitar agent_id inexistente
+[Install] Erro ao validar instalação: DrizzleQueryError: Failed query: select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = ? limit ?
+params: agent_nonexistent_123,1
+    at MySql2PreparedQuery.queryWithCache (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at MySql2PreparedQuery.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:132:18)
+    at /home/ubuntu/servidor-automacao/server/routers/install.ts:139:23
+    at resolveMiddleware (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at callRecursive (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20)
+    at procedure (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20)
+    at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+    at /home/ubuntu/servidor-automacao/server/routers/install.test.ts:149:26 {
+  query: 'select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = ? limit ?',
+  params: [ 'agent_nonexistent_123', 1 ],
+  cause: Error: You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 163 near "= 'agent_nonexistent_123' limit 1" 
+      at PromisePool.query (/home/ubuntu/servidor-automacao/node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22)
+      at file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:133:24
+      at MySql2PreparedQuery.queryWithCache (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18)
+      at MySql2PreparedQuery.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:132:29)
+      at MySqlSelectBase.execute (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/select.ts:1145:25)
+      at MySqlSelectBase.then (file:///home/ubuntu/servidor-automacao/node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15)
+      at processTicksAndRejections (node:internal/process/task_queues:105:5) {
+    code: 'ER_PARSE_ERROR',
+    errno: 1064,
+    sql: "select `id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt` from `desktop_agents` where  = 'agent_nonexistent_123' limit 1",
+    sqlState: '42000',
+    sqlMessage: `You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 163 near "= 'agent_nonexistent_123' limit 1" `
+  }
+}
+
+ ❯ server/routers/install.test.ts (8 tests | 5 failed) 108ms
+   × Install Router > install.desktopAgent > deve registrar novo agente com sucesso 29ms
+     → Falha ao registrar agente
+   × Install Router > install.desktopAgent > deve reutilizar token de agente existente 25ms
+     → Falha ao registrar agente
+   × Install Router > install.validate > deve validar agente registrado 8ms
+     → Falha ao registrar agente
+   × Install Router > install.validate > deve rejeitar token inválido 11ms
+     → Falha ao registrar agente
+   × Install Router > install.validate > deve rejeitar agent_id inexistente 10ms
+     → Falha ao validar instalação
+stdout | server/obsidian-write-permissions.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stderr | server/obsidian-write-permissions.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/obsidian-write-permissions.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+2025-12-01 18:35:50.594457: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:50.631251: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+stdout | server/notifications.test.ts > Notifications System > notification-service > should create a notification
+[Notifications] Created notification 90081 for user 1
+
+stdout | server/notifications.test.ts > Notifications System > notification-service > should notify when command is blocked
+[Notifications] Created notification 90082 for user 1
+
+stdout | server/notifications.test.ts > Notifications System > notification-service > should notify when agent goes offline
+[Notifications] Created notification 90083 for user 1
+
+stdout | server/notifications.test.ts > Notifications System > notification-service > should notify when agent comes online
+[Notifications] Created notification 90084 for user 1
+
+stdout | server/notifications.test.ts > Notifications System > notification-service > should notify when command fails
+[Notifications] Created notification 90085 for user 1
+
+stdout | server/notifications.test.ts > Notifications System > notification-service > should notify when screenshot is captured
+[Notifications] Created notification 90086 for user 1
+
+stdout | server/notifications.test.ts > Notifications System > notification-service > should notify when command succeeds
+[Notifications] Created notification 90087 for user 1
+
+stdout | server/notifications.test.ts > Notifications System > notifications router > should mark notification as read
+[Notifications] Created notification 90088 for user 1
+
+ ✓ server/notifications.test.ts (11 tests) 217ms
+2025-12-01 18:35:51.001829: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:51.038910: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+ ✓ server/obsidian-write-permissions.test.ts (4 tests) 40ms
+stdout | server/alerts.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stdout | server/ml-prediction.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stderr | server/alerts.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/alerts.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stderr | server/ml-prediction.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/ml-prediction.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/alerts.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+stdout | server/ml-prediction.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+stdout | server/websocket.connection.test.ts > WebSocket Connection Tests > deve validar formato ISO8601 dos timestamps
+[DesktopAgent] Nova conexão de ::1
+
+stdout | server/desktop-auth.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stdout | server/websocket.connection.test.ts > WebSocket Connection Tests > deve validar formato ISO8601 dos timestamps
+[DesktopAgent] [DEBUG] handleAuth iniciado
+[DesktopAgent] [DEBUG] Mensagem recebida: {"type":"auth","timestamp":"2025-12-01T23:35:51.967Z"}
+[DesktopAgent] [ERROR] Token não fornecido na mensagem
+
+2025-12-01 18:35:51.976669: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:52.013106: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+stderr | server/desktop-auth.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/desktop-auth.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+2025-12-01 18:35:52.058886: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:52.098457: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+stdout | server/routers/apis-personalizadas.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stdout | server/desktop-auth.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+stderr | server/routers/apis-personalizadas.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/routers/apis-personalizadas.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+ ✓ server/ml-prediction.test.ts (7 tests | 2 skipped) 100ms
+ ✓ server/alerts.test.ts (9 tests) 198ms
+stdout | server/routers/apis-personalizadas.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+2025-12-01 18:35:52.595115: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:52.631689: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+ ✓ server/desktop-auth.test.ts (4 tests) 125ms
+2025-12-01 18:35:52.904785: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:52.952431: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+stdout | server/auth.logout.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+ ✓ server/routes/status.test.ts (2 tests) 96ms
+stdout | server/desktop-control.createAgent.test.ts
+[Health Checks] Iniciando verificações periódicas (intervalo: 30000ms)
+[Auto-Healing] Iniciando monitoramento (intervalo: 30000ms)
+
+stderr | server/auth.logout.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/auth.logout.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stderr | server/desktop-control.createAgent.test.ts
+[Health Checks] Sistema unhealthy: database, cpu
+
+stdout | server/desktop-control.createAgent.test.ts
+[WhatsApp Web Sim] Serviço inicializado (modo simulação)
+
+stdout | server/auth.logout.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+stdout | server/desktop-control.createAgent.test.ts
+[RedisCache] ✅ Conectado ao Redis com sucesso
+
+2025-12-01 18:35:53.875483: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:53.927569: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-12-01 18:35:53.931464: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-01 18:35:53.967239: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+ ✓ server/auth.logout.test.ts (1 test) 5ms
+ ❯ server/desktop-control.createAgent.test.ts (4 tests | 3 failed) 49ms
+   × desktopControl.createAgent > deve criar um novo agent com token válido 29ms
+     → Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 511d2cfc25388a03724fea84e58b68dcd2522e6f880cef294dc98680f73c6b7d,offline,2025-12-01 23:35:54.069
+   × desktopControl.createAgent > deve criar agent sem plataforma especificada 8ms
+     → Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 32eabe904f799cf1f657624a0200b0252162e47cb9d8867297b52763f854342a,offline,2025-12-01 23:35:54.096
+   × desktopControl.createAgent > deve gerar tokens únicos para cada agent 7ms
+     → Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 3315f97d1364f649f8d50e666d7fb4d459576bc1180b5e2d250eabcd8f100d59,offline,2025-12-01 23:35:54.108
+ ❯ server/websocket.connection.test.ts (6 tests | 3 failed) 15184ms
+   × WebSocket Connection Tests > deve autenticar com token válido 5010ms
+     → Timeout: autenticação não completada
+   × WebSocket Connection Tests > deve processar heartbeat e responder com heartbeat_ack 5002ms
+     → Timeout: heartbeat_ack não recebido
+   × WebSocket Connection Tests > deve validar formato ISO8601 dos timestamps 5002ms
+     → Timeout: validação de timestamp não completada
+stdout | server/websocket.connection.test.ts
+[DesktopAgent] Servidor WebSocket fechado
+[Test] HTTP server closed
+
+ ✓ server/routers/apis-personalizadas.test.ts (4 tests) 13266ms
+   ✓ apisPersonalizadas > deve listar APIs personalizadas sem expor chaves 13152ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/desktop-shell-screenshot.test.ts > 🔧 Desktop Control - Shell Commands
+Error: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: ad7d6cea29f266931be0b9a0bf8d428fe292fb35c19d038650cc9fe663321f54,offline,2025-12-01 23:35:39.867
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+     39|   const token = generateAgentToken();
+     40| 
+     41|   const [agent] = await db
+       |                   ^
+     42|     .insert(desktopAgents)
+     43|     .values({
+ ❯ server/desktop-shell-screenshot.test.ts:27:19
+
+Caused by: Error: Field 'user_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, \'ad7d6cea29f266931be0b9a0bf8d428fe292fb35c19d038650cc9fe663321f54\', default, default, default, \'offline\', \'2025-12-01 23:35:39.867\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'user_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/39]⎯
+
+ FAIL  server/desktop-shell-screenshot.test.ts > 📸 Desktop Control - Screenshots
+Error: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 0c6dfb618514f7f1ed0f19e19fbfacbeee34ecc96a6df308cc6b5e9f6101cb21,offline,2025-12-01 23:35:39.974
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+     39|   const token = generateAgentToken();
+     40| 
+     41|   const [agent] = await db
+       |                   ^
+     42|     .insert(desktopAgents)
+     43|     .values({
+ ❯ server/desktop-shell-screenshot.test.ts:162:19
+
+Caused by: Error: Field 'user_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, \'0c6dfb618514f7f1ed0f19e19fbfacbeee34ecc96a6df308cc6b5e9f6101cb21\', default, default, default, \'offline\', \'2025-12-01 23:35:39.974\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'user_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/39]⎯
+
+ FAIL  server/desktop-shell-screenshot.test.ts > ⚡ Desktop Control - Validações
+Error: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 3224b1da86478da2bb423d3f228a2cad1c5655fc151bc5706d067bb55d87bdde,offline,2025-12-01 23:35:39.981
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+     39|   const token = generateAgentToken();
+     40| 
+     41|   const [agent] = await db
+       |                   ^
+     42|     .insert(desktopAgents)
+     43|     .values({
+ ❯ server/desktop-shell-screenshot.test.ts:304:19
+
+Caused by: Error: Field 'user_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, \'3224b1da86478da2bb423d3f228a2cad1c5655fc151bc5706d067bb55d87bdde\', default, default, default, \'offline\', \'2025-12-01 23:35:39.981\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'user_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/39]⎯
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 36 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > createAgent > deve criar um novo Desktop Agent
+Error: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 0abf4403f691b8a19fd05d0e0b6cad5da8cd1ea03438d65baddeb16e9ef20faa,offline,2025-12-01 23:35:39.874
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+     39|   const token = generateAgentToken();
+     40| 
+     41|   const [agent] = await db
+       |                   ^
+     42|     .insert(desktopAgents)
+     43|     .values({
+ ❯ server/db-desktop-control.test.ts:50:21
+
+Caused by: Error: Field 'user_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, \'0abf4403f691b8a19fd05d0e0b6cad5da8cd1ea03438d65baddeb16e9ef20faa\', default, default, default, \'offline\', \'2025-12-01 23:35:39.874\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'user_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > createAgent > deve gerar tokens únicos para cada agent
+Error: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: a7ef6365d6c0081774bedfc927170d694d49e8be7fb7ad035231b78cbf04df43,offline,2025-12-01 23:35:39.999
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+     39|   const token = generateAgentToken();
+     40| 
+     41|   const [agent] = await db
+       |                   ^
+     42|     .insert(desktopAgents)
+     43|     .values({
+ ❯ server/db-desktop-control.test.ts:68:22
+
+Caused by: Error: Field 'user_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, \'a7ef6365d6c0081774bedfc927170d694d49e8be7fb7ad035231b78cbf04df43\', default, default, default, \'offline\', \'2025-12-01 23:35:39.999\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'user_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > getAgentById > deve buscar agent pelo ID
+AssertionError: expected undefined to be 'Test Device' // Object.is equality
+
+- Expected: 
+"Test Device"
+
++ Received: 
+undefined
+
+ ❯ server/db-desktop-control.test.ts:97:33
+     95|       expect(agent).toBeDefined();
+     96|       expect(agent?.id).toBe(testAgentId);
+     97|       expect(agent?.deviceName).toBe("Test Device");
+       |                                 ^
+     98|     });
+     99| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > updateAgentStatus > deve atualizar status do agent
+AssertionError: expected undefined to be 'online' // Object.is equality
+
+- Expected: 
+"online"
+
++ Received: 
+undefined
+
+ ❯ server/db-desktop-control.test.ts:112:29
+    110| 
+    111|       const agent = await getAgentById(testAgentId);
+    112|       expect(agent?.status).toBe("online");
+       |                             ^
+    113|     });
+    114| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > updateAgentStatus > deve aceitar todos os status válidos
+AssertionError: expected undefined to be 'online' // Object.is equality
+
+- Expected: 
+"online"
+
++ Received: 
+undefined
+
+ ❯ server/db-desktop-control.test.ts:126:31
+    124|         await updateAgentStatus(testAgentId, status);
+    125|         const agent = await getAgentById(testAgentId);
+    126|         expect(agent?.status).toBe(status);
+       |                               ^
+    127|       }
+    128|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > updateAgentPing > deve atualizar lastPing do agent
+AssertionError: expected undefined to be defined
+ ❯ server/db-desktop-control.test.ts:142:25
+    140|       const afterPing = (await getAgentById(testAgentId))?.lastPing;
+    141| 
+    142|       expect(afterPing).toBeDefined();
+       |                         ^
+    143|       // Verificar que afterPing existe e é maior ou igual (pode ser i…
+    144|       if (beforePing) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > updateAgentPing > deve atualizar IP address quando fornecido
+AssertionError: expected undefined to be '192.168.1.100' // Object.is equality
+
+- Expected: 
+"192.168.1.100"
+
++ Received: 
+undefined
+
+ ❯ server/db-desktop-control.test.ts:153:32
+    151| 
+    152|       const agent = await getAgentById(testAgentId);
+    153|       expect(agent?.ipAddress).toBe("192.168.1.100");
+       |                                ^
+    154|     });
+    155|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > listUserAgents > deve listar agents do usuário
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ server/db-desktop-control.test.ts:164:56
+    162|       expect(Array.isArray(agents)).toBe(true);
+    163|       expect(agents.length).toBeGreaterThan(0);
+    164|       expect(agents.some((a) => a.id === testAgentId)).toBe(true);
+       |                                                        ^
+    165|     });
+    166| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > createCommand > deve criar comando simples
+Error: Failed query: insert into `desktop_commands` (`id`, `agent_id`, `user_id`, `command_type`, `command_data`, `status`, `result`, `error_message`, `sent_at`, `completed_at`, `execution_time_ms`, `createdAt`) values (default, default, ?, ?, ?, ?, default, default, ?, default, default, default)
+params: 1,screenshot,,pending,2025-12-01 23:35:40.657
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createCommand server/db-desktop-control.ts:192:21
+    190|   }
+    191| 
+    192|   const [command] = await db
+       |                     ^
+    193|     .insert(desktopCommands)
+    194|     .values({
+ ❯ server/db-desktop-control.test.ts:178:23
+
+Caused by: Error: Field 'agent_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_commands` (`id`, `agent_id`, `user_id`, `command_type`, `command_data`, `status`, `result`, `error_message`, `sent_at`, `completed_at`, `execution_time_ms`, `createdAt`) values (default, default, 1, \'screenshot\', NULL, \'pending\', default, default, \'2025-12-01 23:35:40.657\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'agent_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > createCommand > deve criar comando com dados
+Error: Failed query: insert into `desktop_commands` (`id`, `agent_id`, `user_id`, `command_type`, `command_data`, `status`, `result`, `error_message`, `sent_at`, `completed_at`, `execution_time_ms`, `createdAt`) values (default, default, ?, ?, ?, ?, default, default, ?, default, default, default)
+params: 1,mouse_click,{"x":100,"y":200,"button":"left"},pending,2025-12-01 23:35:40.663
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createCommand server/db-desktop-control.ts:192:21
+    190|   }
+    191| 
+    192|   const [command] = await db
+       |                     ^
+    193|     .insert(desktopCommands)
+    194|     .values({
+ ❯ server/db-desktop-control.test.ts:198:23
+
+Caused by: Error: Field 'agent_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_commands` (`id`, `agent_id`, `user_id`, `command_type`, `command_data`, `status`, `result`, `error_message`, `sent_at`, `completed_at`, `execution_time_ms`, `createdAt`) values (default, default, 1, \'mouse_click\', \'{\"x\":100,\"y\":200,\"button\":\"left\"}\', \'pending\', default, default, \'2025-12-01 23:35:40.663\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'agent_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > updateCommandStatus > deve atualizar status para completed com resultado
+AssertionError: expected undefined to be 'completed' // Object.is equality
+
+- Expected: 
+"completed"
+
++ Received: 
+undefined
+
+ ❯ server/db-desktop-control.test.ts:217:31
+    215| 
+    216|       const command = await getCommandById(testCommandId);
+    217|       expect(command?.status).toBe("completed");
+       |                               ^
+    218|       expect(command?.result).toBeDefined();
+    219|       expect(command?.executionTimeMs).toBe(150);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > updateCommandStatus > deve atualizar status para failed com erro
+Error: Failed query: insert into `desktop_commands` (`id`, `agent_id`, `user_id`, `command_type`, `command_data`, `status`, `result`, `error_message`, `sent_at`, `completed_at`, `execution_time_ms`, `createdAt`) values (default, default, ?, ?, ?, ?, default, default, ?, default, default, default)
+params: 1,test_fail,,pending,2025-12-01 23:35:40.693
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createCommand server/db-desktop-control.ts:192:21
+    190|   }
+    191| 
+    192|   const [command] = await db
+       |                     ^
+    193|     .insert(desktopCommands)
+    194|     .values({
+ ❯ server/db-desktop-control.test.ts:224:29
+
+Caused by: Error: Field 'agent_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_commands` (`id`, `agent_id`, `user_id`, `command_type`, `command_data`, `status`, `result`, `error_message`, `sent_at`, `completed_at`, `execution_time_ms`, `createdAt`) values (default, default, 1, \'test_fail\', NULL, \'pending\', default, default, \'2025-12-01 23:35:40.693\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'agent_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > getPendingCommands > deve listar comandos pendentes do agent
+Error: Failed query: insert into `desktop_commands` (`id`, `agent_id`, `user_id`, `command_type`, `command_data`, `status`, `result`, `error_message`, `sent_at`, `completed_at`, `execution_time_ms`, `createdAt`) values (default, default, ?, ?, ?, ?, default, default, ?, default, default, default)
+params: 1,pending_1,,pending,2025-12-01 23:35:40.717
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createCommand server/db-desktop-control.ts:192:21
+    190|   }
+    191| 
+    192|   const [command] = await db
+       |                     ^
+    193|     .insert(desktopCommands)
+    194|     .values({
+ ❯ server/db-desktop-control.test.ts:260:7
+
+Caused by: Error: Field 'agent_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_commands` (`id`, `agent_id`, `user_id`, `command_type`, `command_data`, `status`, `result`, `error_message`, `sent_at`, `completed_at`, `execution_time_ms`, `createdAt`) values (default, default, 1, \'pending_1\', NULL, \'pending\', default, default, \'2025-12-01 23:35:40.717\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'agent_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > getPendingCommands > deve retornar array vazio se não houver comandos pendentes
+Error: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 46cf3c6554a73bbfd95caf168ee8c9f9382d5f703ac276643d53400b22bac7bb,offline,2025-12-01 23:35:40.722
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+     39|   const token = generateAgentToken();
+     40| 
+     41|   const [agent] = await db
+       |                   ^
+     42|     .insert(desktopAgents)
+     43|     .values({
+ ❯ server/db-desktop-control.test.ts:274:24
+
+Caused by: Error: Field 'user_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, \'46cf3c6554a73bbfd95caf168ee8c9f9382d5f703ac276643d53400b22bac7bb\', default, default, default, \'offline\', \'2025-12-01 23:35:40.722\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'user_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > listUserCommands > deve filtrar por agentId
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ server/db-desktop-control.test.ts:298:64
+    296| 
+    297|       expect(commands).toBeDefined();
+    298|       expect(commands.every((c) => c.agentId === testAgentId)).toBe(tr…
+       |                                                                ^
+    299|     });
+    300| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > saveScreenshot > deve salvar screenshot
+Error: Failed query: insert into `desktop_screenshots` (`id`, `agent_id`, `user_id`, `image_url`, `image_key`, `width`, `height`, `file_size`, `format`, `createdAt`) values (default, default, ?, ?, ?, ?, ?, ?, ?, default)
+params: 1,https://s3.example.com/screenshot.png,screenshots/test-123.png,1920,1080,245678,png
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.saveScreenshot server/db-desktop-control.ts:333:24
+    331|   }
+    332| 
+    333|   const [screenshot] = await db
+       |                        ^
+    334|     .insert(desktopScreenshots)
+    335|     .values({
+ ❯ server/db-desktop-control.test.ts:310:28
+
+Caused by: Error: Field 'agent_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_screenshots` (`id`, `agent_id`, `user_id`, `image_url`, `image_key`, `width`, `height`, `file_size`, `format`, `createdAt`) values (default, default, 1, \'https://s3.example.com/screenshot.png\', \'screenshots/test-123.png\', 1920, 1080, 245678, \'png\', default)', sqlState: 'HY000', sqlMessage: 'Field \'agent_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > saveScreenshot > deve salvar screenshot com dados mínimos
+Error: Failed query: insert into `desktop_screenshots` (`id`, `agent_id`, `user_id`, `image_url`, `image_key`, `width`, `height`, `file_size`, `format`, `createdAt`) values (default, default, ?, ?, ?, default, default, default, ?, default)
+params: 1,https://s3.example.com/screenshot2.png,screenshots/test-456.png,png
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.saveScreenshot server/db-desktop-control.ts:333:24
+    331|   }
+    332| 
+    333|   const [screenshot] = await db
+       |                        ^
+    334|     .insert(desktopScreenshots)
+    335|     .values({
+ ❯ server/db-desktop-control.test.ts:325:28
+
+Caused by: Error: Field 'agent_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_screenshots` (`id`, `agent_id`, `user_id`, `image_url`, `image_key`, `width`, `height`, `file_size`, `format`, `createdAt`) values (default, default, 1, \'https://s3.example.com/screenshot2.png\', \'screenshots/test-456.png\', default, default, default, \'png\', default)', sqlState: 'HY000', sqlMessage: 'Field \'agent_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > listUserScreenshots > deve listar screenshots do usuário
+AssertionError: expected 0 to be greater than 0
+ ❯ server/db-desktop-control.test.ts:342:34
+    340|       expect(screenshots).toBeDefined();
+    341|       expect(Array.isArray(screenshots)).toBe(true);
+    342|       expect(screenshots.length).toBeGreaterThan(0);
+       |                                  ^
+    343|     });
+    344| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > addLog > deve adicionar log simples
+Error: Failed query: insert into `desktop_logs` (`id`, `command_id`, `agent_id`, `user_id`, `level`, `message`, `metadata`, `createdAt`) values (default, ?, default, ?, ?, ?, ?, default)
+params: ,1,info,Agent conectado com sucesso,
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.addLog server/db-desktop-control.ts:393:3
+    391|   }
+    392| 
+    393|   await db.insert(desktopLogs).values({
+       |   ^
+    394|     commandId: commandId || null,
+    395|     agentId,
+ ❯ server/db-desktop-control.test.ts:361:7
+
+Caused by: Error: Field 'agent_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_logs` (`id`, `command_id`, `agent_id`, `user_id`, `level`, `message`, `metadata`, `createdAt`) values (default, NULL, default, 1, \'info\', \'Agent conectado com sucesso\', NULL, default)', sqlState: 'HY000', sqlMessage: 'Field \'agent_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > addLog > deve adicionar log com metadata
+Error: Failed query: insert into `desktop_logs` (`id`, `command_id`, `agent_id`, `user_id`, `level`, `message`, `metadata`, `createdAt`) values (default, ?, default, ?, ?, ?, ?, default)
+params: ,1,error,Falha ao executar comando,{"errorCode":"TIMEOUT","duration":5000}
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.addLog server/db-desktop-control.ts:393:3
+    391|   }
+    392| 
+    393|   await db.insert(desktopLogs).values({
+       |   ^
+    394|     commandId: commandId || null,
+    395|     agentId,
+ ❯ server/db-desktop-control.test.ts:370:7
+
+Caused by: Error: Field 'agent_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_logs` (`id`, `command_id`, `agent_id`, `user_id`, `level`, `message`, `metadata`, `createdAt`) values (default, NULL, default, 1, \'error\', \'Falha ao executar comando\', \'{\"errorCode\":\"TIMEOUT\",\"duration\":5000}\', default)', sqlState: 'HY000', sqlMessage: 'Field \'agent_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > addLog > deve aceitar todos os níveis de log
+Error: Failed query: insert into `desktop_logs` (`id`, `command_id`, `agent_id`, `user_id`, `level`, `message`, `metadata`, `createdAt`) values (default, ?, default, ?, ?, ?, ?, default)
+params: ,1,debug,Mensagem de teste debug,
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.addLog server/db-desktop-control.ts:393:3
+    391|   }
+    392| 
+    393|   await db.insert(desktopLogs).values({
+       |   ^
+    394|     commandId: commandId || null,
+    395|     agentId,
+ ❯ server/db-desktop-control.test.ts:390:9
+
+Caused by: Error: Field 'agent_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_logs` (`id`, `command_id`, `agent_id`, `user_id`, `level`, `message`, `metadata`, `createdAt`) values (default, NULL, default, 1, \'debug\', \'Mensagem de teste debug\', NULL, default)', sqlState: 'HY000', sqlMessage: 'Field \'agent_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > listUserLogs > deve filtrar por agentId
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ server/db-desktop-control.test.ts:411:60
+    409| 
+    410|       expect(logs).toBeDefined();
+    411|       expect(logs.every((l) => l.agentId === testAgentId)).toBe(true);
+       |                                                            ^
+    412|     });
+    413| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > deleteAgent > deve deletar agent do usuário
+Error: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: d536b468440ece0a402cc4fea1e3ce4fba8a384d7985b6b489502e6e57831a4c,offline,2025-12-01 23:35:40.859
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+     39|   const token = generateAgentToken();
+     40| 
+     41|   const [agent] = await db
+       |                   ^
+     42|     .insert(desktopAgents)
+     43|     .values({
+ ❯ server/db-desktop-control.test.ts:431:25
+
+Caused by: Error: Field 'user_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, \'d536b468440ece0a402cc4fea1e3ce4fba8a384d7985b6b489502e6e57831a4c\', default, default, default, \'offline\', \'2025-12-01 23:35:40.859\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'user_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/39]⎯
+
+ FAIL  server/db-desktop-control.test.ts > Desktop Control - Helpers CRUD > deleteAgent > não deve deletar agent de outro usuário
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ server/db-desktop-control.test.ts:444:23
+    442|     it("não deve deletar agent de outro usuário", async () => {
+    443|       const deleted = await deleteAgent(testAgentId, 999999);
+    444|       expect(deleted).toBe(false);
+       |                       ^
+    445| 
+    446|       // Verificar que ainda existe
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/39]⎯
+
+ FAIL  server/desktop-control.createAgent.test.ts > desktopControl.createAgent > deve criar um novo agent com token válido
+TRPCError: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 511d2cfc25388a03724fea84e58b68dcd2522e6f880cef294dc98680f73c6b7d,offline,2025-12-01 23:35:54.069
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+     39|   const token = generateAgentToken();
+     40| 
+     41|   const [agent] = await db
+       |                   ^
+     42|     .insert(desktopAgents)
+     43|     .values({
+ ❯ server/routers/desktop-control.ts:46:21
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+
+Caused by: Error: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 511d2cfc25388a03724fea84e58b68dcd2522e6f880cef294dc98680f73c6b7d,offline,2025-12-01 23:35:54.069
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+ ❯ server/routers/desktop-control.ts:46:21
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { query: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)', params: [ '511d2cfc25388a03724fea84e58b68dcd2522e6f880cef294dc98680f73c6b7d', 'offline', '2025-12-01 23:35:54.069' ] }
+Caused by: Error: Field 'user_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, \'511d2cfc25388a03724fea84e58b68dcd2522e6f880cef294dc98680f73c6b7d\', default, default, default, \'offline\', \'2025-12-01 23:35:54.069\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'user_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/39]⎯
+
+ FAIL  server/desktop-control.createAgent.test.ts > desktopControl.createAgent > deve criar agent sem plataforma especificada
+TRPCError: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 32eabe904f799cf1f657624a0200b0252162e47cb9d8867297b52763f854342a,offline,2025-12-01 23:35:54.096
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+     39|   const token = generateAgentToken();
+     40| 
+     41|   const [agent] = await db
+       |                   ^
+     42|     .insert(desktopAgents)
+     43|     .values({
+ ❯ server/routers/desktop-control.ts:46:21
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+
+Caused by: Error: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 32eabe904f799cf1f657624a0200b0252162e47cb9d8867297b52763f854342a,offline,2025-12-01 23:35:54.096
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+ ❯ server/routers/desktop-control.ts:46:21
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { query: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)', params: [ '32eabe904f799cf1f657624a0200b0252162e47cb9d8867297b52763f854342a', 'offline', '2025-12-01 23:35:54.096' ] }
+Caused by: Error: Field 'user_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, \'32eabe904f799cf1f657624a0200b0252162e47cb9d8867297b52763f854342a\', default, default, default, \'offline\', \'2025-12-01 23:35:54.096\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'user_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/39]⎯
+
+ FAIL  server/desktop-control.createAgent.test.ts > desktopControl.createAgent > deve gerar tokens únicos para cada agent
+TRPCError: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 3315f97d1364f649f8d50e666d7fb4d459576bc1180b5e2d250eabcd8f100d59,offline,2025-12-01 23:35:54.108
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+     39|   const token = generateAgentToken();
+     40| 
+     41|   const [agent] = await db
+       |                   ^
+     42|     .insert(desktopAgents)
+     43|     .values({
+ ❯ server/routers/desktop-control.ts:46:21
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+
+Caused by: Error: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 3315f97d1364f649f8d50e666d7fb4d459576bc1180b5e2d250eabcd8f100d59,offline,2025-12-01 23:35:54.108
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+ ❯ server/routers/desktop-control.ts:46:21
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { query: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)', params: [ '3315f97d1364f649f8d50e666d7fb4d459576bc1180b5e2d250eabcd8f100d59', 'offline', '2025-12-01 23:35:54.108' ] }
+Caused by: Error: Field 'user_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, \'3315f97d1364f649f8d50e666d7fb4d459576bc1180b5e2d250eabcd8f100d59\', default, default, default, \'offline\', \'2025-12-01 23:35:54.108\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'user_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/39]⎯
+
+ FAIL  server/desktop-control.integration.test.ts > Desktop Control Integration Tests > Agent Management > deve criar um novo agent
+TRPCError: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 62b8a1ba3295ee40bc9931a3f060a4d36a32efc009db1ba23027cc34ffe06713,offline,2025-12-01 23:35:42.818
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+     39|   const token = generateAgentToken();
+     40| 
+     41|   const [agent] = await db
+       |                   ^
+     42|     .insert(desktopAgents)
+     43|     .values({
+ ❯ server/routers/desktop-control.ts:46:21
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+
+Caused by: Error: Failed query: insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)
+params: 62b8a1ba3295ee40bc9931a3f060a4d36a32efc009db1ba23027cc34ffe06713,offline,2025-12-01 23:35:42.818
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:79:11
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:16
+ ❯ Module.createAgent server/db-desktop-control.ts:41:19
+ ❯ server/routers/desktop-control.ts:46:21
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { query: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, ?, default, default, default, ?, ?, default, default, default)', params: [ '62b8a1ba3295ee40bc9931a3f060a4d36a32efc009db1ba23027cc34ffe06713', 'offline', '2025-12-01 23:35:42.818' ] }
+Caused by: Error: Field 'user_id' doesn't have a default value
+ ❯ PromisePool.query node_modules/.pnpm/mysql2@3.15.1/node_modules/mysql2/lib/promise/pool.js:36:22
+ ❯ node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:101:25
+ ❯ MySql2PreparedQuery.queryWithCache node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/session.ts:77:18
+ ❯ MySql2PreparedQuery.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:100:27
+ ❯ QueryPromise.execute node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/mysql-core/query-builders/insert.ts:323:25
+ ❯ QueryPromise.then node_modules/.pnpm/drizzle-orm@0.44.6_@opentelemetry+api@1.9.0_@types+pg@8.15.6_mysql2@3.15.1/node_modules/src/query-promise.ts:31:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ER_NO_DEFAULT_FOR_FIELD', errno: 1364, sql: 'insert into `desktop_agents` (`id`, `user_id`, `token`, `device_name`, `platform`, `version`, `status`, `last_ping`, `ip_address`, `createdAt`, `updatedAt`) values (default, default, \'62b8a1ba3295ee40bc9931a3f060a4d36a32efc009db1ba23027cc34ffe06713\', default, default, default, \'offline\', \'2025-12-01 23:35:42.818\', default, default, default)', sqlState: 'HY000', sqlMessage: 'Field \'user_id\' doesn\'t have a default value' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/39]⎯
+
+ FAIL  server/websocket.connection.test.ts > WebSocket Connection Tests > deve autenticar com token válido
+Error: Timeout: autenticação não completada
+ ❯ Timeout._onTimeout server/websocket.connection.test.ts:164:16
+    162| 
+    163|       setTimeout(() => {
+    164|         reject(new Error("Timeout: autenticação não completada"));
+       |                ^
+    165|       }, 5000);
+    166|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/39]⎯
+
+ FAIL  server/websocket.connection.test.ts > WebSocket Connection Tests > deve processar heartbeat e responder com heartbeat_ack
+Error: Timeout: heartbeat_ack não recebido
+ ❯ Timeout._onTimeout server/websocket.connection.test.ts:263:16
+    261| 
+    262|       setTimeout(() => {
+    263|         reject(new Error("Timeout: heartbeat_ack não recebido"));
+       |                ^
+    264|       }, 5000);
+    265|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/39]⎯
+
+ FAIL  server/websocket.connection.test.ts > WebSocket Connection Tests > deve validar formato ISO8601 dos timestamps
+Error: Timeout: validação de timestamp não completada
+ ❯ Timeout._onTimeout server/websocket.connection.test.ts:320:16
+    318| 
+    319|       setTimeout(() => {
+    320|         reject(new Error("Timeout: validação de timestamp não completa…
+       |                ^
+    321|       }, 5000);
+    322|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/39]⎯
+
+ FAIL  server/routers/install.test.ts > Install Router > install.desktopAgent > deve registrar novo agente com sucesso
+TRPCError: Falha ao registrar agente
+ ❯ server/routers/install.ts:110:15
+    108|       } catch (error) {
+    109|         console.error("[Install] Erro ao registrar agente:", error);
+    110|         throw new TRPCError({
+       |               ^
+    111|           code: "INTERNAL_SERVER_ERROR",
+    112|           message: "Falha ao registrar agente",
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+ ❯ node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+ ❯ server/routers/install.test.ts:31:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/39]⎯
+
+ FAIL  server/routers/install.test.ts > Install Router > install.desktopAgent > deve reutilizar token de agente existente
+TRPCError: Falha ao registrar agente
+ ❯ server/routers/install.ts:110:15
+    108|       } catch (error) {
+    109|         console.error("[Install] Erro ao registrar agente:", error);
+    110|         throw new TRPCError({
+       |               ^
+    111|           code: "INTERNAL_SERVER_ERROR",
+    112|           message: "Falha ao registrar agente",
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+ ❯ node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+ ❯ server/routers/install.test.ts:50:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[36/39]⎯
+
+ FAIL  server/routers/install.test.ts > Install Router > install.validate > deve validar agente registrado
+TRPCError: Falha ao registrar agente
+ ❯ server/routers/install.ts:110:15
+    108|       } catch (error) {
+    109|         console.error("[Install] Erro ao registrar agente:", error);
+    110|         throw new TRPCError({
+       |               ^
+    111|           code: "INTERNAL_SERVER_ERROR",
+    112|           message: "Falha ao registrar agente",
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+ ❯ node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+ ❯ server/routers/install.test.ts:106:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[37/39]⎯
+
+ FAIL  server/routers/install.test.ts > Install Router > install.validate > deve rejeitar token inválido
+TRPCError: Falha ao registrar agente
+ ❯ server/routers/install.ts:110:15
+    108|       } catch (error) {
+    109|         console.error("[Install] Erro ao registrar agente:", error);
+    110|         throw new TRPCError({
+       |               ^
+    111|           code: "INTERNAL_SERVER_ERROR",
+    112|           message: "Falha ao registrar agente",
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+ ❯ node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+ ❯ server/routers/install.test.ts:129:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[38/39]⎯
+
+ FAIL  server/routers/install.test.ts > Install Router > install.validate > deve rejeitar agent_id inexistente
+TRPCError: Falha ao validar instalação
+ ❯ server/routers/install.ts:181:15
+    179|       } catch (error) {
+    180|         console.error("[Install] Erro ao validar instalação:", error);
+    181|         throw new TRPCError({
+       |               ^
+    182|           code: "INTERNAL_SERVER_ERROR",
+    183|           message: "Falha ao validar instalação",
+ ❯ resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:571:22
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:633:20
+ ❯ procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:673:20
+ ❯ node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:474:20
+ ❯ server/routers/install.test.ts:149:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39/39]⎯
+
+ Test Files  6 failed | 34 passed (40)
+      Tests  36 failed | 428 passed | 19 skipped (483)
+   Start at  18:35:38
+   Duration  27.34s (transform 1.60s, setup 0ms, collect 38.35s, tests 42.02s, environment 11ms, prepare 3.31s)
+
+ ELIFECYCLE  Test failed. See above for more details.

@@ -1,4 +1,5 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
+import { createMockUser } from "./__mocks__/db";
 import {
   createAgent,
   getAgentByToken,
@@ -26,9 +27,13 @@ describe("Desktop Control - Helpers CRUD", () => {
   let testCommandId: number;
 
   beforeAll(() => {
-    // Usar ID de usuário de teste
-    testUserId = 1;
+    // Criar usuário mock
+    const mockUser = createMockUser({ id: 1, name: "Test User" });
+    testUserId = mockUser.id;
   });
+
+  // beforeEach removido para manter estado entre testes relacionados
+  // O reset global do vitest.setup.ts só acontece entre arquivos de teste diferentes
 
   describe("generateAgentToken", () => {
     it("deve gerar token de 64 caracteres", () => {
@@ -47,7 +52,12 @@ describe("Desktop Control - Helpers CRUD", () => {
 
   describe("createAgent", () => {
     it("deve criar um novo Desktop Agent", async () => {
-      const agent = await createAgent(testUserId, "Test Device", "Windows 11", "1.0.0");
+      const agent = await createAgent({
+        userId: testUserId,
+        deviceName: "Test Device",
+        platform: "Windows 11",
+        version: "1.0.0",
+      });
 
       expect(agent).toBeDefined();
       expect(agent.id).toBeGreaterThan(0);
@@ -65,8 +75,18 @@ describe("Desktop Control - Helpers CRUD", () => {
     });
 
     it("deve gerar tokens únicos para cada agent", async () => {
-      const agent1 = await createAgent(testUserId, "Device 1", "Windows", "1.0.0");
-      const agent2 = await createAgent(testUserId, "Device 2", "macOS", "1.0.0");
+      const agent1 = await createAgent({
+        userId: testUserId,
+        deviceName: "Device 1",
+        platform: "Windows",
+        version: "1.0.0",
+      });
+      const agent2 = await createAgent({
+        userId: testUserId,
+        deviceName: "Device 2",
+        platform: "macOS",
+        version: "1.0.0",
+      });
 
       expect(agent1.token).not.toBe(agent2.token);
     });
@@ -271,7 +291,12 @@ describe("Desktop Control - Helpers CRUD", () => {
 
     it("deve retornar array vazio se não houver comandos pendentes", async () => {
       // Criar agent novo sem comandos
-      const newAgent = await createAgent(testUserId, "Clean Agent", "Linux", "1.0.0");
+      const newAgent = await createAgent({
+        userId: testUserId,
+        deviceName: "Clean Agent",
+        platform: "Linux",
+        version: "1.0.0",
+      });
 
       const commands = await getPendingCommands(newAgent.id);
 
@@ -428,7 +453,12 @@ describe("Desktop Control - Helpers CRUD", () => {
   describe("deleteAgent", () => {
     it("deve deletar agent do usuário", async () => {
       // Criar agent temporário
-      const tempAgent = await createAgent(testUserId, "Temp Agent", "Windows", "1.0.0");
+      const tempAgent = await createAgent({
+        userId: testUserId,
+        deviceName: "Temp Agent",
+        platform: "Windows",
+        version: "1.0.0",
+      });
 
       // Deletar
       const deleted = await deleteAgent(tempAgent.id, testUserId);

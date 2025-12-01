@@ -3,9 +3,12 @@
  * Testes unitários para endpoints de instalação de agentes
  */
 
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { appRouter } from "../routers";
 import type { TrpcContext } from "../_core/context";
+
+// Mock local do db.ts para este arquivo de teste
+vi.mock("../db", () => import("../__mocks__/db.full"));
 
 // Mock context
 function createMockContext(): TrpcContext {
