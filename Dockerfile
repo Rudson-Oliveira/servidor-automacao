@@ -1,7 +1,7 @@
 # Multi-stage build para otimizar tamanho da imagem
 FROM node:22-alpine AS base
 
-# Instalar dependências do sistema
+# Instalar dependências do sistema (incluindo TensorFlow)
 RUN apk add --no-cache \
     python3 \
     make \
@@ -9,7 +9,9 @@ RUN apk add --no-cache \
     cairo-dev \
     jpeg-dev \
     pango-dev \
-    giflib-dev
+    giflib-dev \
+    libc6-compat \
+    gcompat
 
 # Instalar pnpm
 RUN npm install -g pnpm
@@ -35,13 +37,15 @@ RUN pnpm build
 # Stage 4: Production
 FROM node:22-alpine AS production
 
-# Instalar apenas dependências de runtime
+# Instalar apenas dependências de runtime (incluindo TensorFlow)
 RUN apk add --no-cache \
     python3 \
     cairo \
     jpeg \
     pango \
-    giflib
+    giflib \
+    libc6-compat \
+    gcompat
 
 RUN npm install -g pnpm
 
