@@ -1,15 +1,17 @@
 # Multi-stage build para otimizar tamanho da imagem
-FROM node:22-alpine AS base
+# IMPORTANTE: Usando Debian (bullseye-slim) em vez de Alpine porque TensorFlow precisa de glibc
+FROM node:22-bullseye-slim AS base
 
 # Instalar dependências do sistema
-RUN apk add --no-cache \
+RUN apt-get update && apt-get install -y \
     python3 \
     make \
     g++ \
-    cairo-dev \
-    jpeg-dev \
-    pango-dev \
-    giflib-dev
+    libcairo2-dev \
+    libjpeg-dev \
+    libpango1.0-dev \
+    libgif-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Instalar pnpm
 RUN npm install -g pnpm
@@ -33,15 +35,17 @@ COPY . .
 RUN pnpm build
 
 # Stage 4: Production
-FROM node:22-alpine AS production
+FROM node:22-bullseye-slim AS production
 
-# Instalar apenas dependências de runtime
-RUN apk add --no-cache \
+# Instalar apenas dependências de runtime necessárias para TensorFlow
+RUN apt-get update && apt-get install -y \
     python3 \
-    cairo \
-    jpeg \
-    pango \
-    giflib
+    libcairo2 \
+    libjpeg62-turbo \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libgif7 \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN npm install -g pnpm
 
