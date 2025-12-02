@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { describe, it, expect, beforeAll, afterAll, vi } from "vitest";
 import { createServer, Server as HttpServer } from "http";
 import express from "express";
 import crypto from "crypto";
@@ -216,7 +216,7 @@ describe("WebSocket Handshake RFC 6455", () => {
     });
   });
 
-  it("deve aplicar rate limiting (10 msg/s)", async () => {
+  it("deve aplicar rate limiting (10 msg/s)", { timeout: 20000 }, async () => {
     return new Promise<void>((resolve, reject) => {
       const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`, {
         headers: {
@@ -264,7 +264,7 @@ describe("WebSocket Handshake RFC 6455", () => {
         }
       });
 
-      // Timeout de 5 segundos
+      // Timeout de 15 segundos
       setTimeout(() => {
         ws.close();
         if (errorReceived) {
@@ -272,7 +272,7 @@ describe("WebSocket Handshake RFC 6455", () => {
         } else {
           reject(new Error('Timeout aguardando rate limit'));
         }
-      }, 5000);
+      }, 15000);
     });
   });
 

@@ -39,6 +39,7 @@ import { orchestratorMultiIARouter } from './routers/orchestrator-multi-ia';
 import { obsidianAIRouter } from './routers/obsidian-ai';
 import { telephonyRouter } from './routers/telephony';
 import { installRouter } from './routers/install';
+import { multiAIRouter } from './routers/multi-ai-orchestrator';
 
 export const appRouter = router({
   downloadAgent: downloadAgentRouter,
@@ -74,6 +75,9 @@ export const appRouter = router({
 
   // Sistema de Instalação de Agentes
   install: installRouter,
+
+  // Orquestrador Multi-IA (COMET, GENSPARK, ABACUS, CLAUDE, GEMINI, DEEPSITE)
+  multiAI: multiAIRouter,
 
   // Integração com IAs externas
   integration: integrationRouter,

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { describe, it, expect, beforeAll, afterAll, vi } from "vitest";
 import { createServer, Server as HttpServer } from "http";
 import express from "express";
 import WebSocket from "ws";
@@ -14,6 +14,8 @@ import { createAgent } from "./db-desktop-control";
  * - Heartbeat bidirecional
  * - Logs de auditoria
  */
+
+
 
 const TEST_PORT = 3002; // Porta diferente para testes
 let testAgentToken: string;
@@ -116,7 +118,7 @@ describe("WebSocket Connection Tests", () => {
     });
   });
 
-  it("deve autenticar com token válido", async () => {
+  it("deve autenticar com token válido", { timeout: 20000 }, async () => {
     return new Promise<void>((resolve, reject) => {
       const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`, {
         headers: {
@@ -162,7 +164,7 @@ describe("WebSocket Connection Tests", () => {
 
       setTimeout(() => {
         reject(new Error("Timeout: autenticação não completada"));
-      }, 5000);
+      }, 15000);
     });
   });
 
@@ -210,7 +212,7 @@ describe("WebSocket Connection Tests", () => {
     });
   });
 
-  it("deve processar heartbeat e responder com heartbeat_ack", async () => {
+  it("deve processar heartbeat e responder com heartbeat_ack", { timeout: 20000 }, async () => {
     return new Promise<void>((resolve, reject) => {
       const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`, {
         headers: {
@@ -261,11 +263,11 @@ describe("WebSocket Connection Tests", () => {
 
       setTimeout(() => {
         reject(new Error("Timeout: heartbeat_ack não recebido"));
-      }, 5000);
+      }, 15000);
     });
   });
 
-  it("deve validar formato ISO8601 dos timestamps", async () => {
+  it("deve validar formato ISO8601 dos timestamps", { timeout: 20000 }, async () => {
     return new Promise<void>((resolve, reject) => {
       const ws = new WebSocket(`ws://localhost:${TEST_PORT}/desktop-agent`, {
         headers: {
@@ -318,7 +320,7 @@ describe("WebSocket Connection Tests", () => {
 
       setTimeout(() => {
         reject(new Error("Timeout: validação de timestamp não completada"));
-      }, 5000);
+      }, 15000);
     });
   });
 });

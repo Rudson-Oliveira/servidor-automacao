@@ -56,6 +56,7 @@ const HealthChecks = lazy(() => import("./pages/HealthChecks"));
 const InstallationPortal = lazy(() => import("./pages/InstallationPortal"));
 const Download = lazy(() => import("./pages/Download"));
 const DownloadAnalyticsDashboard = lazy(() => import("./pages/DownloadAnalyticsDashboard"));
+const MultiAIDashboard = lazy(() => import("./pages/MultiAIDashboard"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -70,6 +71,7 @@ function Router() {
     <Suspense fallback={<LoadingFallback />}>
       <Switch>
        <Route path={"/"} component={Home} />
+      <Route path={"/multi-ai"} component={MultiAIDashboard} />
       <Route path={"/automacoes-simples"} component={AutomacoesSimples} />
       <Route path="/install" component={InstallPortal} />
       <Route path="/instalar-agent" component={InstalarDesktopAgent} />
