@@ -32,6 +32,7 @@ import desktopAgentRegisterRouter from "../routes/desktop-agent-register";
 import { antiHallucinationMiddleware } from "../anti-hallucination";
 import { startDesktopAgentServer } from "../services/desktopAgentServer";
 import metricsRouter, { metricsMiddleware } from "../routes/metrics";
+import healthCheckRouter from "../routes/health-check";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -92,6 +93,7 @@ async function startServer() {
   app.use("/api/download", downloadRouter);
   app.use("/api/desktop-agent", desktopAgentRegisterRouter);
   app.use("/api/metrics", metricsRouter);
+  app.use("/api/health", healthCheckRouter);
   // tRPC API
   app.use(
     "/api/trpc",

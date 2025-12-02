@@ -3710,3 +3710,19 @@ Criar menu de navegação completo e intuitivo que mostra todas as funcionalidad
 - [x] Certificação de robustez
 - [x] Documentação para 6 IAs auditoras
 - [x] Guia de uso completo
+
+## 📖 Documentação Completa da API e Deploy (Nova Solicitação)
+
+- [x] Criar documentação interativa de todos os endpoints
+- [x] Adicionar exemplos de requisições e respostas para cada endpoint
+- [x] Documentar processo de deploy e configuração do sistema
+- [x] Criar guia de variáveis de ambiente necessárias
+- [x] Adicionar instruções de troubleshooting
+- [x] Criar página web de documentação da API
+- [x] Documentar fluxo de autenticação com API keys
+- [x] Criar guia de integração para desenvolvedores
+- [x] Adicionar exemplos de código TypeScript
+- [x] Criar DOCUMENTACAO_API_COMPLETA.md (294 endpoints em 40 módulos)
+- [x] Criar GUIA_DEPLOY_PRODUCAO.md (deploy completo)
+- [x] Criar página ApiDocs.tsx interativa no frontend
+- [x] Adicionar rota /api-docs no App.tsx
